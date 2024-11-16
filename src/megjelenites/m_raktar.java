@@ -83,7 +83,7 @@ public class m_raktar extends JFrame {
         setVisible(true);
     }
 
-    private void filterItems() {
+    public void filterItems() {
         String filterText = filterField.getText().toLowerCase();
         List<raktar.raktar> filteredRaktars = raktars.stream()
                 .filter(r -> r.getNev().toLowerCase().contains(filterText))
