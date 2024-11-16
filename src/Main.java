@@ -16,7 +16,5 @@ public class Main {
         raktars.add(new raktar("Szilva","db",60));
         kezd frame = new kezd(raktars);
 
-        //zooli megjegysz
-
     }
 }
