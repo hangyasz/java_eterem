@@ -26,6 +26,7 @@ public class m_raktar extends JFrame {
         setLayout(new BorderLayout());
         setLocationRelativeTo(null);
         setResizable(true);
+        setVisible(true);
 
         JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         topPanel.add(new JLabel("Raktár"));
@@ -67,8 +68,6 @@ public class m_raktar extends JFrame {
         button.addActionListener(e -> dispose());
         bottomPanel.add(button);
         add(bottomPanel, BorderLayout.SOUTH);
-
-        setVisible(true);
     }
 
     private void filterTable() {

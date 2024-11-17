@@ -7,6 +7,7 @@ public class menu {
     private String nev;
     private int ar;
     private List<oszetevok.oszetevok> oszetevok= new ArrayList<oszetevok.oszetevok>();
+    private boolean enabled = false;
 
     public menu(String nev, int ar, List<oszetevok.oszetevok> oszetevok){
         this.nev = nev;
@@ -21,6 +22,9 @@ public class menu {
     }
     public List<oszetevok.oszetevok> getOszetevok(){
         return oszetevok;
+    }
+    public boolean isEnabled(){
+        return enabled;
     }
 
 

@@ -7,7 +7,7 @@ import java.awt.event.ActionListener;
 import java.util.List;
 
 public class kezd extends JFrame {
-    public kezd(List<raktar.raktar> raktars) {
+    public kezd(List<raktar.raktar> raktars, List<menu.menu> menu) {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("Étteremi rendszer");
 
@@ -35,7 +35,7 @@ public class kezd extends JFrame {
         menuButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null, "Menübe lépés");
+                new m_menu(menu);
             }
         });
         terkepButton.addActionListener(new ActionListener() {
