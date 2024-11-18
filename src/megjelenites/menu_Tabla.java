@@ -11,7 +11,7 @@ import java.awt.*;
 import java.util.List;
 
 public class menu_Tabla extends AbstractTableModel {
-    private final String[] columnNames = {"Elérhető", "Név", "Ár", "Összetevők", "Törles"};
+    private final String[] columnNames = {"Elérhető","Tipus", "Név", "Ár", "Összetevők", "Törles"};
     private final List<menu> menus;
 
     public menu_Tabla(List<menu> menus) {
@@ -34,13 +34,16 @@ public class menu_Tabla extends AbstractTableModel {
         switch (columnIndex) {
             case 0:
                 return menu.isEnabled();
+
             case 1:
+                return menu.getType();
+                case 2:
                 return menu.getNev();
-            case 2:
-                return menu.getAr();
             case 3:
-                return "Összetevők";
+                return menu.getAr();
             case 4:
+                return "Összetevők";
+            case 5:
                 return "Törles";
             default:
                 return null;
@@ -57,13 +60,15 @@ public class menu_Tabla extends AbstractTableModel {
         switch (columnIndex) {
             case 0:
                 return Boolean.class;
-            case 1:
+                case 1:
                 return String.class;
             case 2:
-                return Integer.class;
+                return String.class;
             case 3:
-                return JButton.class;
+                return Integer.class;
             case 4:
+                return JButton.class;
+            case 5:
                 return JButton.class;
             default:
                 return Object.class;
@@ -81,7 +86,7 @@ public class menu_Tabla extends AbstractTableModel {
             case 0:
                 menu.setEnabled((boolean) value);
                 break;
-            case 1:
+            case 2:
                 try {
                     String newName = value.toString();
                     if (newName.equals("")) {
@@ -100,7 +105,7 @@ public class menu_Tabla extends AbstractTableModel {
                     JOptionPane.showMessageDialog(null, ex.getMessage(), "Hiba", JOptionPane.ERROR_MESSAGE);
                 }
                 break;
-            case 2:
+            case 3:
                 try {
                     int ar = Integer.parseInt(value.toString());
                     if (ar < 0) {

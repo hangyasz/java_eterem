@@ -1,12 +1,14 @@
 package megjelenites;
 
 import menu.menu;
+import menu.MenuType;
 import raktar.raktar;
 import oszetevok.oszetevok;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
 import java.awt.*;
 import java.util.ArrayList;
@@ -49,7 +51,9 @@ public class m_menu extends JFrame {
 
         // Add panel for adding new menu items
         JPanel addPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        addPanel.add(new JLabel("Menü hozzáadása"));
+        addPanel.add(new JLabel("Típus:"));
+        JComboBox<MenuType> typeComboBox = new JComboBox<>(MenuType.values());
+        addPanel.add(typeComboBox);
         addPanel.add(new JLabel("Név:"));
         JTextField nameField = new JTextField(20);
         addPanel.add(nameField);
@@ -87,7 +91,8 @@ public class m_menu extends JFrame {
         addButton.addActionListener(e -> {
             String name = nameField.getText();
             String priceText = priceField.getText();
-            if (name.isEmpty() || priceText.isEmpty()) {
+            MenuType type = (MenuType) typeComboBox.getSelectedItem();
+            if (name.isEmpty() || priceText.isEmpty() || type == null) {
                 JOptionPane.showMessageDialog(this, "Minden mezőt ki kell tölteni!", "Hiba", JOptionPane.ERROR_MESSAGE);
                 return;
             }
@@ -96,7 +101,7 @@ public class m_menu extends JFrame {
                 if (price <= 0) {
                     throw new NumberFormatException();
                 }
-                menu newMenu = new menu(name, price, new ArrayList<oszetevok>());
+                menu newMenu = new menu(name, price, new ArrayList<>(), type);
                 menus.add(newMenu);
                 filterTable(); // Update the table after adding a new item
                 nameField.setText("");
@@ -107,6 +112,7 @@ public class m_menu extends JFrame {
         });
 
         setVisible(true);
+        pack(); // Adjust the frame size to fit the preferred sizes of its components
     }
 
     private void filterTable() {
@@ -123,7 +129,20 @@ public class m_menu extends JFrame {
     }
 
     private void setButtonEditorAndRenderer(JTable table) {
-        TableColumn buttonoszetevok = table.getColumnModel().getColumn(3);
+        TableColumn typeColumn = table.getColumnModel().getColumn(1);
+        typeColumn.setCellEditor(new DefaultCellEditor(new JComboBox<>(MenuType.values())));
+        typeColumn.setCellRenderer(new DefaultTableCellRenderer() {
+            @Override
+            protected void setValue(Object value) {
+                if (value instanceof MenuType) {
+                    setText(((MenuType) value).name());
+                } else {
+                    super.setValue(value);
+                }
+            }
+        });
+
+        TableColumn buttonoszetevok = table.getColumnModel().getColumn(4);
         buttonoszetevok.setCellRenderer(new ButtonRenderer());
         buttonoszetevok.setCellEditor(new ButtonEditor(new JCheckBox(), e -> {
             int row = table.convertRowIndexToModel(table.getSelectedRow());
@@ -132,13 +151,13 @@ public class m_menu extends JFrame {
             setButtonEditorAndRenderer(table);
         }));
 
-        TableColumn buttonTorles = table.getColumnModel().getColumn(4);
+        TableColumn buttonTorles = table.getColumnModel().getColumn(5);
         buttonTorles.setCellRenderer(new ButtonRenderer());
         buttonTorles.setCellEditor(new ButtonEditor(new JCheckBox(), e -> {
             int row = table.convertRowIndexToModel(table.getSelectedRow());
             menu menuToRemove = filteredMenus.get(row);
             menus.remove(menuToRemove);
-            filterTable(); // Update filteredMenus after deletion
+            filterTable();
         }));
     }
 }

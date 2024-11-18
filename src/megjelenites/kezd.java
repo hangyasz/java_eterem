@@ -1,3 +1,4 @@
+// kezd.java
 package megjelenites;
 
 import menu.menu;
@@ -11,7 +12,7 @@ import java.awt.event.ActionListener;
 import java.util.List;
 
 public class kezd extends JFrame {
-    public kezd(List<raktar> raktars, List<menu> menu, List<asztal> asztals) {
+    public kezd(List<raktar> raktars, List<menu> menu, List<asztal> asztals, double x, double y) {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("Étteremi rendszer");
 
@@ -23,17 +24,16 @@ public class kezd extends JFrame {
         JButton menuButton = new JButton("Menü");
         JButton terkepButton = new JButton("Térkép");
 
-
         raktarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-             new m_raktar(raktars, menu);
+                new m_raktar(raktars, menu);
             }
         });
         eteremButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null, "Étterembe lépés");
+                new m_Etterem(asztals, x, y);
             }
         });
         menuButton.addActionListener(new ActionListener() {
@@ -45,7 +45,7 @@ public class kezd extends JFrame {
         terkepButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new m_TeremTerkep(asztals);
+                new m_TeremTerkep(asztals, x, y);
             }
         });
 
@@ -59,5 +59,4 @@ public class kezd extends JFrame {
         setLocationRelativeTo(null); // Center the frame on the screen
         setVisible(true);
     }
-
 }

@@ -13,12 +13,13 @@ import java.util.List;
 
 public class m_TeremTerkep extends JFrame {
     private final List<asztal> asztalok;
-    private final double x_term = 300;
-    private final double y_term = 50;
+    private double x_term = 50;
+    private double y_term = 50;
 
-    public m_TeremTerkep(List<asztal> asztalok) {
+    public m_TeremTerkep(List<asztal> asztalok, double x_term, double y_term) {
         this.asztalok = asztalok;
-
+        this.x_term = x_term;
+        this.y_term = y_term;
         setTitle("Terem Térkép");
         setSize(800, 600);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -41,23 +42,16 @@ public class m_TeremTerkep extends JFrame {
     private class TeremPanel extends JPanel {
         private asztal draggedAsztal = null;
         private int offsetX, offsetY;
-        private double zoomFactor = 1.0;
+        private double zoomFactorX = 1.0;
+        private double zoomFactorY = 1.0;
 
         public TeremPanel() {
             addComponentListener(new ComponentAdapter() {
                 @Override
                 public void componentResized(ComponentEvent e) {
                     Dimension size = getSize();
-                    double panelAspectRatio = (double) size.width / size.height;
-                    double roomAspectRatio = x_term / y_term;
-
-                    if (panelAspectRatio > roomAspectRatio) {
-                        // Panel is wider than the room aspect ratio
-                        zoomFactor = size.height / (y_term * 10);
-                    } else {
-                        // Panel is taller than the room aspect ratio
-                        zoomFactor = size.width / (x_term * 10);
-                    }
+                    zoomFactorX = size.width / (x_term * 10);
+                    zoomFactorY = size.height / (y_term * 10);
                     revalidate();
                     repaint();
                 }
@@ -68,15 +62,15 @@ public class m_TeremTerkep extends JFrame {
                 public void mousePressed(MouseEvent e) {
                     boolean tableClicked = false;
                     for (asztal asztal : asztalok) {
-                        if (e.getX() >= asztal.getX() * zoomFactor && e.getX() <= (asztal.getX() + 50) * zoomFactor &&
-                                e.getY() >= asztal.getY() * zoomFactor && e.getY() <= (asztal.getY() + 50) * zoomFactor) {
+                        if (e.getX() >= asztal.getX() * zoomFactorX && e.getX() <= (asztal.getX() + 50) * zoomFactorX &&
+                                e.getY() >= asztal.getY() * zoomFactorY && e.getY() <= (asztal.getY() + 50) * zoomFactorY) {
                             tableClicked = true;
                             if (SwingUtilities.isRightMouseButton(e)) {
                                 showContextMenu(e, asztal);
                             } else {
                                 draggedAsztal = asztal;
-                                offsetX = (int) (e.getX() - asztal.getX() * zoomFactor);
-                                offsetY = (int) (e.getY() - asztal.getY() * zoomFactor);
+                                offsetX = (int) (e.getX() - asztal.getX() * zoomFactorX);
+                                offsetY = (int) (e.getY() - asztal.getY() * zoomFactorY);
                             }
                             break;
                         }
@@ -96,10 +90,9 @@ public class m_TeremTerkep extends JFrame {
                 @Override
                 public void mouseDragged(MouseEvent e) {
                     if (draggedAsztal != null) {
-                        int newX = (int) ((e.getX() - offsetX) / zoomFactor);
-                        int newY = (int) ((e.getY() - offsetY) / zoomFactor);
+                        int newX = (int) ((e.getX() - offsetX) / zoomFactorX);
+                        int newY = (int) ((e.getY() - offsetY) / zoomFactorY);
 
-                        // Ensure the table stays within the room boundaries
                         if (newX < 0) newX = 0;
                         if (newY < 0) newY = 0;
                         if (newX + 50 > x_term * 10) newX = (int) (x_term * 10 - 50);
@@ -114,9 +107,11 @@ public class m_TeremTerkep extends JFrame {
 
             addMouseWheelListener(e -> {
                 if (e.getWheelRotation() < 0) {
-                    zoomFactor *= 1.1;
+                    zoomFactorX *= 1.1;
+                    zoomFactorY *= 1.1;
                 } else {
-                    zoomFactor /= 1.1;
+                    zoomFactorX /= 1.1;
+                    zoomFactorY /= 1.1;
                 }
                 repaint();
             });
@@ -131,8 +126,12 @@ public class m_TeremTerkep extends JFrame {
                 renameItem.addActionListener(event -> {
                     String newName = JOptionPane.showInputDialog("Adja meg az új nevet:", asztal.getNev());
                     if (newName != null && !newName.trim().isEmpty() && newName.length() <= 6) {
-                        asztal.setNev(newName);
-                        repaint();
+                        if (asztalok.stream().anyMatch(a -> a.getNev().equals(newName))) {
+                            JOptionPane.showMessageDialog(this, "Már létezik asztal ezzel a névvel!", "Hiba", JOptionPane.ERROR_MESSAGE);
+                        } else {
+                            asztal.setNev(newName);
+                            repaint();
+                        }
                     } else {
                         JOptionPane.showMessageDialog(this, "Az asztal neve maximum 6 karakter lehet!", "Hiba", JOptionPane.ERROR_MESSAGE);
                     }
@@ -147,16 +146,20 @@ public class m_TeremTerkep extends JFrame {
                 contextMenu.add(deleteItem);
             }
 
-            int x = (int) (e.getX() / zoomFactor);
-            int y = (int) (e.getY() / zoomFactor);
+            int x = (int) (e.getX() / zoomFactorX);
+            int y = (int) (e.getY() / zoomFactorY);
             if (x >= 0 && x + 50 <= x_term * 10 && y >= 0 && y + 50 <= y_term * 10) {
                 JMenuItem addItem = new JMenuItem("Új asztal hozzáadása");
                 addItem.addActionListener(event -> {
                     String nev = JOptionPane.showInputDialog("Adja meg az asztal nevét:");
                     if (nev != null && !nev.trim().isEmpty() && nev.length() <= 6) {
-                        asztal ujAsztal = new asztal(nev, x, y);
-                        asztalok.add(ujAsztal);
-                        repaint();
+                        if (asztalok.stream().anyMatch(a -> a.getNev().equals(nev))) {
+                            JOptionPane.showMessageDialog(this, "Már létezik asztal ezzel a névvel!", "Hiba", JOptionPane.ERROR_MESSAGE);
+                        } else {
+                            asztal ujAsztal = new asztal(nev, x, y);
+                            asztalok.add(ujAsztal);
+                            repaint();
+                        }
                     } else {
                         JOptionPane.showMessageDialog(this, "Az asztal neve maximum 6 karakter lehet!", "Hiba", JOptionPane.ERROR_MESSAGE);
                     }
@@ -171,7 +174,7 @@ public class m_TeremTerkep extends JFrame {
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
             Graphics2D g2d = (Graphics2D) g;
-            g2d.scale(zoomFactor, zoomFactor);
+            g2d.scale(zoomFactorX, zoomFactorY);
             g2d.setColor(Color.BLUE);
             g2d.fillRect(0, 0, (int) (x_term * 10), (int) (y_term * 10));
             g2d.setColor(Color.BLACK);
