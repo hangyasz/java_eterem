@@ -1,5 +1,7 @@
-package megjelenites;
+package megjelenites.oszetevok;
 
+import megjelenites.ButtonEditor;
+import megjelenites.ButtonRenderer;
 import oszetevok.oszetevok;
 import raktar.raktar;
 import javax.swing.*;

@@ -1,5 +1,5 @@
 // m_TeremTerkep.java
-package megjelenites;
+package megjelenites.teremterkep;
 
 import asztal.asztal;
 
@@ -175,11 +175,17 @@ public class m_TeremTerkep extends JFrame {
             super.paintComponent(g);
             Graphics2D g2d = (Graphics2D) g;
             g2d.scale(zoomFactorX, zoomFactorY);
-            g2d.setColor(Color.BLUE);
+            g2d.setColor(Color.LIGHT_GRAY);
             g2d.fillRect(0, 0, (int) (x_term * 10), (int) (y_term * 10));
-            g2d.setColor(Color.BLACK);
             for (asztal asztal : asztalok) {
-                g2d.drawRect(asztal.getX(), asztal.getY(), 50, 50);
+                if (asztal.getRendelesek().isEmpty()) {
+                    g2d.setColor(Color.GREEN);
+                } else {
+                    g2d.setColor(Color.RED);
+                }
+                g2d.fillRect(asztal.getX(), asztal.getY(), 50, 50); // Fill the rectangle with the color
+                g2d.setColor(Color.BLACK);
+                g2d.drawRect(asztal.getX(), asztal.getY(), 50, 50); // Draw the border of the rectangle
                 g2d.drawString(asztal.getNev(), asztal.getX() + 5, asztal.getY() + 25);
             }
         }

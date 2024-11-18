@@ -1,15 +1,10 @@
 // src/megjelenites/menu_Tabla.java
-package megjelenites;
+package megjelenites.oszetevok;
 
-import menu.menu;
 import oszetevok.oszetevok;
-import raktar.raktar;
 
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
-import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableColumn;
-import java.awt.*;
 import java.util.List;
 
 public class oszetevok_Tabla extends AbstractTableModel {

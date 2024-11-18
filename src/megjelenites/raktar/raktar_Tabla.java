@@ -1,4 +1,4 @@
-package megjelenites;
+package megjelenites.raktar;
 
 import raktar.raktar;
 

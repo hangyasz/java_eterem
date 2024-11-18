@@ -28,6 +28,13 @@ public class oszetevok {
     public String getMertekegyseg(){
         return raktar.getMertekegyseg();
     }
+    public void order(){
+        raktar.addMennyiseg(-mennyiseg);
+
+    }
+    public void delete(){
+        raktar.addMennyiseg(mennyiseg);
+    }
 
 
 }

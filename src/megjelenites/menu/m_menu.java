@@ -1,9 +1,13 @@
-package megjelenites;
+package megjelenites.menu;
 
+import megjelenites.ButtonEditor;
+import megjelenites.ButtonRenderer;
+import megjelenites.login.login_side;
+import megjelenites.oszetevok.m_oszetevok;
 import menu.menu;
 import menu.MenuType;
 import raktar.raktar;
-import oszetevok.oszetevok;
+import role.*;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -14,6 +18,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.EventObject;
 
 public class m_menu extends JFrame {
     private List<menu> menus;
@@ -21,12 +26,15 @@ public class m_menu extends JFrame {
     private final JTextField filterField;
     private final JTable table;
     private List<menu> filteredMenus;
+    private User authenticatedUser;
+    private List<User> users;
 
-    public m_menu(List<menu> menus, List<raktar> raktars) {
+    public m_menu(List<menu> menus, List<raktar> raktars, List<User> users, User authenticatedUser) {
         this.menus = menus;
         this.raktars = raktars;
         this.filteredMenus = menus; // Initialize filteredMenus to menus
-
+        this.authenticatedUser = authenticatedUser;
+        this.users = users;
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setTitle("Menü");
         setSize(800, 600);
@@ -129,8 +137,24 @@ public class m_menu extends JFrame {
     }
 
     private void setButtonEditorAndRenderer(JTable table) {
+        // Column 1 (MenuType) - Add permission check
         TableColumn typeColumn = table.getColumnModel().getColumn(1);
-        typeColumn.setCellEditor(new DefaultCellEditor(new JComboBox<>(MenuType.values())));
+        JComboBox<MenuType> menuTypeCombo = new JComboBox<>(MenuType.values());
+
+        // Custom cell editor with permission check
+        DefaultCellEditor menuTypeEditor = new DefaultCellEditor(menuTypeCombo) {
+            @Override
+            public boolean isCellEditable(EventObject e) {
+                if (!exes.ratar_menuex(authenticatedUser)) {
+                    if (!magasab()) {
+                        return false;
+                    }
+                }
+                return super.isCellEditable(e);
+            }
+        };
+
+        typeColumn.setCellEditor(menuTypeEditor);
         typeColumn.setCellRenderer(new DefaultTableCellRenderer() {
             @Override
             protected void setValue(Object value) {
@@ -142,6 +166,23 @@ public class m_menu extends JFrame {
             }
         });
 
+        // Column 5 (Delete button) - Add permission check
+        TableColumn buttonTorles = table.getColumnModel().getColumn(5);
+        buttonTorles.setCellRenderer(new ButtonRenderer());
+        buttonTorles.setCellEditor(new ButtonEditor(new JCheckBox(), e -> {
+            if (!exes.ratar_menuex(authenticatedUser)) {
+                if (!magasab()) {
+                    return;
+                }
+            }
+
+            int row = table.convertRowIndexToModel(table.getSelectedRow());
+            menu menuToRemove = filteredMenus.get(row);
+            menus.remove(menuToRemove);
+            filterTable();
+        }));
+
+        // Column 4 (Ingredients button) - No permission check needed
         TableColumn buttonoszetevok = table.getColumnModel().getColumn(4);
         buttonoszetevok.setCellRenderer(new ButtonRenderer());
         buttonoszetevok.setCellEditor(new ButtonEditor(new JCheckBox(), e -> {
@@ -150,14 +191,18 @@ public class m_menu extends JFrame {
             new m_oszetevok(menu.getOszetevok(), raktars);
             setButtonEditorAndRenderer(table);
         }));
+    }
 
-        TableColumn buttonTorles = table.getColumnModel().getColumn(5);
-        buttonTorles.setCellRenderer(new ButtonRenderer());
-        buttonTorles.setCellEditor(new ButtonEditor(new JCheckBox(), e -> {
-            int row = table.convertRowIndexToModel(table.getSelectedRow());
-            menu menuToRemove = filteredMenus.get(row);
-            menus.remove(menuToRemove);
-            filterTable();
-        }));
+    private boolean magasab() {
+        login_side login = new login_side(users);
+        User user = login.showLoginDialog(this);
+        if (user == null) {
+            return false;
+        }
+        if (!exes.ratar_menuex(user)) {
+            JOptionPane.showMessageDialog(this, "Nincs hozzáférése", "Error", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        return true;
     }
 }

@@ -1,6 +1,9 @@
 // asztal.java
 package asztal;
 
+import oszetevok.oszetevok;
+import raktar.raktar;
+import menu.menu;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -8,7 +11,7 @@ public class asztal {
     private String nev;
     private int eretke = 0;
     private int x, y;
-    private List<menu.menu> rendelesek = new ArrayList<>();
+    private List<menu> rendelesek = new ArrayList<>();
 
     public asztal(String nev, int x, int y) {
         this.nev = nev;
@@ -16,23 +19,9 @@ public class asztal {
         this.y = y;
     }
 
-    public void rendel(menu.menu menu) {
-        rendelesek.add(menu);
-        eretke += menu.getAr();
-    }
 
-    public void torol(menu.menu menu) {
-        rendelesek.remove(menu);
-        eretke -= menu.getAr();
-    }
 
-    public void kiir() {
-        System.out.println("Asztal: " + nev);
-        System.out.println("Érték: " + eretke);
-        for (menu.menu menu : rendelesek) {
-            System.out.println(menu.getNev() + " " + menu.getAr());
-        }
-    }
+
 
     public int getEretke() {
         return eretke;
@@ -50,7 +39,7 @@ public class asztal {
         return nev;
     }
 
-    public List<menu.menu> getRendelesek() {
+    public List<menu> getRendelesek() {
         return rendelesek;
     }
 
@@ -65,4 +54,27 @@ public class asztal {
     public void setNev(String nev) {
         this.nev = nev;
     }
+
+    public void addRendeles(menu item) {
+        rendelesek.add(item);
+        eretke += item.getAr();
+        for(oszetevok oszetevo :item.getOszetevok())
+        {
+            oszetevo.order();
+        }
+    }
+
+    public void removeRendeles(menu item) {
+        rendelesek.remove(item);
+        eretke -= item.getAr();
+        for(oszetevok oszetevo :item.getOszetevok())
+        {
+            oszetevo.delete();
+        }
+    }
+
+    public void setEretke(int eretke) {
+        this.eretke = eretke;
+    }
+
 }

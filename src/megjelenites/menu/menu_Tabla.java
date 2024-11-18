@@ -1,13 +1,11 @@
 // src/megjelenites/menu_Tabla.java
-package megjelenites;
+package megjelenites.menu;
 
+import menu.MenuType;
 import menu.menu;
 
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
-import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableColumn;
-import java.awt.*;
 import java.util.List;
 
 public class menu_Tabla extends AbstractTableModel {
@@ -85,6 +83,11 @@ public class menu_Tabla extends AbstractTableModel {
         switch (columnIndex) {
             case 0:
                 menu.setEnabled((boolean) value);
+                break;
+            case 1:
+                if (value instanceof MenuType) {
+                    menu.setType((MenuType) value);
+                }
                 break;
             case 2:
                 try {

@@ -1,5 +1,7 @@
-package megjelenites;
+package megjelenites.raktar;
 
+import megjelenites.ButtonEditor;
+import megjelenites.ButtonRenderer;
 import menu.menu;
 import raktar.raktar;
 
