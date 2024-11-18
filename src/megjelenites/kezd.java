@@ -1,5 +1,9 @@
 package megjelenites;
 
+import menu.menu;
+import raktar.raktar;
+import asztal.asztal;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -7,7 +11,7 @@ import java.awt.event.ActionListener;
 import java.util.List;
 
 public class kezd extends JFrame {
-    public kezd(List<raktar.raktar> raktars, List<menu.menu> menu) {
+    public kezd(List<raktar> raktars, List<menu> menu, List<asztal> asztals) {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("Étteremi rendszer");
 
@@ -23,7 +27,7 @@ public class kezd extends JFrame {
         raktarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-             new m_raktar(raktars);
+             new m_raktar(raktars, menu);
             }
         });
         eteremButton.addActionListener(new ActionListener() {
@@ -35,13 +39,13 @@ public class kezd extends JFrame {
         menuButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new m_menu(menu);
+                new m_menu(menu, raktars);
             }
         });
         terkepButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null, "Térképbe lépés");
+                new m_TeremTerkep(asztals);
             }
         });
 

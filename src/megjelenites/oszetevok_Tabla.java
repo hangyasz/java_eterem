@@ -1,22 +1,28 @@
+// src/megjelenites/menu_Tabla.java
 package megjelenites;
 
+import menu.menu;
+import oszetevok.oszetevok;
 import raktar.raktar;
 
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
+import java.awt.*;
 import java.util.List;
 
-public class raktar_Tabla extends AbstractTableModel {
-    private final String[] columnNames = {"Név", "Mértékegység", "Mennyiség","Hozzadás", "Törlés"};
-    private final List<raktar> raktars;
+public class oszetevok_Tabla extends AbstractTableModel {
+    private final String[] columnNames = {"Név", "Mértékegység", "Mennyiség", "Törles"};
+    private final List<oszetevok> oszetevok;
 
-    public raktar_Tabla(List<raktar> raktars) {
-        this.raktars = raktars;
+    public oszetevok_Tabla(List<oszetevok> oszetevoks) {
+        this.oszetevok = oszetevoks;
     }
 
     @Override
     public int getRowCount() {
-        return raktars.size();
+        return oszetevok.size();
     }
 
     @Override
@@ -26,18 +32,19 @@ public class raktar_Tabla extends AbstractTableModel {
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        raktar raktar = raktars.get(rowIndex);
+        if (oszetevok== null || oszetevok.size() == 0) {
+            return null;
+        }
+        oszetevok oszetevo = oszetevok.get(rowIndex);
         switch (columnIndex) {
             case 0:
-                return raktar.getNev();
+                return oszetevo.getNev();
             case 1:
-                return raktar.getMertekegyseg();
+               return oszetevo.getMertekegyseg();
             case 2:
-                return raktar.getMennyiseg();
+                 return oszetevo.getMennyiseg();
             case 3:
-                return null;
-            case 4:
-                return "Törlés";
+                return "Törles";
             default:
                 return null;
         }
@@ -52,13 +59,12 @@ public class raktar_Tabla extends AbstractTableModel {
     public Class<?> getColumnClass(int columnIndex) {
         switch (columnIndex) {
             case 0:
+                return String.class;
             case 1:
                 return String.class;
             case 2:
                 return Double.class;
             case 3:
-                return Double.class;
-            case 4:
                 return JButton.class;
             default:
                 return Object.class;
@@ -67,19 +73,25 @@ public class raktar_Tabla extends AbstractTableModel {
 
     @Override
     public boolean isCellEditable(int rowIndex, int columnIndex) {
-        return columnIndex == 3 || columnIndex == 4;
+        return columnIndex == 2 || columnIndex == 3;
     }
 
     @Override
     public void setValueAt(Object value, int rowIndex, int columnIndex) {
-        raktar raktar = raktars.get(rowIndex);
         switch (columnIndex) {
-            case 3:
-                raktar.addMennyiseg((Double) value);
+            case 2:
+                oszetevok oszetevo = oszetevok.get(rowIndex);
+                try {
+                    double newValue = ((Number) value).doubleValue();
+                    oszetevo.setMennyiseg(newValue);
+                } catch (IllegalArgumentException e) {
+                    JOptionPane.showMessageDialog(null, e.getMessage(), "Hiba", JOptionPane.ERROR_MESSAGE);
+                }
                 break;
             default:
                 break;
         }
+
         fireTableCellUpdated(rowIndex, columnIndex);
     }
 }

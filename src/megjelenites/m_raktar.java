@@ -1,11 +1,12 @@
-
 package megjelenites;
 
+import menu.menu;
 import raktar.raktar;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.table.TableColumn;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,13 +15,15 @@ import java.util.stream.Collectors;
 
 public class m_raktar extends JFrame {
     private final List<raktar> raktars;
+    private final List<menu> menus;
     private final JTextField filterField;
     private final JTable table;
 
-    public m_raktar(List<raktar> raktars) {
+    public m_raktar(List<raktar> raktars, List<menu> menus) {
         this.raktars = raktars;
+        this.menus = menus;
 
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setTitle("Raktár");
         setSize(800, 600);
         setLayout(new BorderLayout());
@@ -68,6 +71,8 @@ public class m_raktar extends JFrame {
         button.addActionListener(e -> dispose());
         bottomPanel.add(button);
         add(bottomPanel, BorderLayout.SOUTH);
+
+        setButtonEditorAndRenderer(table);
     }
 
     private void filterTable() {
@@ -76,6 +81,32 @@ public class m_raktar extends JFrame {
                 .filter(r -> r.getNev().toLowerCase().contains(filterText.toLowerCase()))
                 .collect(Collectors.toList());
         table.setModel(new raktar_Tabla(filteredRaktars));
+        setButtonEditorAndRenderer(table);
+    }
+
+    private void setButtonEditorAndRenderer(JTable table) {
+        TableColumn buttonColumn = table.getColumnModel().getColumn(4);
+        buttonColumn.setCellRenderer(new ButtonRenderer());
+        buttonColumn.setCellEditor(new ButtonEditor(new JCheckBox(), e -> {
+            int row = table.convertRowIndexToModel(table.getSelectedRow());
+            raktar raktarToRemove = raktars.get(row);
+            List<String> containingMenus = menus.stream()
+                    .filter(m -> m.getOszetevok().stream().anyMatch(o -> o.getNev().equals(raktarToRemove.getNev())))
+                    .map(menu::getNev)
+                    .collect(Collectors.toList());
+
+            if (!containingMenus.isEmpty()) {
+                JTextArea textArea = new JTextArea(String.join("\n", containingMenus));
+                textArea.setEditable(false);
+                JScrollPane scrollPane = new JScrollPane(textArea);
+                scrollPane.setPreferredSize(new Dimension(300, 200));
+                JOptionPane.showMessageDialog(this, scrollPane, "Nem lehet törölni, mert az alábbi ételek tartalmazzák:", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            raktars.remove(raktarToRemove);
+            filterTable();
+        }));
     }
 
     private class AddButtonListener implements ActionListener {

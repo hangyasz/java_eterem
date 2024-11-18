@@ -34,4 +34,8 @@ public class raktar {
             this.mennyiseg = 0;
         }
     }
+    @Override
+    public String toString() {
+        return nev;
+    }
 }

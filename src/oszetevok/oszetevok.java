@@ -16,19 +16,18 @@ public class oszetevok {
         return mennyiseg;
     }
     public void setMennyiseg(double mennyiseg){
+        if(mennyiseg <= 0){
+            throw new IllegalArgumentException("A mennyiségnek nagyobbnak kell lennie, mint 0!");
+        }
         this.mennyiseg = mennyiseg;
     }
-    public void addMennyiseg(double mennyiseg){
-        this.mennyiseg += mennyiseg;
-        if(this.mennyiseg < 0){
-            this.mennyiseg = 0;
-        }
-    }
+
     public String getNev(){
         return raktar.getNev();
     }
     public String getMertekegyseg(){
         return raktar.getMertekegyseg();
     }
+
 
 }

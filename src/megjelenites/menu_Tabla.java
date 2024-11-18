@@ -2,14 +2,16 @@
 package megjelenites;
 
 import menu.menu;
-import oszetevok.oszetevok;
 
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
+import java.awt.*;
 import java.util.List;
 
 public class menu_Tabla extends AbstractTableModel {
-    private final String[] columnNames = {"Elérhető", "Név", "Ár", "Összetevők"};
+    private final String[] columnNames = {"Elérhető", "Név", "Ár", "Összetevők", "Törles"};
     private final List<menu> menus;
 
     public menu_Tabla(List<menu> menus) {
@@ -37,16 +39,9 @@ public class menu_Tabla extends AbstractTableModel {
             case 2:
                 return menu.getAr();
             case 3:
-                // Egy belső JTable az összetevők megjelenítéséhez
-                String[] columnNames = {"Összetevő", "Mennyiség", "Mértékegység"};
-                Object[][] data = menu.getOszetevok().stream()
-                        .map(oszetevo -> new Object[]{
-                                oszetevo.getRaktar().getNev(),
-                                oszetevo.getMennyiseg(),
-                                oszetevo.getRaktar().getMertekegyseg()
-                        })
-                        .toArray(Object[][]::new);
-                return new JTable(data, columnNames);
+                return "Összetevők";
+            case 4:
+                return "Törles";
             default:
                 return null;
         }
@@ -67,9 +62,58 @@ public class menu_Tabla extends AbstractTableModel {
             case 2:
                 return Integer.class;
             case 3:
-                return String.class;
+                return JButton.class;
+            case 4:
+                return JButton.class;
             default:
                 return Object.class;
         }
+    }
+
+    @Override
+    public boolean isCellEditable(int rowIndex, int columnIndex) {
+        return true;
+    }
+    @Override
+    public void setValueAt(Object value, int rowIndex, int columnIndex) {
+        menu menu = menus.get(rowIndex);
+        switch (columnIndex) {
+            case 0:
+                menu.setEnabled((boolean) value);
+                break;
+            case 1:
+                try {
+                    String newName = value.toString();
+                    if (newName.equals("")) {
+                        throw new NumberFormatException("Üres");
+                    }
+                    // Check for duplicate names
+                    for (menu m : menus) {
+                        if (m.getNev().equalsIgnoreCase(newName) && m != menu) {
+                            throw new IllegalArgumentException("Név már létezik");
+                        }
+                    }
+                    menu.setNev(newName);
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(null, "Érvénytelen név!", "Hiba", JOptionPane.ERROR_MESSAGE);
+                } catch (IllegalArgumentException ex) {
+                    JOptionPane.showMessageDialog(null, ex.getMessage(), "Hiba", JOptionPane.ERROR_MESSAGE);
+                }
+                break;
+            case 2:
+                try {
+                    int ar = Integer.parseInt(value.toString());
+                    if (ar < 0) {
+                        throw new NumberFormatException("Negativ");
+                    }
+                    menu.setAr(ar);
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(null, "Érvénytelen mennyiség!", "Hiba", JOptionPane.ERROR_MESSAGE);
+                }
+                break;
+            default:
+                break;
+        }
+        fireTableCellUpdated(rowIndex, columnIndex);
     }
 }

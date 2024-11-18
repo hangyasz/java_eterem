@@ -26,6 +26,15 @@ public class menu {
     public boolean isEnabled(){
         return enabled;
     }
+    public void setEnabled(boolean enabled){
+        this.enabled = enabled;
+    }
+    public void setNev(String nev){
+        this.nev = nev;
+    }
+    public void setAr(int ar){
+        this.ar = ar;
+    }
 
 
 }
