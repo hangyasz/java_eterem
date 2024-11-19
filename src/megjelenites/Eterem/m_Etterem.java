@@ -270,6 +270,7 @@ public class m_Etterem extends JFrame {
         closeButton.addActionListener(e -> {
             ordersPanel.setVisible(false);
             restoreOriginalLayout();
+            selectedType=null;
         });
         titlePanel.add(titleLabel);
         titlePanel.add(closeButton);

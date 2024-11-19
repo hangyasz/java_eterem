@@ -1,6 +1,7 @@
 
 package raktar;
 
+
 public class raktar {
     private String nev;
     private String mertekegyseg;
