@@ -15,6 +15,8 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
+import static role.exes.magasab;
+
 public class m_Etterem extends JFrame {
     private final List<asztal> asztalok;
     private final List<menu> menus;
@@ -43,7 +45,7 @@ public class m_Etterem extends JFrame {
         up.add(new JLabel("Étterem"));
         add(up, BorderLayout.NORTH);
 
-        TeremPanel panel = new TeremPanel();
+        TeremPanel panel = new TeremPanel(asztalok, x_term, y_term, this);
         add(panel, BorderLayout.CENTER);
 
         ordersPanel = new JPanel();
@@ -67,7 +69,7 @@ public class m_Etterem extends JFrame {
         JPanel up = new JPanel(new FlowLayout(FlowLayout.CENTER));
         up.add(new JLabel("Étterem"));
         add(up, BorderLayout.NORTH);
-        TeremPanel panel = new TeremPanel();
+        TeremPanel panel = new TeremPanel(asztalok, x_term, y_term, this);
         add(panel, BorderLayout.CENTER);
         ordersPanel.removeAll();
         add(ordersPanel, BorderLayout.EAST);
@@ -76,58 +78,8 @@ public class m_Etterem extends JFrame {
         repaint();
     }
 
-    private class TeremPanel extends JPanel {
-        private double zoomFactorX = 1.0;
-        private double zoomFactorY = 1.0;
 
-        public TeremPanel() {
-            addComponentListener(new ComponentAdapter() {
-                @Override
-                public void componentResized(ComponentEvent e) {
-                    Dimension size = getSize();
-                    zoomFactorX = size.width / (x_term * 10);
-                    zoomFactorY = size.height / (y_term * 10);
-                    revalidate();
-                    repaint();
-                }
-            });
-
-            addMouseListener(new MouseAdapter() {
-                @Override
-                public void mousePressed(MouseEvent e) {
-                    for (asztal asztal : asztalok) {
-                        if (e.getX() >= asztal.getX() * zoomFactorX && e.getX() <= (asztal.getX() + 50) * zoomFactorX &&
-                                e.getY() >= asztal.getY() * zoomFactorY && e.getY() <= (asztal.getY() + 50) * zoomFactorY) {
-                            showOrders(asztal);
-                            break;
-                        }
-                    }
-                }
-            });
-        }
-
-        @Override
-        protected void paintComponent(Graphics g) {
-            super.paintComponent(g);
-            Graphics2D g2d = (Graphics2D) g;
-            g2d.scale(zoomFactorX, zoomFactorY);
-            g2d.setColor(Color.LIGHT_GRAY);
-            g2d.fillRect(0, 0, (int) (x_term * 10), (int) (y_term * 10));
-            for (asztal asztal : asztalok) {
-                if (asztal.getRendelesek().isEmpty()) {
-                    g2d.setColor(Color.GREEN);
-                } else {
-                    g2d.setColor(Color.RED);
-                }
-                g2d.fillRect(asztal.getX(), asztal.getY(), 50, 50);
-                g2d.setColor(Color.BLACK);
-                g2d.drawRect(asztal.getX(), asztal.getY(), 50, 50);
-                g2d.drawString(asztal.getNev(), asztal.getX() + 5, asztal.getY() + 25);
-            }
-        }
-    }
-
-    public void showOrders(asztal asztal) {
+    void showOrders(asztal asztal) {
         ordersPanel.removeAll();
         ordersPanel.setLayout(new BorderLayout());
 
@@ -157,7 +109,7 @@ public class m_Etterem extends JFrame {
         });
         payButton.addActionListener(e -> {
             if (!exes.ratar_menuex(authenticatedUser)) {
-                if (!magasab()) {
+                if (!magasab(users, this)) {
                     return;
                 }
             }
@@ -239,7 +191,6 @@ public class m_Etterem extends JFrame {
             typeButton.addActionListener(event -> {
                 selectedType = type;
                 showMenuItems(asztal, centerPanel, rightPanel);
-                highlightSelectedButton(leftPanel, typeButton);
             });
 
             leftPanel.add(typeButton);
@@ -251,14 +202,6 @@ public class m_Etterem extends JFrame {
         repaint();
     }
 
-    private void highlightSelectedButton(JPanel leftPanel, JButton selectedButton) {
-        for (Component component : leftPanel.getComponents()) {
-            if (component instanceof JButton) {
-                component.setBackground(null); // Reset background color
-            }
-        }
-        selectedButton.setBackground(Color.YELLOW); // Highlight selected button
-    }
 
     private void updateOrdersPanel(JPanel rightPanel, asztal asztal, JPanel centerPanel) {
         rightPanel.removeAll();
@@ -270,7 +213,7 @@ public class m_Etterem extends JFrame {
         closeButton.addActionListener(e -> {
             ordersPanel.setVisible(false);
             restoreOriginalLayout();
-            selectedType=null;
+            authenticatedUser=null;
         });
         titlePanel.add(titleLabel);
         titlePanel.add(closeButton);
@@ -293,7 +236,7 @@ public class m_Etterem extends JFrame {
             JButton deleteButton = new JButton("Törlés");
             deleteButton.addActionListener(e -> {
                 if (!exes.ratar_menuex(authenticatedUser)) {
-                    if (!magasab()) {
+                    if (!magasab(users, this)) {
                         return;
                     }
                 }
@@ -409,16 +352,4 @@ public class m_Etterem extends JFrame {
         return itemsByType;
     }
 
-    private boolean magasab() {
-        login_side login = new login_side(users);
-        User magasab = login.showLoginDialog(this);
-        if (magasab == null) {
-            return false;
-        }
-        if (!exes.ratar_menuex(magasab)) {
-            JOptionPane.showMessageDialog(this, "Nincs hozzáférése", "Error", JOptionPane.ERROR_MESSAGE);
-            return false;
-        }
-        return true;
-    }
 }

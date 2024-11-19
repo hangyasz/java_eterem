@@ -20,6 +20,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.EventObject;
 
+import static role.exes.magasab;
+
 public class m_menu extends JFrame {
     private List<menu> menus;
     private final List<raktar> raktars;
@@ -28,36 +30,42 @@ public class m_menu extends JFrame {
     private List<menu> filteredMenus;
     private User authenticatedUser;
     private List<User> users;
+    private JFrame frame;
 
     public m_menu(List<menu> menus, List<raktar> raktars, List<User> users, User authenticatedUser) {
+        //privát változók beállítása
+        frame = this;
         this.menus = menus;
         this.raktars = raktars;
-        this.filteredMenus = menus; // Initialize filteredMenus to menus
+        this.filteredMenus = menus;
         this.authenticatedUser = authenticatedUser;
         this.users = users;
+        //ablak beállítása
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setTitle("Menü");
         setSize(800, 600);
         setLayout(new BorderLayout());
         setLocationRelativeTo(null);
         setResizable(true);
-
         JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         topPanel.add(new JLabel("Menü"));
         add(topPanel, BorderLayout.NORTH);
+        setVisible(true);
 
+        //szűrő mező
         JPanel centerPanel = new JPanel(new BorderLayout());
         JPanel filterPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         filterPanel.add(new JLabel("Szűrés:"));
         filterField = new JTextField(40);
         filterPanel.add(filterField);
         centerPanel.add(filterPanel, BorderLayout.NORTH);
+        //tábla létrehozása
         table = new JTable(new menu_Tabla(filteredMenus));
         setButtonEditorAndRenderer(table);
         JScrollPane scrollPane = new JScrollPane(table);
         centerPanel.add(scrollPane, BorderLayout.CENTER);
 
-        // Add panel for adding new menu items
+        //menü hozzáadása panel
         JPanel addPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         addPanel.add(new JLabel("Típus:"));
         JComboBox<MenuType> typeComboBox = new JComboBox<>(MenuType.values());
@@ -73,12 +81,14 @@ public class m_menu extends JFrame {
         centerPanel.add(addPanel, BorderLayout.SOUTH);
         add(centerPanel, BorderLayout.CENTER);
 
+        //vissza gomb
         JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         JButton button = new JButton("Vissza");
         button.addActionListener(e -> dispose());
         bottomPanel.add(button);
         add(bottomPanel, BorderLayout.SOUTH);
 
+        //szűrő mező figyelése és változás esetén a tábla frissítése
         filterField.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
@@ -96,6 +106,7 @@ public class m_menu extends JFrame {
             }
         });
 
+        //menü hozzáadása gomb lenyomás esemény feltételek ellenőrzése
         addButton.addActionListener(e -> {
             String name = nameField.getText();
             String priceText = priceField.getText();
@@ -109,20 +120,24 @@ public class m_menu extends JFrame {
                 if (price <= 0) {
                     throw new NumberFormatException();
                 }
+                //menü hozzáadása a listához alapanyagok még nincsenek hozzáadva
                 menu newMenu = new menu(name, price, new ArrayList<>(), type);
                 menus.add(newMenu);
-                filterTable(); // Update the table after adding a new item
+                //tábla frissítése
+                filterTable();
+                //mezők ürítése
                 nameField.setText("");
                 priceField.setText("");
             } catch (NumberFormatException ex) {
+                //hiba esetén hibaüzenet
                 JOptionPane.showMessageDialog(this, "Érvénytelen ár!", "Hiba", JOptionPane.ERROR_MESSAGE);
             }
         });
 
-        setVisible(true);
-        pack(); // Adjust the frame size to fit the preferred sizes of its components
+        pack();
     }
 
+    //tábla frissítése szűrés alapján
     private void filterTable() {
         String filterText = filterField.getText();
         if (filterText.isEmpty()) {
@@ -136,25 +151,28 @@ public class m_menu extends JFrame {
         setButtonEditorAndRenderer(table);
     }
 
+    //gomb használata táblázatbol
     private void setButtonEditorAndRenderer(JTable table) {
-        // Column 1 (MenuType) - Add permission check
+        // dropbox szerkesztő
         TableColumn typeColumn = table.getColumnModel().getColumn(1);
         JComboBox<MenuType> menuTypeCombo = new JComboBox<>(MenuType.values());
 
-        // Custom cell editor with permission check
+        //chekbox szerkesztő
         DefaultCellEditor menuTypeEditor = new DefaultCellEditor(menuTypeCombo) {
+            //hozzáférés ellenőrzése
             @Override
             public boolean isCellEditable(EventObject e) {
                 if (!exes.ratar_menuex(authenticatedUser)) {
-                    if (!magasab()) {
+                    if (!magasab(users, frame)) {
                         return false;
                     }
                 }
                 return super.isCellEditable(e);
             }
         };
-
+        //beállijuk váltotathatová
         typeColumn.setCellEditor(menuTypeEditor);
+        //cella megjelenítő és érték beállítása
         typeColumn.setCellRenderer(new DefaultTableCellRenderer() {
             @Override
             protected void setValue(Object value) {
@@ -166,43 +184,37 @@ public class m_menu extends JFrame {
             }
         });
 
-        // Column 5 (Delete button) - Add permission check
+        //Törlés gomb
         TableColumn buttonTorles = table.getColumnModel().getColumn(5);
         buttonTorles.setCellRenderer(new ButtonRenderer());
         buttonTorles.setCellEditor(new ButtonEditor(new JCheckBox(), e -> {
+            //hozzáférés ellenőrzése
             if (!exes.ratar_menuex(authenticatedUser)) {
-                if (!magasab()) {
+                if (!magasab(users, frame)) {
                     return;
                 }
             }
-
+            //lekérjük a kiválasztott sort
             int row = table.convertRowIndexToModel(table.getSelectedRow());
             menu menuToRemove = filteredMenus.get(row);
+            //töröljük a menüt
             menus.remove(menuToRemove);
+            //frissítjük a táblát
             filterTable();
         }));
 
-        // Column 4 (Ingredients button) - No permission check needed
+        // Összetevők gomb
         TableColumn buttonoszetevok = table.getColumnModel().getColumn(4);
         buttonoszetevok.setCellRenderer(new ButtonRenderer());
         buttonoszetevok.setCellEditor(new ButtonEditor(new JCheckBox(), e -> {
+            //megjelenítjük az adot menü összetevőit
             int row = table.convertRowIndexToModel(table.getSelectedRow());
             menu menu = filteredMenus.get(row);
             new m_oszetevok(menu.getOszetevok(), raktars);
+            //frissítjük a táblát gombjait
             setButtonEditorAndRenderer(table);
         }));
     }
 
-    private boolean magasab() {
-        login_side login = new login_side(users);
-        User user = login.showLoginDialog(this);
-        if (user == null) {
-            return false;
-        }
-        if (!exes.ratar_menuex(user)) {
-            JOptionPane.showMessageDialog(this, "Nincs hozzáférése", "Error", JOptionPane.ERROR_MESSAGE);
-            return false;
-        }
-        return true;
-    }
+
 }

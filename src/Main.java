@@ -2,7 +2,7 @@ import megjelenites.*;
 import menu.MenuType;
 import raktar.raktar;
 import menu.menu;
-import asztal.asztal;
+import asztal.*;
 import oszetevok.oszetevok;
 import role.*;
 

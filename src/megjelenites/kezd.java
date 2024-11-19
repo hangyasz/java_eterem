@@ -19,22 +19,25 @@ import java.awt.event.ActionListener;
 import java.util.List;
 
 public class kezd extends JFrame {
-    private List<User> users;
 
     public kezd(List<raktar> raktars, List<menu> menu, List<asztal> asztals, double x, double y, List<User> users) {
-        this.users = users;
+        //válaszopanel megjelenitése
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("Étteremi rendszer");
-
+        setLocationRelativeTo(null);
+        setVisible(true);
         JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(2, 3, 10, 10)); // 2x3 grid with gaps
-
+        // 2 sor 3 oszlop
+        panel.setLayout(new GridLayout(2, 3, 10, 10));
+        //gombok létrehozása
         JButton eteremButton = new JButton("Étterem");
         JButton raktarButton = new JButton("Raktár");
         JButton menuButton = new JButton("Menü");
         JButton terkepButton = new JButton("Térkép");
         JButton adminButton = new JButton("Admin");
+        JButton close = new JButton("Bezárás");
 
+        //gombokra kattintás és azonositás báliásia
         raktarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -46,7 +49,7 @@ public class kezd extends JFrame {
                 if (exes.ratar_menuex(authenticatedUser)) {
                     new m_raktar(raktars, menu);
                 } else {
-                    JOptionPane.showMessageDialog(kezd.this, "Nincs hozzáférése", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(kezd.this, "Nincs hozzáférése a raktárhoz", "Hitelesités", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
@@ -69,7 +72,7 @@ public class kezd extends JFrame {
                 if (exes.menuex(authenticatedUser)) {
                     new m_menu(menu, raktars, users, authenticatedUser);
                 } else {
-                    JOptionPane.showMessageDialog(kezd.this, "Nincs hozzáférése", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(kezd.this, "Nincs hozzáférése", "Hitelesités", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
@@ -85,7 +88,7 @@ public class kezd extends JFrame {
                 if (exes.ratar_menuex(authenticatedUser)) {
                     new m_TeremTerkep(asztals, x, y);
                 } else {
-                    JOptionPane.showMessageDialog(kezd.this, "Nincs hozzáférése", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(kezd.this, "Nincs hozzáférése", "Hitelesités", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
@@ -101,20 +104,27 @@ public class kezd extends JFrame {
                 if (exes.allex(authenticatedUser)) {
                     new m_admin(users);
                 } else {
-                    JOptionPane.showMessageDialog(kezd.this, "Nincs hozzáférése", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(kezd.this, "Nincs hozzáférése", "Hitelesités", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
 
+        close.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.exit(0);
+            }
+        });
+
+        //gombok hozzáadása a panelhez
         panel.add(eteremButton);
         panel.add(raktarButton);
         panel.add(menuButton);
         panel.add(terkepButton);
         panel.add(adminButton);
+        panel.add(close);
         add(panel);
+        pack();
 
-        pack(); // Adjust the frame size to fit the preferred sizes of its components
-        setLocationRelativeTo(null); // Center the frame on the screen
-        setVisible(true);
     }
 }

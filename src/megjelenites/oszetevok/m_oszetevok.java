@@ -17,22 +17,28 @@ public class m_oszetevok extends JFrame {
     private final List<oszetevok> oszetevok_lista;
 
     public m_oszetevok(List<oszetevok> oszetevok_lista, List<raktar> raktars) {
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.oszetevok_lista = oszetevok_lista;
+        // Ablak beállítása
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setTitle("Összetevők");
         setSize(800, 400);
-        setLocationRelativeTo(null); // Center the frame on the screen
+        setLocationRelativeTo(null);
+        setVisible(true);
         setLayout(new BorderLayout());
+        // Felső panel
         JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         topPanel.add(new JLabel("Összetevők"));
         add(topPanel, BorderLayout.NORTH);
+        // Középső panel
         JPanel center = new JPanel(new BorderLayout());
+        // Táblázat
         JTable table = new JTable(new oszetevok_Tabla(oszetevok_lista));
         JScrollPane scrollPane = new JScrollPane(table);
         center.add(scrollPane, BorderLayout.CENTER);
 
-        // Panel for adding new ingredient
+        // Hozzáadás panel
         JPanel addPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        // Összetevő kiválasztása dropdown
         JComboBox<raktar> ingredientComboBox;
         if (raktars.isEmpty()) {
             ingredientComboBox = new JComboBox<>();
@@ -40,8 +46,11 @@ public class m_oszetevok extends JFrame {
             ingredientComboBox = new JComboBox<>(new DefaultComboBoxModel<>(raktars.toArray(new raktar[0])));
         }
         ingredientComboBox.setEditable(true);
+        //mértékegység abblak ha ures a raktár akkor ures különben a raktár első elemének mértékegysége
+        JLabel quantityLabel = new JLabel(raktars.isEmpty() ? "" : String.valueOf(raktars.get(0).getMertekegyseg()));
+        // Mennyiség mező
         JTextField quantityField = new JTextField(5);
-        JLabel quantityLabel = new JLabel(raktars.isEmpty() ? "" : String.valueOf(raktars.get(0).getMertekegyseg())); // Set the quantity label to the first element's quantity
+        //elemek hozzáadása a panelhez
         JButton addButton = new JButton("Hozzáadás");
         addPanel.add(new JLabel("Összetevő:"));
         addPanel.add(ingredientComboBox);
@@ -52,24 +61,27 @@ public class m_oszetevok extends JFrame {
         addPanel.add(addButton);
         center.add(addPanel, BorderLayout.SOUTH);
 
+        //alsó panel viszalépés gombal
         add(center, BorderLayout.CENTER);
         JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         JButton button = new JButton("Vissza");
         button.addActionListener(e -> dispose());
         bottomPanel.add(button);
         add(bottomPanel, BorderLayout.SOUTH);
-        setVisible(true);
+
 
         // Gomb renderer és editor beállítása
         setButtonEditorAndRenderer(table);
 
-        // Add button action
+        // hozzáadás gombra kattintás
         addButton.addActionListener(e -> {
+            // Ellenőrizzük, hogy minden mező helyesen van-e kitöltve
             raktar selectedIngredient = (raktar) ingredientComboBox.getSelectedItem();
             if (selectedIngredient == null) {
                 JOptionPane.showMessageDialog(this, "Nincs kiválasztva összetevő!", "Hiba", JOptionPane.ERROR_MESSAGE);
                 return;
             }
+            // Mennyiség ellenőrzése
             double quantity;
             try {
                 quantity = Double.parseDouble(quantityField.getText());
@@ -80,17 +92,19 @@ public class m_oszetevok extends JFrame {
                 JOptionPane.showMessageDialog(this, "Érvénytelen mennyiség!", "Hiba", JOptionPane.ERROR_MESSAGE);
                 return;
             }
+            // Ellenőrizzük, hogy az összetevő már szerepel-e a listában
             if (oszetevok_lista.stream().anyMatch(oszetevok -> oszetevok.getNev().equals(selectedIngredient.getNev()))) {
                 JOptionPane.showMessageDialog(this, "Az összetevő már szerepel a listában!", "Hiba", JOptionPane.ERROR_MESSAGE);
                 return;
             }
+            // Hozzáadjuk az összetevőt a listához
             oszetevok newOszetevok = new oszetevok(selectedIngredient, quantity);
             oszetevok_lista.add(newOszetevok);
             table.setModel(new oszetevok_Tabla(oszetevok_lista));
             setButtonEditorAndRenderer(table); // Újra beállítjuk a gombokat
         });
 
-        // Add filtering functionality to the combo box
+        // Összetevő kiválasztása legördülő menüből beírt szöveg alapján
         JTextField editorComponent = (JTextField) ingredientComboBox.getEditor().getEditorComponent();
         editorComponent.addKeyListener(new KeyAdapter() {
             @Override
@@ -105,7 +119,7 @@ public class m_oszetevok extends JFrame {
             }
         });
 
-        // Update quantity label when a new item is selected
+        // Összetevő kiválasztása esemény figyelő frissíti a mértékegységet
         ingredientComboBox.addActionListener(e -> {
             raktar selectedIngredient = (raktar) ingredientComboBox.getSelectedItem();
             if (selectedIngredient != null) {
@@ -114,6 +128,7 @@ public class m_oszetevok extends JFrame {
         });
     }
 
+    // Lehetővé teszi a torlés gomb használatát a táblázatban
     private void setButtonEditorAndRenderer(JTable table) {
         TableColumn buttonColumn = table.getColumnModel().getColumn(3);
         buttonColumn.setCellRenderer(new ButtonRenderer());

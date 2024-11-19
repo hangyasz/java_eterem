@@ -12,17 +12,19 @@ public class login_side {
     public login_side(List<User> users) {
         this.users = users;
     }
-
+    //megjeleníti a login ablakot
     public User showLoginDialog(Frame parent) {
         PinInputField pinInputField = new PinInputField(users);
+        //megjeleníti a felubó
         JDialog dialog = new JDialog(parent, "Login", true);
         dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         dialog.setSize(400, 600);
         dialog.setLayout(new BorderLayout());
+        //megjelnit a jelkod mezot
         dialog.add(pinInputField, BorderLayout.CENTER);
         dialog.setLocationRelativeTo(parent);
         dialog.setVisible(true);
-
+        //viszaadja a bejelentkezett felhasználót
         return pinInputField.getAuthenticatedUser();
     }
 }

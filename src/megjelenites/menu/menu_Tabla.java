@@ -12,20 +12,24 @@ public class menu_Tabla extends AbstractTableModel {
     private final String[] columnNames = {"Elérhető","Tipus", "Név", "Ár", "Összetevők", "Törles"};
     private final List<menu> menus;
 
+    //konstruktor
     public menu_Tabla(List<menu> menus) {
         this.menus = menus;
     }
 
+    //visszaadja a sorok számát
     @Override
     public int getRowCount() {
         return menus.size();
     }
 
+    //visszaadja az oszlopok számát
     @Override
     public int getColumnCount() {
         return columnNames.length;
     }
 
+    //visszaadja az adott cella értékét
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         menu menu = menus.get(rowIndex);
@@ -48,11 +52,13 @@ public class menu_Tabla extends AbstractTableModel {
         }
     }
 
+    //visszaadja az oszlop nevét
     @Override
     public String getColumnName(int column) {
         return columnNames[column];
     }
 
+    //visszaadja az oszlopok típusát
     @Override
     public Class<?> getColumnClass(int columnIndex) {
         switch (columnIndex) {
@@ -73,10 +79,13 @@ public class menu_Tabla extends AbstractTableModel {
         }
     }
 
+    //a cellák szerkeszthetőek alapesetben mindegyik az
     @Override
     public boolean isCellEditable(int rowIndex, int columnIndex) {
         return true;
     }
+
+    //az adott cella értékét bálitás modositás estén
     @Override
     public void setValueAt(Object value, int rowIndex, int columnIndex) {
         menu menu = menus.get(rowIndex);
@@ -90,6 +99,7 @@ public class menu_Tabla extends AbstractTableModel {
                 }
                 break;
             case 2:
+                //név ellenőrzése
                 try {
                     String newName = value.toString();
                     if (newName.equals("")) {
@@ -103,12 +113,12 @@ public class menu_Tabla extends AbstractTableModel {
                     }
                     menu.setNev(newName);
                 } catch (NumberFormatException ex) {
-                    JOptionPane.showMessageDialog(null, "Érvénytelen név!", "Hiba", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Érvénytelen név! " + ex.getMessage(), "Hiba", JOptionPane.ERROR_MESSAGE);
                 } catch (IllegalArgumentException ex) {
                     JOptionPane.showMessageDialog(null, ex.getMessage(), "Hiba", JOptionPane.ERROR_MESSAGE);
                 }
                 break;
-            case 3:
+            case 3: //ár ellenőrzése
                 try {
                     int ar = Integer.parseInt(value.toString());
                     if (ar < 0) {
@@ -116,12 +126,13 @@ public class menu_Tabla extends AbstractTableModel {
                     }
                     menu.setAr(ar);
                 } catch (NumberFormatException ex) {
-                    JOptionPane.showMessageDialog(null, "Érvénytelen mennyiség!", "Hiba", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Érvénytelen mennyiség !" + ex.getMessage(), "Hiba", JOptionPane.ERROR_MESSAGE);
                 }
                 break;
             default:
                 break;
         }
+        //tábla frissítése
         fireTableCellUpdated(rowIndex, columnIndex);
     }
 }

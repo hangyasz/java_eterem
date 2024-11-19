@@ -11,12 +11,12 @@ import java.awt.*;
 import java.util.List;
 
 public class m_admin extends JFrame {
-    private List<User> users;
     private JTable userTable;
     private UserTableModel userTableModel;
 
     public m_admin(List<User> users) {
-        this.users = users;
+
+        //az ablak beállításai
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setTitle("Adminisztráció");
         setSize(800, 600);
@@ -24,14 +24,15 @@ public class m_admin extends JFrame {
         setLocationRelativeTo(null);
         setResizable(true);
 
+        //a felhastnálók táblázatának létrehozása
         userTableModel = new UserTableModel(users);
         userTable = new JTable(userTableModel);
 
-        // Use combo box for roles
+        //a szerep oszlop szerkesztőjének beállítása
         JComboBox<Role> roleComboBox = new JComboBox<>(Role.values());
         userTable.getColumnModel().getColumn(2).setCellEditor(new DefaultCellEditor(roleComboBox));
 
-        // Add delete button functionality
+        //a törlés gomb oszlop szerkesztőjének beállítása
         userTable.getColumnModel().getColumn(3).setCellRenderer(new ButtonRenderer());
         userTable.getColumnModel().getColumn(3).setCellEditor(new ButtonEditor(new JCheckBox(), e -> {
             int row = userTable.convertRowIndexToModel(userTable.getSelectedRow());
@@ -40,51 +41,24 @@ public class m_admin extends JFrame {
                 if (userToDelete.getRole() == Role.OWNER) {
                     JOptionPane.showMessageDialog(m_admin.this, "Az owner fiókot nem lehet törölni!", "Hiba", JOptionPane.ERROR_MESSAGE);
                 } else {
-                    users.remove(userToDelete); // Remove the user from the main list
-                    userTableModel.updateUsers(users); // Update the table model
+                    users.remove(userToDelete); //törlés a felhasználók listából
+                    userTableModel.fliter_user(users);  //táblázat frissítése
                 }
             }
         }));
 
+        //a táblázat hozzáadása a görgethető panelhez
         JScrollPane scrollPane = new JScrollPane(userTable);
         add(scrollPane, BorderLayout.CENTER);
 
+        //az új felhasználó hozzáadásához gomb hozzáadása
         JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         JButton addButton = new JButton("Új felhasználó hozzáadása");
         bottomPanel.add(addButton);
         add(bottomPanel, BorderLayout.SOUTH);
-
+        //az új felhasználó hozzáadásához dialógusablak megjelenítése
         addButton.addActionListener(e -> {
-            JTextField usernameField = new JTextField(20);
-            JTextField passwordField = new JTextField(20);
-            JComboBox<Role> roleComboBoxNew = new JComboBox<>(Role.values());
-
-            JPanel panel = new JPanel(new GridLayout(3, 2));
-            panel.add(new JLabel("Felhasználónév:"));
-            panel.add(usernameField);
-            panel.add(new JLabel("Jelszó:"));
-            panel.add(passwordField);
-            panel.add(new JLabel("Szerep:"));
-            panel.add(roleComboBoxNew);
-
-            int result = JOptionPane.showConfirmDialog(null, panel, "Új felhasználó hozzáadása", JOptionPane.OK_CANCEL_OPTION);
-            if (result == JOptionPane.OK_OPTION) {
-                String username = usernameField.getText();
-                String password = passwordField.getText();
-                Role role = (Role) roleComboBoxNew.getSelectedItem();
-                if (!username.isEmpty() && password.matches("\\d{4}") && role != null) {
-                    if (users.stream().anyMatch(u -> u.getUsername().equals(username)||u.getPassword().equals(password))) {
-                        JOptionPane.showMessageDialog(m_admin.this, "A felhasználónév már létezik!", "Hiba", JOptionPane.ERROR_MESSAGE);
-                    } else if (role == Role.ADMIN) {
-                        JOptionPane.showMessageDialog(m_admin.this, "Nem lehet új admin felhasználót hozzáadni!", "Hiba", JOptionPane.ERROR_MESSAGE);
-                    } else {
-                        users.add(new User(username, password, role));
-                        userTableModel.updateUsers(users); // Update the table model
-                    }
-                } else {
-                    JOptionPane.showMessageDialog(m_admin.this, "Minden mezőt ki kell tölteni és a jelszónak 4 számjegyből kell állnia!", "Hiba", JOptionPane.ERROR_MESSAGE);
-                }
-            }
+            add_User.addUser(users, userTableModel, m_admin.this);
         });
 
         setVisible(true);
