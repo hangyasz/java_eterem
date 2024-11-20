@@ -6,6 +6,7 @@ import asztal.*;
 import oszetevok.oszetevok;
 import role.*;
 import xml.XMLManager;
+import xml.XMLRaktar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,18 +35,7 @@ public class Main {
         users.add(new User("chef", "2222", Role.CHEF));
 
         XMLManager xmlManager = new XMLManager();
-
-        // Adatok mentése külön fájlokba
-        xmlManager.saveRaktarToXML(raktars);
-        xmlManager.saveMenuToXML(menus);
-        xmlManager.saveAsztalToXML(asztals);
-
-        // Adatok betöltése külön fájlokból
-        List<raktar> raktarItems = xmlManager.loadRaktarFromXML();
-        List<menu> menuItems = xmlManager.loadMenuFromXML(raktarItems);
-        List<asztal> asztalok = xmlManager.loadAsztalFromXML(menuItems);
-
-        new kezd(raktarItems, menuItems, asztalok, x, y, users);
+        new kezd(raktarItems, menuItems, asztalok, x, y, usersItem);
 
 
     }

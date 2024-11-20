@@ -5,6 +5,7 @@ import megjelenites.ButtonEditor;
 import megjelenites.ButtonRenderer;
 import role.User;
 import role.Role;
+import xml.XMLUser;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,6 +14,7 @@ import java.util.List;
 public class m_admin extends JFrame {
     private JTable userTable;
     private UserTableModel userTableModel;
+    private XMLUser xmlUser = new XMLUser();
 
     public m_admin(List<User> users) {
 

@@ -3,6 +3,8 @@ package megjelenites.admin;
 
 import role.User;
 import role.Role;
+import xml.XMLUser;
+
 
 import javax.swing.*;
 import java.awt.*;
