@@ -68,4 +68,8 @@ public class asztal {
     public void setEretke(int eretke) {
         this.eretke = eretke;
     }
+
+    public void SetRendelesek(List<menu> rendelesek) {
+        this.rendelesek = rendelesek;
+    }
 }

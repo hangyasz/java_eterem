@@ -5,6 +5,7 @@ import menu.menu;
 import asztal.*;
 import oszetevok.oszetevok;
 import role.*;
+import xml.XMLManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +33,19 @@ public class Main {
         users.add(new User("waiter", "1111", Role.WAITER));
         users.add(new User("chef", "2222", Role.CHEF));
 
-        new kezd(raktars, menus, asztals, x, y, users);
+        XMLManager xmlManager = new XMLManager();
+
+        // Adatok mentése külön fájlokba
+        xmlManager.saveRaktarToXML(raktars);
+        xmlManager.saveMenuToXML(menus);
+        xmlManager.saveAsztalToXML(asztals);
+
+        // Adatok betöltése külön fájlokból
+        List<raktar> raktarItems = xmlManager.loadRaktarFromXML();
+        List<menu> menuItems = xmlManager.loadMenuFromXML(raktarItems);
+        List<asztal> asztalok = xmlManager.loadAsztalFromXML(menuItems);
+
+        new kezd(raktarItems, menuItems, asztalok, x, y, users);
 
 
     }
