@@ -800,4 +800,424 @@
     <password>2222</password>
     <role>CHEF</role>
   </user>
+  <user nev="owner">
+    <password>1234</password>
+    <role>OWNER</role>
+  </user>
+  <user nev="manager">
+    <password>5678</password>
+    <role>BUSINESS_MANAGER</role>
+  </user>
+  <user nev="admin">
+    <password>0000</password>
+    <role>ADMIN</role>
+  </user>
+  <user nev="waiter">
+    <password>1111</password>
+    <role>WAITER</role>
+  </user>
+  <user nev="chef">
+    <password>2222</password>
+    <role>CHEF</role>
+  </user>
+  <user nev="owner">
+    <password>1234</password>
+    <role>OWNER</role>
+  </user>
+  <user nev="manager">
+    <password>5678</password>
+    <role>BUSINESS_MANAGER</role>
+  </user>
+  <user nev="admin">
+    <password>0000</password>
+    <role>ADMIN</role>
+  </user>
+  <user nev="waiter">
+    <password>1111</password>
+    <role>WAITER</role>
+  </user>
+  <user nev="chef">
+    <password>2222</password>
+    <role>CHEF</role>
+  </user>
+  <user nev="owner">
+    <password>1234</password>
+    <role>OWNER</role>
+  </user>
+  <user nev="manager">
+    <password>5678</password>
+    <role>BUSINESS_MANAGER</role>
+  </user>
+  <user nev="admin">
+    <password>0000</password>
+    <role>ADMIN</role>
+  </user>
+  <user nev="waiter">
+    <password>1111</password>
+    <role>WAITER</role>
+  </user>
+  <user nev="chef">
+    <password>2222</password>
+    <role>CHEF</role>
+  </user>
+  <user nev="owner">
+    <password>1234</password>
+    <role>OWNER</role>
+  </user>
+  <user nev="manager">
+    <password>5678</password>
+    <role>BUSINESS_MANAGER</role>
+  </user>
+  <user nev="admin">
+    <password>0000</password>
+    <role>ADMIN</role>
+  </user>
+  <user nev="waiter">
+    <password>1111</password>
+    <role>WAITER</role>
+  </user>
+  <user nev="chef">
+    <password>2222</password>
+    <role>CHEF</role>
+  </user>
+  <user nev="owner">
+    <password>1234</password>
+    <role>OWNER</role>
+  </user>
+  <user nev="manager">
+    <password>5678</password>
+    <role>BUSINESS_MANAGER</role>
+  </user>
+  <user nev="admin">
+    <password>0000</password>
+    <role>ADMIN</role>
+  </user>
+  <user nev="waiter">
+    <password>1111</password>
+    <role>WAITER</role>
+  </user>
+  <user nev="chef">
+    <password>2222</password>
+    <role>CHEF</role>
+  </user>
+  <user nev="owner">
+    <password>1234</password>
+    <role>OWNER</role>
+  </user>
+  <user nev="manager">
+    <password>5678</password>
+    <role>BUSINESS_MANAGER</role>
+  </user>
+  <user nev="admin">
+    <password>0000</password>
+    <role>ADMIN</role>
+  </user>
+  <user nev="waiter">
+    <password>1111</password>
+    <role>WAITER</role>
+  </user>
+  <user nev="chef">
+    <password>2222</password>
+    <role>CHEF</role>
+  </user>
+  <user nev="owner">
+    <password>1234</password>
+    <role>OWNER</role>
+  </user>
+  <user nev="manager">
+    <password>5678</password>
+    <role>BUSINESS_MANAGER</role>
+  </user>
+  <user nev="admin">
+    <password>0000</password>
+    <role>ADMIN</role>
+  </user>
+  <user nev="waiter">
+    <password>1111</password>
+    <role>WAITER</role>
+  </user>
+  <user nev="chef">
+    <password>2222</password>
+    <role>CHEF</role>
+  </user>
+  <user nev="owner">
+    <password>1234</password>
+    <role>OWNER</role>
+  </user>
+  <user nev="manager">
+    <password>5678</password>
+    <role>BUSINESS_MANAGER</role>
+  </user>
+  <user nev="admin">
+    <password>0000</password>
+    <role>ADMIN</role>
+  </user>
+  <user nev="waiter">
+    <password>1111</password>
+    <role>WAITER</role>
+  </user>
+  <user nev="chef">
+    <password>2222</password>
+    <role>CHEF</role>
+  </user>
+  <user nev="owner">
+    <password>1234</password>
+    <role>OWNER</role>
+  </user>
+  <user nev="manager">
+    <password>5678</password>
+    <role>BUSINESS_MANAGER</role>
+  </user>
+  <user nev="admin">
+    <password>0000</password>
+    <role>ADMIN</role>
+  </user>
+  <user nev="waiter">
+    <password>1111</password>
+    <role>WAITER</role>
+  </user>
+  <user nev="chef">
+    <password>2222</password>
+    <role>CHEF</role>
+  </user>
+  <user nev="owner">
+    <password>1234</password>
+    <role>OWNER</role>
+  </user>
+  <user nev="manager">
+    <password>5678</password>
+    <role>BUSINESS_MANAGER</role>
+  </user>
+  <user nev="admin">
+    <password>0000</password>
+    <role>ADMIN</role>
+  </user>
+  <user nev="waiter">
+    <password>1111</password>
+    <role>WAITER</role>
+  </user>
+  <user nev="chef">
+    <password>2222</password>
+    <role>CHEF</role>
+  </user>
+  <user nev="owner">
+    <password>1234</password>
+    <role>OWNER</role>
+  </user>
+  <user nev="manager">
+    <password>5678</password>
+    <role>BUSINESS_MANAGER</role>
+  </user>
+  <user nev="admin">
+    <password>0000</password>
+    <role>ADMIN</role>
+  </user>
+  <user nev="waiter">
+    <password>1111</password>
+    <role>WAITER</role>
+  </user>
+  <user nev="chef">
+    <password>2222</password>
+    <role>CHEF</role>
+  </user>
+  <user nev="owner">
+    <password>1234</password>
+    <role>OWNER</role>
+  </user>
+  <user nev="manager">
+    <password>5678</password>
+    <role>BUSINESS_MANAGER</role>
+  </user>
+  <user nev="admin">
+    <password>0000</password>
+    <role>ADMIN</role>
+  </user>
+  <user nev="waiter">
+    <password>1111</password>
+    <role>WAITER</role>
+  </user>
+  <user nev="chef">
+    <password>2222</password>
+    <role>CHEF</role>
+  </user>
+  <user nev="owner">
+    <password>1234</password>
+    <role>OWNER</role>
+  </user>
+  <user nev="manager">
+    <password>5678</password>
+    <role>BUSINESS_MANAGER</role>
+  </user>
+  <user nev="admin">
+    <password>0000</password>
+    <role>ADMIN</role>
+  </user>
+  <user nev="waiter">
+    <password>1111</password>
+    <role>WAITER</role>
+  </user>
+  <user nev="chef">
+    <password>2222</password>
+    <role>CHEF</role>
+  </user>
+  <user nev="owner">
+    <password>1234</password>
+    <role>OWNER</role>
+  </user>
+  <user nev="manager">
+    <password>5678</password>
+    <role>BUSINESS_MANAGER</role>
+  </user>
+  <user nev="admin">
+    <password>0000</password>
+    <role>ADMIN</role>
+  </user>
+  <user nev="waiter">
+    <password>1111</password>
+    <role>WAITER</role>
+  </user>
+  <user nev="chef">
+    <password>2222</password>
+    <role>CHEF</role>
+  </user>
+  <user nev="owner">
+    <password>1234</password>
+    <role>OWNER</role>
+  </user>
+  <user nev="manager">
+    <password>5678</password>
+    <role>BUSINESS_MANAGER</role>
+  </user>
+  <user nev="admin">
+    <password>0000</password>
+    <role>ADMIN</role>
+  </user>
+  <user nev="waiter">
+    <password>1111</password>
+    <role>WAITER</role>
+  </user>
+  <user nev="chef">
+    <password>2222</password>
+    <role>CHEF</role>
+  </user>
+  <user nev="owner">
+    <password>1234</password>
+    <role>OWNER</role>
+  </user>
+  <user nev="manager">
+    <password>5678</password>
+    <role>BUSINESS_MANAGER</role>
+  </user>
+  <user nev="admin">
+    <password>0000</password>
+    <role>ADMIN</role>
+  </user>
+  <user nev="waiter">
+    <password>1111</password>
+    <role>WAITER</role>
+  </user>
+  <user nev="chef">
+    <password>2222</password>
+    <role>CHEF</role>
+  </user>
+  <user nev="owner">
+    <password>1234</password>
+    <role>OWNER</role>
+  </user>
+  <user nev="manager">
+    <password>5678</password>
+    <role>BUSINESS_MANAGER</role>
+  </user>
+  <user nev="admin">
+    <password>0000</password>
+    <role>ADMIN</role>
+  </user>
+  <user nev="waiter">
+    <password>1111</password>
+    <role>WAITER</role>
+  </user>
+  <user nev="chef">
+    <password>2222</password>
+    <role>CHEF</role>
+  </user>
+  <user nev="owner">
+    <password>1234</password>
+    <role>OWNER</role>
+  </user>
+  <user nev="manager">
+    <password>5678</password>
+    <role>BUSINESS_MANAGER</role>
+  </user>
+  <user nev="admin">
+    <password>0000</password>
+    <role>ADMIN</role>
+  </user>
+  <user nev="waiter">
+    <password>1111</password>
+    <role>WAITER</role>
+  </user>
+  <user nev="chef">
+    <password>2222</password>
+    <role>CHEF</role>
+  </user>
+  <user nev="owner">
+    <password>1234</password>
+    <role>OWNER</role>
+  </user>
+  <user nev="manager">
+    <password>5678</password>
+    <role>BUSINESS_MANAGER</role>
+  </user>
+  <user nev="admin">
+    <password>0000</password>
+    <role>ADMIN</role>
+  </user>
+  <user nev="waiter">
+    <password>1111</password>
+    <role>WAITER</role>
+  </user>
+  <user nev="chef">
+    <password>2222</password>
+    <role>CHEF</role>
+  </user>
+  <user nev="owner">
+    <password>1234</password>
+    <role>OWNER</role>
+  </user>
+  <user nev="manager">
+    <password>5678</password>
+    <role>BUSINESS_MANAGER</role>
+  </user>
+  <user nev="admin">
+    <password>0000</password>
+    <role>ADMIN</role>
+  </user>
+  <user nev="waiter">
+    <password>1111</password>
+    <role>WAITER</role>
+  </user>
+  <user nev="chef">
+    <password>2222</password>
+    <role>CHEF</role>
+  </user>
+  <user nev="owner">
+    <password>1234</password>
+    <role>OWNER</role>
+  </user>
+  <user nev="manager">
+    <password>5678</password>
+    <role>BUSINESS_MANAGER</role>
+  </user>
+  <user nev="admin">
+    <password>0000</password>
+    <role>ADMIN</role>
+  </user>
+  <user nev="waiter">
+    <password>1111</password>
+    <role>WAITER</role>
+  </user>
+  <user nev="chef">
+    <password>2222</password>
+    <role>CHEF</role>
+  </user>
 </users>

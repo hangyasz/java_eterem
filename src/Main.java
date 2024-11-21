@@ -13,8 +13,8 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        double x = 50;
-        double y = 50;
+        int x = 10;
+        int y = 10;
         XMLUser xmlUser = new XMLUser();
         List<User> users = xmlUser.userLoad();
         XMLRaktar xmlRaktar = new XMLRaktar();

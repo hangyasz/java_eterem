@@ -48,7 +48,7 @@ public class m_Etterem extends JFrame {
         add(up, BorderLayout.NORTH);
 
         //Terem panel
-        TeremPanel panel = new TeremPanel(asztalok, x_term, y_term, this);
+        TeremPanel_asztal panel = new TeremPanel_asztal(asztalok, x_term, y_term,this);
         add(panel, BorderLayout.CENTER);
 
         //Rendelések panel
@@ -76,7 +76,7 @@ public class m_Etterem extends JFrame {
         JPanel up = new JPanel(new FlowLayout(FlowLayout.CENTER));
         up.add(new JLabel("Étterem"));
         add(up, BorderLayout.NORTH);
-        TeremPanel panel = new TeremPanel(asztalok, x_term, y_term, this);
+        TeremPanel_asztal panel = new TeremPanel_asztal(asztalok, x_term, y_term, this);
         add(panel, BorderLayout.CENTER);
         ordersPanel.removeAll();
         add(ordersPanel, BorderLayout.EAST);

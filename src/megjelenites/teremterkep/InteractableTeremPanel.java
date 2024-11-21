@@ -12,15 +12,15 @@ public class InteractableTeremPanel extends TeremPanel {
     private asztal draggedAsztal = null;
     private int offsetX, offsetY;
 
-    public InteractableTeremPanel(List<asztal> asztalok, double x_term, double y_term) {
-        super(asztalok, x_term, y_term, null);
+    public InteractableTeremPanel(List<asztal> asztalok, double x_term, double y_term, JFrame parent) {
+        super(asztalok, x_term, y_term, parent);
 
         addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
                 Dimension size = getSize();
-                zoomFactorX = size.width / (x_term * 10);
-                zoomFactorY = size.height / (y_term * 10);
+                zoomFactorX = size.width / x_term;
+                zoomFactorY = size.height / y_term;
                 revalidate();
                 repaint();
             }
@@ -31,8 +31,8 @@ public class InteractableTeremPanel extends TeremPanel {
             public void mousePressed(MouseEvent e) {
                 boolean tableClicked = false;
                 for (asztal asztal : asztalok) {
-                    if (e.getX() >= asztal.getX() * zoomFactorX && e.getX() <= (asztal.getX() + 50) * zoomFactorX &&
-                            e.getY() >= asztal.getY() * zoomFactorY && e.getY() <= (asztal.getY() + 50) * zoomFactorY) {
+                    if (e.getX() >= asztal.getX() * zoomFactorX && e.getX() <= (asztal.getX() + 1) * zoomFactorX &&
+                            e.getY() >= asztal.getY() * zoomFactorY && e.getY() <= (asztal.getY() + 1) * zoomFactorY) {
                         tableClicked = true;
                         if (SwingUtilities.isRightMouseButton(e)) {
                             showContextMenu(e, asztal);
@@ -59,30 +59,19 @@ public class InteractableTeremPanel extends TeremPanel {
             @Override
             public void mouseDragged(MouseEvent e) {
                 if (draggedAsztal != null) {
-                    int newX = (int) ((e.getX() - offsetX) / zoomFactorX);
-                    int newY = (int) ((e.getY() - offsetY) / zoomFactorY);
+                    int newX = (int) Math.floor((e.getX() - offsetX) / zoomFactorX);
+                    int newY = (int) Math.floor((e.getY() - offsetY) / zoomFactorY);
 
                     if (newX < 0) newX = 0;
                     if (newY < 0) newY = 0;
-                    if (newX + 50 > x_term * 10) newX = (int) (x_term * 10 - 50);
-                    if (newY + 50 > y_term * 10) newY = (int) (y_term * 10 - 50);
+                    if (newX + 1 > x_term) newX = (int) (x_term - 1);
+                    if (newY + 1 > y_term) newY = (int) (y_term - 1);
 
                     draggedAsztal.setX(newX);
                     draggedAsztal.setY(newY);
                     repaint();
                 }
             }
-        });
-
-        addMouseWheelListener(e -> {
-            if (e.getWheelRotation() < 0) {
-                zoomFactorX *= 1.1;
-                zoomFactorY *= 1.1;
-            } else {
-                zoomFactorX /= 1.1;
-                zoomFactorY /= 1.1;
-            }
-            repaint();
         });
     }
 
@@ -113,29 +102,28 @@ public class InteractableTeremPanel extends TeremPanel {
 
             contextMenu.add(renameItem);
             contextMenu.add(deleteItem);
-        }
-        else {
-        int x = (int) (e.getX() / zoomFactorX);
-        int y = (int) (e.getY() / zoomFactorY);
-        if (x >= 0 && x + 50 <= x_term * 10 && y >= 0 && y + 50 <= y_term * 10) {
-            JMenuItem addItem = new JMenuItem("Új asztal hozzáadása");
-            addItem.addActionListener(event -> {
-                String nev = JOptionPane.showInputDialog("Adja meg az asztal nevét:");
-                if (nev != null && !nev.trim().isEmpty() && nev.length() <= 6) {
-                    if (asztalok.stream().anyMatch(a -> a.getNev().equals(nev))) {
-                        JOptionPane.showMessageDialog(this, "Már létezik asztal ezzel a névvel!", "Hiba", JOptionPane.ERROR_MESSAGE);
+        } else {
+            int x = (int) (e.getX() / zoomFactorX);
+            int y = (int) (e.getY() / zoomFactorY);
+            if (x >= 0 && x + 1 <= x_term  && y >= 0 && y +1 <= y_term) {
+                JMenuItem addItem = new JMenuItem("Új asztal hozzáadása");
+                addItem.addActionListener(event -> {
+                    String nev = JOptionPane.showInputDialog("Adja meg az asztal nevét:");
+                    if (nev != null && !nev.trim().isEmpty() && nev.length() <= 6) {
+                        if (asztalok.stream().anyMatch(a -> a.getNev().equals(nev))) {
+                            JOptionPane.showMessageDialog(this, "Már létezik asztal ezzel a névvel!", "Hiba", JOptionPane.ERROR_MESSAGE);
+                        } else {
+                            asztal ujAsztal = new asztal(nev, x, y);
+                            asztalok.add(ujAsztal);
+                            repaint();
+                        }
                     } else {
-                        asztal ujAsztal = new asztal(nev, x, y);
-                        asztalok.add(ujAsztal);
-                        repaint();
+                        JOptionPane.showMessageDialog(this, "Az asztal neve maximum 6 karakter lehet!", "Hiba", JOptionPane.ERROR_MESSAGE);
                     }
-                } else {
-                    JOptionPane.showMessageDialog(this, "Az asztal neve maximum 6 karakter lehet!", "Hiba", JOptionPane.ERROR_MESSAGE);
-                }
-            });
-            contextMenu.add(addItem);
+                });
+                contextMenu.add(addItem);
+            }
         }
-    }
         contextMenu.show(e.getComponent(), e.getX(), e.getY());
     }
 }

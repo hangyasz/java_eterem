@@ -33,7 +33,7 @@ public class m_TeremTerkep extends JFrame {
         vissza.addActionListener(e -> dispose());
         done.add(vissza);
         add(done, BorderLayout.SOUTH);
-        InteractableTeremPanel panel = new InteractableTeremPanel(asztalok, x_term, y_term);
+        InteractableTeremPanel panel = new InteractableTeremPanel(asztalok, x_term, y_term, this);
         add(panel, BorderLayout.CENTER);
 
         setVisible(true);

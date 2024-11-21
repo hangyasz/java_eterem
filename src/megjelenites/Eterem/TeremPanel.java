@@ -16,39 +16,12 @@ public class TeremPanel extends JPanel {
     protected final List<asztal> asztalok;
     protected final double x_term;
     protected final double y_term;
-    protected final m_Etterem parent;
 
-    public TeremPanel(List<asztal> asztalok, double x_term, double y_term, m_Etterem parent) {
+
+    public TeremPanel(List<asztal> asztalok, double x_term, double y_term, JFrame parent) {
         this.asztalok = asztalok;
         this.x_term = x_term;
         this.y_term = y_term;
-        this.parent = parent;
-
-        addComponentListener(new ComponentAdapter() {
-            @Override
-            public void componentResized(ComponentEvent e) {
-                Dimension size = getSize();
-                zoomFactorX = size.width / (x_term * 10);
-                zoomFactorY = size.height / (y_term * 10);
-                revalidate();
-                repaint();
-            }
-        });
-
-        addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                for (asztal asztal : asztalok) {
-                    if (e.getX() >= asztal.getX() * zoomFactorX && e.getX() <= (asztal.getX() + 50) * zoomFactorX &&
-                            e.getY() >= asztal.getY() * zoomFactorY && e.getY() <= (asztal.getY() + 50) * zoomFactorY) {
-                        if (parent != null) {
-                            parent.showOrders(asztal);
-                        }
-                        break;
-                    }
-                }
-            }
-        });
     }
 
     @Override
@@ -57,17 +30,16 @@ public class TeremPanel extends JPanel {
         Graphics2D g2d = (Graphics2D) g;
         g2d.scale(zoomFactorX, zoomFactorY);
         g2d.setColor(Color.LIGHT_GRAY);
-        g2d.fillRect(0, 0, (int) (x_term * 10), (int) (y_term * 10));
+        g2d.fillRect(0, 0, (int) (x_term*zoomFactorX), (int) (y_term * zoomFactorY));
         for (asztal asztal : asztalok) {
             if (asztal.getRendelesek().isEmpty()) {
                 g2d.setColor(Color.GREEN);
             } else {
                 g2d.setColor(Color.RED);
             }
-            g2d.fillRect(asztal.getX(), asztal.getY(), 50, 50);
+            g2d.fillRect(asztal.getX(), asztal.getY(), 1, 1);
             g2d.setColor(Color.BLACK);
-            g2d.drawRect(asztal.getX(), asztal.getY(), 50, 50);
-            g2d.drawString(asztal.getNev(), asztal.getX() + 5, asztal.getY() + 25);
+            g2d.drawString(asztal.getNev(), asztal.getX(), asztal.getY());
         }
     }
 }
