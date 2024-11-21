@@ -9,6 +9,7 @@ public class menu {
     private List<oszetevok.oszetevok> oszetevok = new ArrayList<>();
     private boolean enabled = false;
     private MenuType type;
+    private Runnable onChangeCallback;
 
     public menu(String nev, int ar, List<oszetevok.oszetevok> oszetevok, MenuType type) {
         this.nev = nev;
@@ -35,14 +36,17 @@ public class menu {
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
+        notifyChange();
     }
 
     public void setNev(String nev) {
         this.nev = nev;
+        notifyChange();
     }
 
     public void setAr(int ar) {
         this.ar = ar;
+        notifyChange();
     }
 
     public MenuType getType() {
@@ -51,5 +55,16 @@ public class menu {
 
     public void setType(MenuType type) {
         this.type = type;
+        notifyChange();
+    }
+
+    public void setOnChangeCallback(Runnable callback){
+        this.onChangeCallback = callback;
+    }
+
+    private void notifyChange(){
+        if(onChangeCallback != null){
+            onChangeCallback.run();
+        }
     }
 }

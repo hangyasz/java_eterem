@@ -1,8 +1,8 @@
 package xml;
 
 import menu.*;
+import asztal.*;
 
-import asztal.asztal;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -14,31 +14,34 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import java.util.ArrayList;
 import java.util.List;
 
-
 import static xml.XMLManager.ASZTAL_FILE;
 
 public class XMLAsztal {
+    private List<asztal> asztalok = new ObservableAsztalList(this);
 
     // Asztalok mentése fájlba
-    void asztaUpdae(List<asztal> asztalok ){
+    public void asztalUpdate() {
         try {
-            saveAsztalToXML(asztalok);
+            saveAsztalToXML();
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null,  e.getMessage(), "Hiba a asztal írásakor", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Hiba az asztalok írásakor", JOptionPane.ERROR_MESSAGE);
         }
     }
 
     // Asztalok betöltése fájlból
-    public List<asztal> asztalLoad(List<menu> menuItems){
+    public List<asztal> asztalLoad(List<menu> menuItems) {
         try {
-            return loadAsztalFromXML(menuItems);
+            List<asztal> loadedAsztalok = loadAsztalFromXML(menuItems);
+            asztalok.clear();
+            asztalok.addAll(loadedAsztalok);
+            return asztalok;
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null,  e.getMessage(), "Hiba a aztal olvasásakor", JOptionPane.ERROR_MESSAGE);
-            return new ArrayList<>();
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Hiba az asztalok olvasásakor", JOptionPane.ERROR_MESSAGE);
+            return asztalok;
         }
     }
 
-    public void saveAsztalToXML(List<asztal> asztalok) throws Exception {
+    public void saveAsztalToXML() throws Exception {
         DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
         Document doc = docBuilder.newDocument();
@@ -102,6 +105,7 @@ public class XMLAsztal {
                 // Rendelések betöltése
                 List<menu> rendelesek = new ArrayList<>();
                 NodeList rendelesNodes = asztalElem.getElementsByTagName("rendeles");
+
                 for (int j = 0; j < rendelesNodes.getLength(); j++) {
                     Element rendElem = (Element) rendelesNodes.item(j);
                     String rendNev = rendElem.getAttribute("nev");
@@ -117,13 +121,12 @@ public class XMLAsztal {
                     }
                 }
 
-                // Asztal példány létrehozása és listához adása
-                asztal asztalItem = new asztal(nev, x, y);
-                asztalItem.setEretke(ertek);
-                asztalItem.SetRendelesek(rendelesek);
+                // Asztal létrehozása és hozzáadása a listához
+                asztal asztalItem = new asztal(nev, x, y, rendelesek, ertek);
                 asztalok.add(asztalItem);
             }
         }
+
         return asztalok;
     }
 

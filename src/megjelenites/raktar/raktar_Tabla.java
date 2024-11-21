@@ -8,7 +8,7 @@ import java.util.List;
 
 public class raktar_Tabla extends AbstractTableModel {
     private final String[] columnNames = {"Név", "Mértékegység", "Mennyiség","Hozzadás", "Törlés"};
-    private final List<raktar> raktars;
+    private  List<raktar> raktars;
 
 
     public raktar_Tabla(List<raktar> raktars) {

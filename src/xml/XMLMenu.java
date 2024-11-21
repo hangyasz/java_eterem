@@ -8,7 +8,7 @@ import oszetevok.oszetevok;
 import menu.menu;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import oszetevok.oszetevok;
+import oszetevok.*;
 import raktar.raktar;
 
 import javax.swing.*;
@@ -20,9 +20,10 @@ import java.util.List;
 import static xml.XMLManager.MENU_FILE;
 
 public class XMLMenu {
+    private List<menu> menuItems = new ObservableMenuList(this);
 
     // Menü mentése fájlba
-    public void menuUpdate(List<menu> menuItems){
+    public void menuUpdate(){
         try {
             saveMenuToXML(menuItems);
         } catch (Exception e) {
@@ -36,7 +37,7 @@ public class XMLMenu {
             return loadMenuFromXML(raktarItems);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null,  e.getMessage(), "Hiba a menü olvasásakor", JOptionPane.ERROR_MESSAGE);
-            return new ArrayList<>();
+            return menuItems;
         }
     }
 
@@ -87,7 +88,6 @@ public class XMLMenu {
 
 
     public List<menu> loadMenuFromXML(List<raktar> raktarItems) throws Exception {
-        List<menu> menuItems = new ArrayList<>();
         Document doc = XMLManager.loadXmlFile(MENU_FILE);
         NodeList elemList = doc.getElementsByTagName("elem");
 
@@ -100,7 +100,7 @@ public class XMLMenu {
                 MenuType type = MenuType.valueOf(elem.getElementsByTagName("type").item(0).getTextContent());
                 boolean enabled = Boolean.parseBoolean(elem.getElementsByTagName("enabled").item(0).getTextContent());
 
-                List<oszetevok> oszetevokList = new ArrayList<>();
+                List<oszetevok> oszetevokList = new ObservableOszetevokList(this);
                 NodeList oszetevokNodes = elem.getElementsByTagName("oszetevo");
                 for (int j = 0; j < oszetevokNodes.getLength(); j++) {
                     Element oszElem = (Element) oszetevokNodes.item(j);
@@ -112,9 +112,10 @@ public class XMLMenu {
                             .findFirst()
                             .orElse(null);
 
-                    if (raktarItem != null) {
-                        oszetevokList.add(new oszetevok(raktarItem, mennyiseg));
+                    if (raktarItem == null) {
+                        throw new Exception("Nem található a raktárban az alapanyag: " + oszNev);
                     }
+                    oszetevokList.add(new oszetevok(raktarItem, mennyiseg));
                 }
 
                 menu menuItem = new menu(nev, ar, oszetevokList, type);

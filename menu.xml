@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<menu>
+  <elem nev="pgacsa">
+    <ar>1555</ar>
+    <type>ELOETEL</type>
+    <enabled>true</enabled>
+    <oszetevok>
+      <oszetevo nev="zoli">
+        <mennyiseg>5.0</mennyiseg>
+      </oszetevo>
+      <oszetevo nev="etelem">
+        <mennyiseg>1.0</mennyiseg>
+      </oszetevo>
+    </oszetevok>
+  </elem>
+  <elem nev="zol">
+    <ar>555</ar>
+    <type>ELOETEL</type>
+    <enabled>true</enabled>
+    <oszetevok/>
+  </elem>
+</menu>

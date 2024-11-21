@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<raktar>
+  <elem nev="zoli">
+    <mertekegyseg>55</mertekegyseg>
+    <mennyiseg>10.0</mennyiseg>
+  </elem>
+  <elem nev="etelem">
+    <mertekegyseg>legiob</mertekegyseg>
+    <mennyiseg>151.0</mennyiseg>
+  </elem>
+</raktar>

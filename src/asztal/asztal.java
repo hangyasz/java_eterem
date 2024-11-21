@@ -10,11 +10,20 @@ public class asztal {
     private int eretke = 0;
     private int x, y;
     private List<menu> rendelesek = new ArrayList<>();
+    private Runnable onChangeCallback;
 
     public asztal(String nev, int x, int y) {
         this.nev = nev;
         this.x = x;
         this.y = y;
+    }
+
+    public asztal(String nev, int x, int y, List<menu> rendelesek, int eretke) {
+        this.nev = nev;
+        this.x = x;
+        this.y = y;
+        this.rendelesek = rendelesek;
+        this.eretke = eretke;
     }
 
     public int getEretke() {
@@ -39,14 +48,18 @@ public class asztal {
 
     public void setX(int x) {
         this.x = x;
+        notifyChange();
+
     }
 
     public void setY(int y) {
         this.y = y;
+        notifyChange();
     }
 
     public void setNev(String nev) {
         this.nev = nev;
+        notifyChange();
     }
 
     public void addRendeles(menu item) {
@@ -55,6 +68,7 @@ public class asztal {
         for(oszetevok oszetevo : item.getOszetevok()) {
             oszetevo.order();
         }
+        notifyChange();
     }
 
     public void removeRendeles(menu item) {
@@ -63,13 +77,28 @@ public class asztal {
         for(oszetevok oszetevo : item.getOszetevok()) {
             oszetevo.delete();
         }
+        notifyChange();
     }
 
     public void setEretke(int eretke) {
         this.eretke = eretke;
+        notifyChange();
     }
 
     public void SetRendelesek(List<menu> rendelesek) {
         this.rendelesek = rendelesek;
+        notifyChange();
     }
+
+    public void setOnChangeCallback(Runnable callback){
+        this.onChangeCallback = callback;
+    }
+
+    private void notifyChange(){
+        if(onChangeCallback != null){
+            onChangeCallback.run();
+        }
+    }
+
+
 }

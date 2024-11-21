@@ -4,7 +4,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import raktar.raktar;
+import raktar.*;
 
 import javax.swing.*;
 import javax.xml.parsers.DocumentBuilder;
@@ -16,7 +16,7 @@ import static xml.XMLManager.RAKTAR_FILE;
 
 public class XMLRaktar  {
 
-    List<raktar> raktarItems = new ArrayList<>();
+    List<raktar> raktarItems = new ObservableRaktarList(this);
 
     public void raktarUpdate(){
         try {

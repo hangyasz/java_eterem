@@ -5,6 +5,8 @@ public class User {
     private String username;
     private String password;
     private Role role;
+    private Runnable onChangeCallback; // Megfigyelő
+
 
     public User(String username, String password, Role role) {
         this.username = username;
@@ -30,13 +32,26 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+        notifyChange();
     }
 
     public void setRole(Role role) {
         this.role = role;
+        notifyChange();
     }
 
     public void setUsername(String username) {
         this.username = username;
+        notifyChange();
+    }
+
+    public void setOnChangeCallback(Runnable callback) {
+        this.onChangeCallback = callback;
+    }
+
+    private void notifyChange() {
+        if (onChangeCallback != null) {
+            onChangeCallback.run();
+        }
     }
 }

@@ -4,6 +4,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import role.ObservableUserList;
 import role.Role;
 import role.User;
 
@@ -17,9 +18,9 @@ import static xml.XMLManager.USER_FILE;
 
 public class XMLUser {
 
-    List<User> users = new ArrayList<>();
+    List<User> users = new ObservableUserList(this);
 
-    public void userUpdate(){
+    public void userUpdate(List<User> users){
         try {
             saveUserToXML(users);
         } catch (Exception e) {
@@ -33,7 +34,6 @@ public class XMLUser {
             return loadUserFromXML();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null,  e.getMessage(), "Hiba a User olvasásakor", JOptionPane.ERROR_MESSAGE);
-
             return users;
         }
     }
