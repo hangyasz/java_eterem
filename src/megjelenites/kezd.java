@@ -20,7 +20,7 @@ import java.util.List;
 
 public class kezd extends JFrame {
 
-    public kezd(List<raktar> raktars, List<menu> menu, List<asztal> asztals, double x, double y, List<User> users) {
+    public kezd(List<raktar> raktars, List<menu> menu, List<asztal> asztals, int x, int y, List<User> users) {
         //válaszopanel megjelenitése
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("Étteremi rendszer");

@@ -12,14 +12,8 @@ import java.awt.event.MouseEvent;
 import java.util.List;
 
 public class m_TeremTerkep extends JFrame {
-    private final List<asztal> asztalok;
-    private double x_term = 50;
-    private double y_term = 50;
 
     public m_TeremTerkep(List<asztal> asztalok, double x_term, double y_term) {
-        this.asztalok = asztalok;
-        this.x_term = x_term;
-        this.y_term = y_term;
         setTitle("Terem Térkép");
         setSize(800, 600);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -33,7 +27,7 @@ public class m_TeremTerkep extends JFrame {
         vissza.addActionListener(e -> dispose());
         done.add(vissza);
         add(done, BorderLayout.SOUTH);
-        InteractableTeremPanel panel = new InteractableTeremPanel(asztalok, x_term, y_term, this);
+        InteractableTeremPanel panel = new InteractableTeremPanel(asztalok, x_term, y_term);
         add(panel, BorderLayout.CENTER);
 
         setVisible(true);

@@ -12,15 +12,15 @@ public class InteractableTeremPanel extends TeremPanel {
     private asztal draggedAsztal = null;
     private int offsetX, offsetY;
 
-    public InteractableTeremPanel(List<asztal> asztalok, double x_term, double y_term, JFrame parent) {
-        super(asztalok, x_term, y_term, parent);
+    public InteractableTeremPanel(List<asztal> asztalok, double x_term, double y_term) {
+        super(asztalok, x_term, y_term);
 
         addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
                 Dimension size = getSize();
-                zoomFactorX = size.width / x_term;
-                zoomFactorY = size.height / y_term;
+                zoomFactorX = size.width / (x_term*cellSize);
+                zoomFactorY = size.height / (y_term*cellSize);
                 revalidate();
                 repaint();
             }
@@ -31,15 +31,20 @@ public class InteractableTeremPanel extends TeremPanel {
             public void mousePressed(MouseEvent e) {
                 boolean tableClicked = false;
                 for (asztal asztal : asztalok) {
-                    if (e.getX() >= asztal.getX() * zoomFactorX && e.getX() <= (asztal.getX() + 1) * zoomFactorX &&
-                            e.getY() >= asztal.getY() * zoomFactorY && e.getY() <= (asztal.getY() + 1) * zoomFactorY) {
+                    int tableX = asztal.getX() * cellSize;
+                    int tableY = asztal.getY() * cellSize;
+
+                    if (e.getX() / zoomFactorX >= tableX &&
+                            e.getX() / zoomFactorX < tableX + cellSize &&
+                            e.getY() / zoomFactorY >= tableY &&
+                            e.getY() / zoomFactorY < tableY + cellSize) {
                         tableClicked = true;
                         if (SwingUtilities.isRightMouseButton(e)) {
                             showContextMenu(e, asztal);
                         } else {
                             draggedAsztal = asztal;
-                            offsetX = (int) (e.getX() - asztal.getX() * zoomFactorX);
-                            offsetY = (int) (e.getY() - asztal.getY() * zoomFactorY);
+                            offsetX = (int) ((e.getX() / zoomFactorX) - tableX);
+                            offsetY = (int) ((e.getY() / zoomFactorY) - tableY);
                         }
                         break;
                     }
@@ -59,8 +64,8 @@ public class InteractableTeremPanel extends TeremPanel {
             @Override
             public void mouseDragged(MouseEvent e) {
                 if (draggedAsztal != null) {
-                    int newX = (int) Math.floor((e.getX() - offsetX) / zoomFactorX);
-                    int newY = (int) Math.floor((e.getY() - offsetY) / zoomFactorY);
+                    int newX = (int) Math.floor((e.getX() / zoomFactorX - offsetX) / cellSize);
+                    int newY = (int) Math.floor((e.getY() / zoomFactorY - offsetY) / cellSize);
 
                     if (newX < 0) newX = 0;
                     if (newY < 0) newY = 0;
@@ -103,9 +108,10 @@ public class InteractableTeremPanel extends TeremPanel {
             contextMenu.add(renameItem);
             contextMenu.add(deleteItem);
         } else {
-            int x = (int) (e.getX() / zoomFactorX);
-            int y = (int) (e.getY() / zoomFactorY);
-            if (x >= 0 && x + 1 <= x_term  && y >= 0 && y +1 <= y_term) {
+            int x = (int) (e.getX() / (zoomFactorX * cellSize));
+            int y = (int) (e.getY() / (zoomFactorY * cellSize));
+
+            if (x >= 0 && x + 1 <= x_term && y >= 0 && y + 1 <= y_term) {
                 JMenuItem addItem = new JMenuItem("Új asztal hozzáadása");
                 addItem.addActionListener(event -> {
                     String nev = JOptionPane.showInputDialog("Adja meg az asztal nevét:");

@@ -29,9 +29,9 @@ public class XMLAsztal {
     }
 
     // Asztalok betöltése fájlból
-    public List<asztal> asztalLoad(List<menu> menuItems) {
+    public List<asztal> asztalLoad(List<menu> menuItems,int x_term, int y_term) {
         try {
-            List<asztal> loadedAsztalok = loadAsztalFromXML(menuItems);
+            List<asztal> loadedAsztalok = loadAsztalFromXML(menuItems, x_term, y_term);
             asztalok.clear();
             asztalok.addAll(loadedAsztalok);
             return asztalok;
@@ -83,7 +83,7 @@ public class XMLAsztal {
     }
 
     // Asztalok betöltése fájlból
-    public List<asztal> loadAsztalFromXML(List<menu> menuItems) throws Exception {
+    public List<asztal> loadAsztalFromXML(List<menu> menuItems, int x_term, int y_ter) throws Exception {
         List<asztal> asztalok = new ArrayList<>();
         Document doc = XMLManager.loadXmlFile(ASZTAL_FILE);
         NodeList asztalNodes = doc.getElementsByTagName("asztal");
@@ -98,6 +98,10 @@ public class XMLAsztal {
                 Element pozicioElem = (Element) asztalElem.getElementsByTagName("pozicio").item(0);
                 int x = Integer.parseInt(pozicioElem.getElementsByTagName("x").item(0).getTextContent());
                 int y = Integer.parseInt(pozicioElem.getElementsByTagName("y").item(0).getTextContent());
+
+                if(x+1 >= x_term || y+1 >= y_ter) {
+                    throw new Exception("Az asztal pozíciója nem lehet nagyobb, mint a terem mérete!");
+                }
 
                 // Érték betöltése
                 int ertek = Integer.parseInt(asztalElem.getElementsByTagName("ertek").item(0).getTextContent());

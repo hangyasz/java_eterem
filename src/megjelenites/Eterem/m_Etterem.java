@@ -21,13 +21,13 @@ public class m_Etterem extends JFrame {
     private final List<asztal> asztalok;
     private final List<menu> menus;
     private final JPanel ordersPanel;
-    private double x_term = 50;
-    private double y_term = 50;
+    private int x_term;
+    private int y_term;
     private List<User> users;
     private User authenticatedUser;
     private MenuType selectedType;
 
-    public m_Etterem(List<asztal> asztalok, double x_term, double y_term, List<menu> menus, List<User> users) {
+    public m_Etterem(List<asztal> asztalok, int x_term, int y_term, List<menu> menus, List<User> users) {
         this.asztalok = asztalok;
         this.x_term = x_term;
         this.y_term = y_term;

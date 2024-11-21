@@ -22,7 +22,7 @@ public class Main {
         XMLMenu xmlMenu = new XMLMenu();
         List<menu> menus = xmlMenu.menuLoad(raktars);
         XMLAsztal xmlAsztal = new XMLAsztal();
-        List<asztal> asztals = xmlAsztal.asztalLoad(menus);
+        List<asztal> asztals = xmlAsztal.asztalLoad(menus, x, y);
         users.add(new User("owner", "1234", Role.OWNER));
         users.add(new User("manager", "5678", Role.BUSINESS_MANAGER));
         users.add(new User("admin", "0000", Role.ADMIN));
