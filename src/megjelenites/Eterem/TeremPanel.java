@@ -7,6 +7,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
+
+/**
+ * A terem megjelenítését megvalósító osztály
+ */
 public class TeremPanel extends JPanel {
     protected double zoomFactorX = 1.0;
     protected double zoomFactorY = 1.0;
@@ -16,12 +20,23 @@ public class TeremPanel extends JPanel {
     protected int cellSize = 50;
 
 
+    /**
+     * Konstruktor a terem megjelenítéséhez
+     * @param asztalok az asztalok listája
+     * @param terem a terem mérete
+     */
     public TeremPanel(List<asztal> asztalok, terem terem) {
         this.asztalok = asztalok;
         x_term = terem.getX();
         y_term = terem.getY();
     }
 
+
+    /**
+     * A terem kirajzolását megvalósító metódus
+     * @param g a grafikus felület
+     * a megjekenítéshez mértéehez a zoomFactorX és zoomFactorY értékeket használja ezen felul pedig a cellSize értékét az jellemzi hogy milyen nagy legyen egy cella az alapértelmezett 1 helyet
+     */
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -40,9 +55,10 @@ public class TeremPanel extends JPanel {
         } else {
             teremHeight = (int) (y_term *cellSize* zoomFactorY);
         }
-
+        // Háttér színe
         g2d.fillRect(0, 0, teremWidth, teremHeight);
 
+        // Asztalok kirajzolása
         for (asztal asztal : asztalok) {
             // Négyzet színe a rendelések állapotától függően
             if (asztal.getRendelesek().isEmpty()) {
@@ -51,8 +67,11 @@ public class TeremPanel extends JPanel {
                 g2d.setColor(Color.RED);
             }
             g2d.fillRect(asztal.getX()*cellSize, asztal.getY()*cellSize, cellSize, cellSize);
+            // Négyzet kerete
+            g2d.setColor(Color.GRAY);
+            g2d.drawRect(asztal.getX() * cellSize, asztal.getY() * cellSize, cellSize, cellSize);
 
-            // Szöveg rajzolása
+            // Szöveg megjelenítése
             g2d.setColor(Color.BLACK);
             Font font = new Font("Arial",Font.BOLD, 12); // Fix méretű betűtípus
             g2d.setFont(font);

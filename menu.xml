@@ -17,7 +17,11 @@
     <ar>11</ar>
     <type>FOETEL</type>
     <enabled>true</enabled>
-    <oszetevok/>
+    <oszetevok>
+      <oszetevo nev="nem tudomn">
+        <mennyiseg>1.0</mennyiseg>
+      </oszetevo>
+    </oszetevok>
   </elem>
   <elem nev="nagyon hoszi mnevu érte">
     <ar>1111111</ar>

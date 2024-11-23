@@ -10,8 +10,21 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
 
+
+/**
+ * A terem megjelenítését megvalósító osztály az m_Etteremhez
+ */
 public class TeremPanel_asztal extends TeremPanel {
 
+
+    /**
+     * Konstruktor a terem megjelenítéséhez
+     * @param asztalok az asztalok listája
+     * @param terem a terem mérete
+     * @param parent az m_Etterem
+     * beállítja a zoom faktorokat és a terem méretét
+     * ha az egér kattint egy asztalra akkor az m_Etteremben megjeleníti a orders(rendelésekl) panel
+     */
     public TeremPanel_asztal(List<asztal> asztalok,terem terem, m_Etterem parent) {
         super(asztalok, terem);
 
