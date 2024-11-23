@@ -115,7 +115,7 @@ public class XMLAsztal {
                 }
 
                 // Érték betöltése
-                int ertek = Integer.parseInt(asztalElem.getElementsByTagName("ertek").item(0).getTextContent());
+                Long ertek = Long.parseLong(asztalElem.getElementsByTagName("ertek").item(0).getTextContent());
 
                 // Rendelések betöltése
                 List<menu> rendelesek = new ArrayList<>();

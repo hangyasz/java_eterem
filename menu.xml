@@ -23,6 +23,20 @@
     <ar>1111111</ar>
     <type>ELOETEL</type>
     <enabled>true</enabled>
-    <oszetevok/>
+    <oszetevok>
+      <oszetevo nev="zoli">
+        <mennyiseg>1.0</mennyiseg>
+      </oszetevo>
+    </oszetevok>
+  </elem>
+  <elem nev="a legoshz legfsfddsfdsdsgbfdykílsfv,nbsykdvbsjdímfva">
+    <ar>1111111111</ar>
+    <type>ELOETEL</type>
+    <enabled>true</enabled>
+    <oszetevok>
+      <oszetevo nev="zoli">
+        <mennyiseg>1.0</mennyiseg>
+      </oszetevo>
+    </oszetevok>
   </elem>
 </menu>

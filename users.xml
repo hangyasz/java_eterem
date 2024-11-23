@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <users>
-  <user nev="default">
-    <password>000</password>
+  <user nev="zol">
+    <password>0000</password>
     <role>OWNER</role>
   </user>
 </users>

@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public class asztal {
     private String nev;
-    private int eretke = 0;
+    private long eretke = 0;
     private int x, y;
     private List<menu> rendelesek = new ArrayList<>();
     private Runnable onChangeCallback;
@@ -36,7 +36,7 @@ public class asztal {
      * @param rendelesek az asztal rendelései
      * @param eretke az asztal értéke
      */
-    public asztal(String nev, int x, int y, List<menu> rendelesek, int eretke) {
+    public asztal(String nev, int x, int y, List<menu> rendelesek, Long eretke) {
         this.nev = nev;
         this.x = x;
         this.y = y;
@@ -48,7 +48,7 @@ public class asztal {
      * Visszaadja az asztal értékét.
      * @return az asztal értéke
      */
-    public int getEretke() {
+    public long getEretke() {
         return eretke;
     }
 

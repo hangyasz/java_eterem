@@ -82,6 +82,9 @@ public class XMLUser {
         doc.appendChild(rootElement);
 
         for (User user : users) {
+            if (!user.getPassword().matches("\\d{4}")) {
+                continue;
+            }
             Element userElem = doc.createElement("user");
             userElem.setAttribute("nev", user.getUsername());
 
