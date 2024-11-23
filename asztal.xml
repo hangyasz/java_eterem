@@ -1,27 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <asztalok>
-  <asztal nev="zoli">
+  <asztal nev="000">
     <pozicio>
       <x>7</x>
-      <y>2</y>
+      <y>3</y>
     </pozicio>
-    <ertek>0</ertek>
-    <rendelesek/>
-  </asztal>
-  <asztal nev="zzz">
-    <pozicio>
-      <x>3</x>
-      <y>4</y>
-    </pozicio>
-    <ertek>0</ertek>
-    <rendelesek/>
-  </asztal>
-  <asztal nev="zzzz">
-    <pozicio>
-      <x>0</x>
-      <y>1</y>
-    </pozicio>
-    <ertek>0</ertek>
-    <rendelesek/>
+    <ertek>1555</ertek>
+    <rendelesek>
+      <rendeles nev="pgacsa"/>
+    </rendelesek>
   </asztal>
 </asztalok>

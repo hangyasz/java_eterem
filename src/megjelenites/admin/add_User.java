@@ -3,15 +3,26 @@ package megjelenites.admin;
 
 import role.User;
 import role.Role;
-import xml.XMLUser;
+
 
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
+/**
+ * Új felhasználó hozzáadását megvalósító ablak.
+ */
+
 public class add_User {
 
+    /**
+     * Új felhasználó hozzáadása.
+     *
+     * @param felhasznalok           a felhasználók listája
+     * @param felhasznaloTablaModell a felhasználók táblázatának osztály (ezt kell frissímiat)
+     * @param parentComponent        a szülő komponens, amelyhez a dialógus ablak kapcsolódik
+     */
     public static void addUser(List<User> felhasznalok, UserTableModel felhasznaloTablaModell, Component parentComponent) {
         JTextField ussername = new JTextField(20);
         JTextField passworde = new JTextField(20);
@@ -36,12 +47,10 @@ public class add_User {
             //feltételek elenörzése
             if (!new_username.isEmpty() && new_pasword.matches("\\d{4}") && new_role != null) {
                 if (felhasznalok.stream().anyMatch(u -> u.getUsername().equals(new_username) || u.getPassword().equals(new_pasword))) {
-                    JOptionPane.showMessageDialog(parentComponent, "A felhasználónév már létezik!", "Hiba", JOptionPane.ERROR_MESSAGE);
-                } else if (new_role == Role.ADMIN) {
-                    JOptionPane.showMessageDialog(parentComponent, "Nem lehet új admin felhasználót hozzáadni!", "Hiba", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(parentComponent, "A felhasználó már létezik!", "Hiba", JOptionPane.ERROR_MESSAGE);
                 } else {
                     felhasznalok.add(new User(new_username, new_pasword, new_role)); //felhasználo hozaáadása
-                    felhasznaloTablaModell.fliter_user(felhasznalok); // Táblázat frissítése
+                    felhasznaloTablaModell.fireTableDataChanged(); //táblázat frissítése
                 }
             } else {
                 JOptionPane.showMessageDialog(parentComponent, "Minden mezőt ki kell tölteni és a jelszónak 4 számjegyből kell állnia!", "Hiba", JOptionPane.ERROR_MESSAGE);

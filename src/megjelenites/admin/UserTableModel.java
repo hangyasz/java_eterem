@@ -1,4 +1,3 @@
-// UserTableModel.java
 package megjelenites.admin;
 
 import role.User;
@@ -7,51 +6,70 @@ import role.Role;
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 import java.util.List;
-import java.util.stream.Collectors;
 
+/**
+ * A felhasználók táblázatának a megjelenítését megvalósító osztály
+ */
 public class UserTableModel extends AbstractTableModel {
-    private List<User> filteredUsers; //szürt felhasználok
-    private final String[] columnNames = {"Felhasználónév", "Jelszó", "Szerep", "Törlés"};
+    private List<User> userList; //felhasználók listája
+    private final String[] columnNames = {"Felhasználónév", "Jelszó", "Szerep", "Törlés"}; //oszlopok nevei
 
+
+    /**
+     * Konstruktor a felhasználók táblázatának létrehozásához
+     *
+     * @param users a felhasználók listája
+     */
     public UserTableModel(List<User> users) {
-        //beálitja a filteredUserst
-        fliter_user(users);
+        userList = users;
     }
-    //vistadja a tárolt felhasználókat
+
+
+    /**
+     * Visszaadja a felhasználókat
+     * @return
+     */
     public List<User> getUsers() {
-        return filteredUsers;
+        return userList;
     }
 
-    //felhasználók szűrése és táblázat frissítése
-    public void fliter_user(List<User> users) {
-        this.filteredUsers = users.stream()
-                .filter(user -> user.getRole() != Role.ADMIN)
-                .collect(Collectors.toList());
-        fireTableDataChanged();
-    }
-
-    //visszaadja a szűrt felhasználók számát
+    /**
+     * Visszaadja a sorok számát a felhasználók száma alapján
+     * @return
+     */
     @Override
     public int getRowCount() {
-        return filteredUsers.size();
+        return userList.size();
     }
 
-    //visszaadja az oszlopok számát
+    /**
+     * Visszaadja az oszlopok számát az oszlopok nevei alapján
+     * @return
+     */
     @Override
     public int getColumnCount() {
         return columnNames.length;
     }
 
-    //visszaadja az oszlop nevét
+    /**
+     * Visszaadja az oszlop nevét
+     * @param column az oszlop sorszáma
+     * @return
+     */
     @Override
     public String getColumnName(int column) {
         return columnNames[column];
     }
 
-    //visszaadja az adott cella értékét
+    /**
+     * Visszaadja az adott cella értékét
+     * @param rowIndex a sor sorszáma
+     * @param columnIndex az oszlop sorszáma
+     * @return
+     */
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        User user = filteredUsers.get(rowIndex);
+        User user = userList.get(rowIndex);
         switch (columnIndex) {
             case 0:
                 return user.getUsername();
@@ -66,20 +84,31 @@ public class UserTableModel extends AbstractTableModel {
         }
     }
 
-    //minden cella szerkeszthető
+    /**
+     * A táblázatban lévő cellák szerkeszthetőek midnen esetben szerkeszthetőek
+     * @param rowIndex a sor sorszáma
+     * @param columnIndex az oszlop sorszáma
+     * @return
+     */
     @Override
     public boolean isCellEditable(int rowIndex, int columnIndex) {
         return true;
     }
 
-    //cella értékének módosítása
+    /**
+     * A táblázatban lévő cellák értékének módosítása
+     *@param aValue az új érték
+     *@param rowIndex a sor sorszáma
+     *@param columnIndex az oszlop sorszáma
+     *
+     */
     @Override
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-        User user = filteredUsers.get(rowIndex);
+        User user = userList.get(rowIndex);
         switch (columnIndex) {
             case 0: //felhasználónév módosítása elenörzése az egyediség
                 String newUsername = (String) aValue;
-                if (filteredUsers.stream().anyMatch(u -> u.getUsername().equals(newUsername))) {
+                if (userList.stream().anyMatch(u -> u.getUsername().equals(newUsername))) {
                     JOptionPane.showMessageDialog(null, "A felhasználónév már létezik!", "Hiba", JOptionPane.ERROR_MESSAGE);
                 } else {
                     user.setUsername(newUsername);
@@ -87,25 +116,25 @@ public class UserTableModel extends AbstractTableModel {
                 break;
             case 1: //jelszó módosítása elenörzése az egyediség
                 String newPassword = (String) aValue;
-                if (newPassword.matches("\\d{4}") && filteredUsers.stream().noneMatch(u -> u.getPassword().equals(newPassword))) {
+                if (newPassword.matches("\\d{4}") && userList.stream().noneMatch(u -> u.getPassword().equals(newPassword))) {
                     user.setPassword(newPassword);
                 } else {
                     JOptionPane.showMessageDialog(null, "A jelszónak 4 számjegyből kell állnia és egyedinek kell lennie!", "Hiba", JOptionPane.ERROR_MESSAGE);
                 }
                 break;
-            case 2: //szerep módosítása elenörzése az admin szerep
-                if (aValue == Role.ADMIN) {
-                    JOptionPane.showMessageDialog(null, "Nem lehet admin jogköröket adni!", "Hiba", JOptionPane.ERROR_MESSAGE);
-                } else {
+            case 2:
                     user.setRole((Role) aValue);
-                }
                 break;
         }
         //táblázat frissítése
         fireTableCellUpdated(rowIndex, columnIndex);
     }
 
-    //oszlopok típusának beállítása
+    /**
+     * Az oszlopok típusának beállítása
+     * @param columnIndex az oszlop sorszáma
+     * @return
+     */
     @Override
     public Class<?> getColumnClass(int columnIndex) {
         switch (columnIndex) {

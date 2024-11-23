@@ -5,11 +5,10 @@ import megjelenites.login.login_side;
 import menu.menu;
 import menu.MenuType;
 import role.*;
+import terem.terem;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -17,20 +16,29 @@ import java.util.List;
 
 import static role.exes.magasab;
 
+/**
+ * Az étterem ablakot reprezentáló osztály
+ */
+
 public class m_Etterem extends JFrame {
     private final List<asztal> asztalok;
     private final List<menu> menus;
     private final JPanel ordersPanel;
-    private int x_term;
-    private int y_term;
+    private terem terem;
     private List<User> users;
     private User authenticatedUser;
     private MenuType selectedType;
 
-    public m_Etterem(List<asztal> asztalok, int x_term, int y_term, List<menu> menus, List<User> users) {
+    /**
+     * Konstruktor lértehoz egy étterem ablakot
+     * @param asztalok asztalok listája
+     * @param terem terem meretei
+     * @param menus menü elemek listája
+     * @param users felhasználók listája
+     */
+    public m_Etterem(List<asztal> asztalok,terem terem , List<menu> menus, List<User> users) {
         this.asztalok = asztalok;
-        this.x_term = x_term;
-        this.y_term = y_term;
+        this.terem = terem;
         this.menus = menus;
         this.users = users;
 
@@ -48,7 +56,7 @@ public class m_Etterem extends JFrame {
         add(up, BorderLayout.NORTH);
 
         //Terem panel
-        TeremPanel_asztal panel = new TeremPanel_asztal(asztalok, x_term, y_term,this);
+        TeremPanel_asztal panel = new TeremPanel_asztal(asztalok, terem,this);
         add(panel, BorderLayout.CENTER);
 
         //Rendelések panel
@@ -61,7 +69,10 @@ public class m_Etterem extends JFrame {
 
     }
 
-    //Beállítja az ablak méretét
+    /**
+     * Az ablak újra elrendezése
+     *
+     */
     @Override
     public void doLayout() {
         super.doLayout();
@@ -70,13 +81,16 @@ public class m_Etterem extends JFrame {
         ordersPanel.revalidate();
     }
 
-    //Visszaállítja az eredeti elrendezést
+    /**
+     * Az ablak újra elrendezése a korábbi elrendezésre az orderPanel eltávolításával
+     *
+     */
     private void restoreOriginalLayout() {
         getContentPane().removeAll();
         JPanel up = new JPanel(new FlowLayout(FlowLayout.CENTER));
         up.add(new JLabel("Étterem"));
         add(up, BorderLayout.NORTH);
-        TeremPanel_asztal panel = new TeremPanel_asztal(asztalok, x_term, y_term, this);
+        TeremPanel_asztal panel = new TeremPanel_asztal(asztalok, terem, this);
         add(panel, BorderLayout.CENTER);
         ordersPanel.removeAll();
         add(ordersPanel, BorderLayout.EAST);
@@ -85,7 +99,12 @@ public class m_Etterem extends JFrame {
         repaint();
     }
 
-    //ő jeleniti meg a rendeláseket
+    /**
+     * Az asztalhoz tartozó rendelések megjelenítése
+     * @param asztal az asztal
+     * a rendelések megjelenítése egymás alatt tornik a panelen
+     * a fizetés gombra kattintva a rendelések törlődnek és megjelenik a fizetendő összeg mégegyszer
+     */
     void showOrders(asztal asztal) {
         //törli a korábbi tatartalmat a panelről
         ordersPanel.removeAll();
@@ -130,8 +149,7 @@ public class m_Etterem extends JFrame {
             JOptionPane.showMessageDialog(null, "Fizetendő összeg: " + asztal.getEretke() + " Ft", "Fizetés", JOptionPane.INFORMATION_MESSAGE);
             asztal.setEretke(0);
         });
-
-        //rendelések panel
+// rendelések panel
         JPanel ordersListPanel = new JPanel();
         ordersListPanel.setLayout(new BoxLayout(ordersListPanel, BoxLayout.Y_AXIS));
         ordersListPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -148,27 +166,34 @@ public class m_Etterem extends JFrame {
 
             JLabel arr = new JLabel(item.getAr() + " Ft");
             orderPanel.add(arr, BorderLayout.EAST);
-            //szegély
+            // szegély
             orderPanel.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.LIGHT_GRAY));
 
             ordersListPanel.add(orderPanel);
         }
-        //görgetősáv
+// görgetősáv
         JScrollPane scrollPane = new JScrollPane(ordersListPanel);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         ordersPanel.add(scrollPane, BorderLayout.CENTER);
 
+// Ensure the panel is updated and visible
+        ordersPanel.revalidate();
+        ordersPanel.repaint();
         //gombok hozzáadása a panelhez
         bottomPanel.add(addOrderButton);
         bottomPanel.add(totalLabel);
         bottomPanel.add(payButton);
         ordersPanel.add(bottomPanel, BorderLayout.SOUTH);
-
         ordersPanel.setVisible(true);
-        ordersPanel.revalidate();
-        ordersPanel.repaint();
+        revalidate();
+        repaint();
     }
 
+    /**
+     * Az új rendelés panel megjelenítése
+     * @param asztal az asztal
+     * az új rendelés panelen megjelenik a menü elemek és a rendelések
+     */
     private void showNewOrderPanel(asztal asztal) {
         JPanel newOrderPanel = new JPanel(new BorderLayout());
 
@@ -222,10 +247,20 @@ public class m_Etterem extends JFrame {
     }
 
 
+    /**
+     * A rendelések panel frissítése
+     * @param rightPanel a jobb panel ahol a rendelések vannak
+     * @param asztal az asztal
+     * @param centerPanel a középső panel
+     * a rendelések panelen megjelenik a rendelések és az összeg
+     * a törlés gombra kattintva a rendelés törlődik és frissül a panel és a középső panel is
+     */
     private void updateOrdersPanel(JPanel rightPanel, asztal asztal, JPanel centerPanel) {
+        //törli a korábbi tartalmat a panelről
         rightPanel.removeAll();
         rightPanel.setLayout(new BorderLayout());
 
+        //felső panel ahol az asztal neve van és a bezár gomb
         JPanel titlePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         JLabel titleLabel = new JLabel(asztal.getNev() + " asztalnál:");
         JButton closeButton = new JButton("Bezár");
@@ -238,15 +273,18 @@ public class m_Etterem extends JFrame {
         titlePanel.add(closeButton);
         rightPanel.add(titlePanel, BorderLayout.NORTH);
 
+        //rendelések panel
         JPanel ordersListPanel = new JPanel();
         ordersListPanel.setLayout(new BoxLayout(ordersListPanel, BoxLayout.Y_AXIS));
         ordersListPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         for (menu item : asztal.getRendelesek()) {
             JPanel orderPanel = new JPanel();
+            Dimension size = rightPanel.getSize();
+            size.height = 40;
             orderPanel.setLayout(new BorderLayout());
-            orderPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
-            orderPanel.setMinimumSize(new Dimension(Integer.MAX_VALUE, 40));
+            orderPanel.setMaximumSize(size);
+            orderPanel.setMinimumSize(size);
             orderPanel.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
 
             JLabel orderLabel = new JLabel(item.getNev() + " - " + item.getAr() + " Ft");

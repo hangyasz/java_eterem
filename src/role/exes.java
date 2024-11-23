@@ -10,7 +10,7 @@ public class exes {
         if(user==null){
             return false;
         }
-        return  user.getRole() == Role.ADMIN || user.getRole() == Role.OWNER;
+        return  user.getRole() == Role.OWNER;
     }
 
     public static Boolean ratar_menuex(User user) {

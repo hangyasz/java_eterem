@@ -2,6 +2,7 @@ package megjelenites.teremterkep;
 
 import asztal.asztal;
 import megjelenites.Eterem.TeremPanel;
+import terem.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,17 +11,16 @@ import java.util.List;
 
 public class InteractableTeremPanel extends TeremPanel {
     private asztal draggedAsztal = null;
-    private int offsetX, offsetY;
 
-    public InteractableTeremPanel(List<asztal> asztalok, double x_term, double y_term) {
-        super(asztalok, x_term, y_term);
+    public InteractableTeremPanel(List<asztal> asztalok, terem terem) {
+        super(asztalok, terem);
 
         addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
                 Dimension size = getSize();
-                zoomFactorX = size.width / (x_term*cellSize);
-                zoomFactorY = size.height / (y_term*cellSize);
+                zoomFactorX = (double) size.width / (x_term * cellSize);
+                zoomFactorY = (double) size.height / (y_term * cellSize);
                 revalidate();
                 repaint();
             }
@@ -43,8 +43,6 @@ public class InteractableTeremPanel extends TeremPanel {
                             showContextMenu(e, asztal);
                         } else {
                             draggedAsztal = asztal;
-                            offsetX = (int) ((e.getX() / zoomFactorX) - tableX);
-                            offsetY = (int) ((e.getY() / zoomFactorY) - tableY);
                         }
                         break;
                     }
@@ -64,13 +62,13 @@ public class InteractableTeremPanel extends TeremPanel {
             @Override
             public void mouseDragged(MouseEvent e) {
                 if (draggedAsztal != null) {
-                    int newX = (int) Math.floor((e.getX() / zoomFactorX - offsetX) / cellSize);
-                    int newY = (int) Math.floor((e.getY() / zoomFactorY - offsetY) / cellSize);
+                    int newX = (int) (e.getX() / (zoomFactorX * cellSize));
+                    int newY = (int) (e.getY() / (zoomFactorY * cellSize));
 
                     if (newX < 0) newX = 0;
                     if (newY < 0) newY = 0;
-                    if (newX + 1 > x_term) newX = (int) (x_term - 1);
-                    if (newY + 1 > y_term) newY = (int) (y_term - 1);
+                    if (newX >= x_term) newX = x_term - 1;
+                    if (newY >= y_term) newY = y_term - 1;
 
                     draggedAsztal.setX(newX);
                     draggedAsztal.setY(newY);

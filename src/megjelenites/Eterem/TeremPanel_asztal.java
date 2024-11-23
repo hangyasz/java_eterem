@@ -1,6 +1,7 @@
 package megjelenites.Eterem;
 
 import asztal.asztal;
+import terem.*;
 
 import java.awt.Dimension;
 import java.awt.event.ComponentAdapter;
@@ -11,15 +12,15 @@ import java.util.List;
 
 public class TeremPanel_asztal extends TeremPanel {
 
-    public TeremPanel_asztal(List<asztal> asztalok, double x_term, double y_term, m_Etterem parent) {
-        super(asztalok, x_term, y_term);
+    public TeremPanel_asztal(List<asztal> asztalok,terem terem, m_Etterem parent) {
+        super(asztalok, terem);
 
         addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
                 Dimension size = getSize();
-                zoomFactorX = size.width / (x_term*cellSize);
-                zoomFactorY = size.height /( y_term*cellSize);
+                zoomFactorX = (double) size.width / (x_term*cellSize);
+                zoomFactorY = (double) size.height /( y_term*cellSize);
                 revalidate();
                 repaint();
             }
@@ -29,12 +30,14 @@ public class TeremPanel_asztal extends TeremPanel {
             @Override
             public void mousePressed(MouseEvent e) {
                 for (asztal asztal : asztalok) {
-                    if (e.getX() >= asztal.getX() * zoomFactorX && e.getX() <= (asztal.getX() +cellSize) * zoomFactorX &&
-                            e.getY() >= asztal.getY() * zoomFactorY && e.getY() <= (asztal.getY() + cellSize) * zoomFactorY) {
-                        if (parent != null) {
+                    int tableX = asztal.getX() * cellSize;
+                    int tableY = asztal.getY() * cellSize;
+
+                    if (e.getX() / zoomFactorX >= tableX &&
+                            e.getX() / zoomFactorX < tableX + cellSize &&
+                            e.getY() / zoomFactorY >= tableY &&
+                            e.getY() / zoomFactorY < tableY + cellSize) {
                             parent.showOrders(asztal);
-                        }
-                        break;
                     }
                 }
             }

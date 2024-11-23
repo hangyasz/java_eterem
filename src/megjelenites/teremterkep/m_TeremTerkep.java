@@ -2,6 +2,7 @@
 package megjelenites.teremterkep;
 
 import asztal.asztal;
+import terem.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,7 +14,7 @@ import java.util.List;
 
 public class m_TeremTerkep extends JFrame {
 
-    public m_TeremTerkep(List<asztal> asztalok, double x_term, double y_term) {
+    public m_TeremTerkep(List<asztal> asztalok,terem terem) {
         setTitle("Terem Térkép");
         setSize(800, 600);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -27,7 +28,7 @@ public class m_TeremTerkep extends JFrame {
         vissza.addActionListener(e -> dispose());
         done.add(vissza);
         add(done, BorderLayout.SOUTH);
-        InteractableTeremPanel panel = new InteractableTeremPanel(asztalok, x_term, y_term);
+        InteractableTeremPanel panel = new InteractableTeremPanel(asztalok, terem );
         add(panel, BorderLayout.CENTER);
 
         setVisible(true);

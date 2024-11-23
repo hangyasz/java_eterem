@@ -1,28 +1,25 @@
 package megjelenites.Eterem;
 
 import asztal.asztal;
+import terem.*;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.List;
 
 public class TeremPanel extends JPanel {
     protected double zoomFactorX = 1.0;
     protected double zoomFactorY = 1.0;
     protected final List<asztal> asztalok;
-    protected final double x_term;
-    protected final double y_term;
+    protected final int x_term;
+    protected final int y_term;
     protected int cellSize = 50;
 
 
-    public TeremPanel(List<asztal> asztalok, double x_term, double y_term) {
+    public TeremPanel(List<asztal> asztalok, terem terem) {
         this.asztalok = asztalok;
-        this.x_term = x_term;
-        this.y_term = y_term;
+        x_term = terem.getX();
+        y_term = terem.getY();
     }
 
     @Override
@@ -31,7 +28,20 @@ public class TeremPanel extends JPanel {
         Graphics2D g2d = (Graphics2D) g;
         g2d.scale(zoomFactorX, zoomFactorY);
         g2d.setColor(Color.LIGHT_GRAY);
-        g2d.fillRect(0, 0, (int) (x_term*cellSize * zoomFactorX), (int) (y_term *cellSize* zoomFactorY));
+        int teremWidth;
+        if (zoomFactorX < 1.0)  {
+            teremWidth = (int) (x_term*cellSize / zoomFactorX);
+        } else {
+            teremWidth = (int) (x_term*cellSize * zoomFactorX);
+        }
+        int teremHeight;
+        if (zoomFactorY < 1.0) {
+            teremHeight = (int) (y_term *cellSize / zoomFactorY);
+        } else {
+            teremHeight = (int) (y_term *cellSize* zoomFactorY);
+        }
+
+        g2d.fillRect(0, 0, teremWidth, teremHeight);
 
         for (asztal asztal : asztalok) {
             // Négyzet színe a rendelések állapotától függően

@@ -1,22 +1,29 @@
-// m_admin.java
 package megjelenites.admin;
 
 import megjelenites.ButtonEditor;
 import megjelenites.ButtonRenderer;
 import role.User;
 import role.Role;
-import xml.XMLUser;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
+
+/**
+ * Az adminisztrációs felületet megjekenó osztály
+ */
 public class m_admin extends JFrame {
     private JTable userTable;
     private UserTableModel userTableModel;
-    private XMLUser xmlUser = new XMLUser();
 
-    public m_admin(List<User> users) {
+    /**
+     * Az adminisztrációs felületet megjelenítő konstruktor
+     *
+     * @param users        a felhasználók listája
+     * @param loggedInUser a bejelentkezett felhasználó
+     */
+    public m_admin(List<User> users, User loggedInUser) {
 
         //az ablak beállításai
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -40,11 +47,13 @@ public class m_admin extends JFrame {
             int row = userTable.convertRowIndexToModel(userTable.getSelectedRow());
             if (row >= 0 && row < userTableModel.getUsers().size()) {
                 User userToDelete = userTableModel.getUsers().get(row);
-                if (userToDelete.getRole() == Role.OWNER) {
+                if (userToDelete.equals(loggedInUser)) {
+                    JOptionPane.showMessageDialog(m_admin.this, "Nem törölheti saját magát!", "Hiba", JOptionPane.ERROR_MESSAGE);
+                } else if (userToDelete.getRole() == Role.OWNER) {
                     JOptionPane.showMessageDialog(m_admin.this, "Az owner fiókot nem lehet törölni!", "Hiba", JOptionPane.ERROR_MESSAGE);
                 } else {
                     users.remove(userToDelete); //törlés a felhasználók listából
-                    userTableModel.fliter_user(users);  //táblázat frissítése
+                    userTableModel.fireTableDataChanged();  //táblázat frissítése
                 }
             }
         }));

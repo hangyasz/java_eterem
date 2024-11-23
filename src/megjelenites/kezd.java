@@ -11,6 +11,7 @@ import raktar.raktar;
 import asztal.asztal;
 import role.*;
 import megjelenites.login.*;
+import terem.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -20,7 +21,7 @@ import java.util.List;
 
 public class kezd extends JFrame {
 
-    public kezd(List<raktar> raktars, List<menu> menu, List<asztal> asztals, int x, int y, List<User> users) {
+    public kezd(List<raktar> raktars, List<menu> menu, List<asztal> asztals, terem terem, List<User> users) {
         //válaszopanel megjelenitése
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("Étteremi rendszer");
@@ -57,7 +58,7 @@ public class kezd extends JFrame {
         eteremButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new m_Etterem(asztals, x, y, menu, users);
+                new m_Etterem(asztals,terem, menu, users);
             }
         });
 
@@ -86,7 +87,7 @@ public class kezd extends JFrame {
                     return;
                 }
                 if (exes.ratar_menuex(authenticatedUser)) {
-                    new m_TeremTerkep(asztals, x, y);
+                    new m_TeremTerkep(asztals, terem);
                 } else {
                     JOptionPane.showMessageDialog(kezd.this, "Nincs hozzáférése", "Hitelesités", JOptionPane.ERROR_MESSAGE);
                 }
@@ -102,7 +103,7 @@ public class kezd extends JFrame {
                     return;
                 }
                 if (exes.allex(authenticatedUser)) {
-                    new m_admin(users);
+                    new m_admin(users,authenticatedUser);
                 } else {
                     JOptionPane.showMessageDialog(kezd.this, "Nincs hozzáférése", "Hitelesités", JOptionPane.ERROR_MESSAGE);
                 }

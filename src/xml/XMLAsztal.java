@@ -2,6 +2,7 @@ package xml;
 
 import menu.*;
 import asztal.*;
+import terem.*;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -29,9 +30,9 @@ public class XMLAsztal {
     }
 
     // Asztalok betöltése fájlból
-    public List<asztal> asztalLoad(List<menu> menuItems,int x_term, int y_term) {
+    public List<asztal> asztalLoad(List<menu> menuItems,terem terem) {
         try {
-            List<asztal> loadedAsztalok = loadAsztalFromXML(menuItems, x_term, y_term);
+            List<asztal> loadedAsztalok = loadAsztalFromXML(menuItems, terem);
             asztalok.clear();
             asztalok.addAll(loadedAsztalok);
             return asztalok;
@@ -41,6 +42,10 @@ public class XMLAsztal {
         }
     }
 
+    /**
+     *
+     * @throws Exception
+     */
     public void saveAsztalToXML() throws Exception {
         DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
@@ -82,8 +87,14 @@ public class XMLAsztal {
         XMLManager.writeXmlFile(doc, ASZTAL_FILE);
     }
 
-    // Asztalok betöltése fájlból
-    public List<asztal> loadAsztalFromXML(List<menu> menuItems, int x_term, int y_ter) throws Exception {
+    /**
+     *
+     * @param menuItems
+     * @param terem
+     * @return
+     * @throws Exception
+     */
+    public List<asztal> loadAsztalFromXML(List<menu> menuItems,terem terem) throws Exception {
         List<asztal> asztalok = new ArrayList<>();
         Document doc = XMLManager.loadXmlFile(ASZTAL_FILE);
         NodeList asztalNodes = doc.getElementsByTagName("asztal");
@@ -99,7 +110,7 @@ public class XMLAsztal {
                 int x = Integer.parseInt(pozicioElem.getElementsByTagName("x").item(0).getTextContent());
                 int y = Integer.parseInt(pozicioElem.getElementsByTagName("y").item(0).getTextContent());
 
-                if(x+1 >= x_term || y+1 >= y_ter) {
+                if(x+1 >= terem.getX() || y+1 >= terem.getY()) {
                     throw new Exception("Az asztal pozíciója nem lehet nagyobb, mint a terem mérete!");
                 }
 

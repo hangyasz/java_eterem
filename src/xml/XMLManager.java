@@ -19,10 +19,10 @@ import role.User;
 
 
 public class XMLManager{
-    static final String RAKTAR_FILE = "raktar.xml";
-    static final String MENU_FILE = "menu.xml";
-    static final String ASZTAL_FILE = "asztal.xml";
-    static final String USER_FILE = "users.xml";
+    static public final String RAKTAR_FILE = "raktar.xml";
+    static public final String MENU_FILE = "menu.xml";
+    static public final String ASZTAL_FILE = "asztal.xml";
+    static public  String USER_FILE = "users.xml";
 
     // Segéd metódus XML fájl írásához
     static void writeXmlFile(Document doc, String fileName) throws TransformerException {

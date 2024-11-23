@@ -13,8 +13,14 @@
       </oszetevo>
     </oszetevok>
   </elem>
-  <elem nev="zol">
-    <ar>555</ar>
+  <elem nev="parav">
+    <ar>11</ar>
+    <type>FOETEL</type>
+    <enabled>true</enabled>
+    <oszetevok/>
+  </elem>
+  <elem nev="nagyon hoszi mnevu érte">
+    <ar>1111111</ar>
     <type>ELOETEL</type>
     <enabled>true</enabled>
     <oszetevok/>
