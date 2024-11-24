@@ -1,2 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<asztalok/>
+<asztalok>
+  <asztal nev="zol">
+    <pozicio>
+      <x>1</x>
+      <y>2</y>
+    </pozicio>
+    <ertek>0</ertek>
+    <rendelesek/>
+  </asztal>
+  <asztal nev="ppp">
+    <pozicio>
+      <x>6</x>
+      <y>5</y>
+    </pozicio>
+    <ertek>0</ertek>
+    <rendelesek/>
+  </asztal>
+</asztalok>
