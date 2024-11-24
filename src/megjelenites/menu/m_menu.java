@@ -131,7 +131,7 @@ public class m_menu extends JFrame {
             try {
                 int price = Integer.parseInt(priceText);
                 if (price <= 0) {
-                    throw new NumberFormatException();
+                    throw new IllegalArgumentException();
                 }
                 //menü hozzáadása a listához alapanyagok még nincsenek hozzáadva
                 menu newMenu = new menu(name, price, new ArrayList<>(), type);
@@ -141,7 +141,7 @@ public class m_menu extends JFrame {
                 //mezők ürítése
                 nameField.setText("");
                 priceField.setText("");
-            } catch (NumberFormatException ex) {
+            } catch (IllegalArgumentException ex) {
                 //hiba esetén hibaüzenet
                 JOptionPane.showMessageDialog(this, "Érvénytelen ár!", "Hiba", JOptionPane.ERROR_MESSAGE);
             }

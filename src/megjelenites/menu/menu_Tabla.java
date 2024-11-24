@@ -142,7 +142,7 @@ public class menu_Tabla extends AbstractTableModel {
                 try {
                     String newName = value.toString();
                     if (newName.equals("")) {
-                        throw new NumberFormatException("Üres");
+                        throw new IllegalArgumentException("Üres név");
                     }
                     // Check for duplicate names
                     for (menu m : menus) {
@@ -151,8 +151,6 @@ public class menu_Tabla extends AbstractTableModel {
                         }
                     }
                     menu.setNev(newName);
-                } catch (NumberFormatException ex) {
-                    JOptionPane.showMessageDialog(null, "Érvénytelen név! " + ex.getMessage(), "Hiba", JOptionPane.ERROR_MESSAGE);
                 } catch (IllegalArgumentException ex) {
                     JOptionPane.showMessageDialog(null, ex.getMessage(), "Hiba", JOptionPane.ERROR_MESSAGE);
                 }
@@ -161,10 +159,10 @@ public class menu_Tabla extends AbstractTableModel {
                 try {
                     int ar = Integer.parseInt(value.toString());
                     if (ar < 0) {
-                        throw new NumberFormatException("Negativ");
+                        throw new IllegalArgumentException("Negativ");
                     }
                     menu.setAr(ar);
-                } catch (NumberFormatException ex) {
+                } catch (IllegalArgumentException ex) {
                     JOptionPane.showMessageDialog(null, "Érvénytelen mennyiség !" + ex.getMessage(), "Hiba", JOptionPane.ERROR_MESSAGE);
                 }
                 break;

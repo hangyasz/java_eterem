@@ -9,15 +9,25 @@ import raktar.*;
 import javax.swing.*;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import java.util.ArrayList;
+import java.awt.*;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static xml.XMLManager.RAKTAR_FILE;
 
+/**
+ * Az osztály a raktár XML fáljának kezelését végzi
+ */
 public class XMLRaktar  {
 
+    /**
+     * A raktár elemek listája
+     */
     List<raktar> raktarItems = new ObservableRaktarList(this);
 
+    /**
+     * Raktár frissítése fájlba kiírjuk a raktár adatokat a fájlba a raktár listából
+     */
     public void raktarUpdate(){
         try {
             saveRaktarToXML(raktarItems);
@@ -26,15 +36,29 @@ public class XMLRaktar  {
         }
     }
 
+    /**
+     * Raktár betöltése fájból hibbes esetén hibaüzenet megjelenít a raktár elemek listáját
+     * @return A raktár elemek listája
+     */
     public List<raktar> raktarLoad(){
         try {
             return loadRaktarFromXML();
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null,  e.getMessage(), "Hiba a raktár olvasásakor", JOptionPane.ERROR_MESSAGE);
+            List<String> raktarName = raktarItems.stream().map(raktar::getNev).collect(Collectors.toList());
+            JTextArea textArea = new JTextArea(String.join("\n", raktarName));
+            textArea.setEditable(false);
+            JScrollPane scrollPane = new JScrollPane(textArea);
+            scrollPane.setPreferredSize(new Dimension(300, 200));
+            JOptionPane.showMessageDialog(null,  scrollPane, "Hiba a raktár olvasásakor", JOptionPane.ERROR_MESSAGE);
             return raktarItems;
         }
     }
 
+    /**
+     * Raktár elemek fájlba írása
+     * @param raktarItems A raktár elemek listája
+     * @throws Exception Hiba esetén kivétel dobása
+     */
     public void saveRaktarToXML(List<raktar> raktarItems) throws Exception {
         DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
@@ -61,6 +85,11 @@ public class XMLRaktar  {
         XMLManager.writeXmlFile(doc, RAKTAR_FILE);
     }
 
+    /**
+     * Raktár elemek fájlból beolvasása
+     * @return A raktár elemek listája
+     * @throws Exception Hiba esetén kivétel dobása a fájl beolvasásakor vagy ha már szerepel a raktárban az elem
+     */
     public List<raktar> loadRaktarFromXML() throws Exception {
         Document doc =  XMLManager.loadXmlFile(RAKTAR_FILE);
         NodeList elemList = doc.getElementsByTagName("elem");
@@ -73,6 +102,13 @@ public class XMLRaktar  {
 
                 String mertekegyseg = elem.getElementsByTagName("mertekegyseg").item(0).getTextContent();
                 double mennyiseg = Double.parseDouble(elem.getElementsByTagName("mennyiseg").item(0).getTextContent());
+                if (mennyiseg < 0) {
+                    mennyiseg = 0;
+                }
+                boolean include = raktarItems.stream().anyMatch(raktar -> raktar.getNev().equals(nev));
+                if (include) {
+                    throw new Exception(nev + " már szerepel a raktárban");
+                }
 
                 raktarItems.add(new raktar(nev, mertekegyseg, mennyiseg));
             }

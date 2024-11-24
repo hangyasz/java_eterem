@@ -2,6 +2,7 @@ package xml;
 
 import menu.*;
 import asztal.*;
+import role.User;
 import terem.*;
 
 import org.w3c.dom.Document;
@@ -12,15 +13,23 @@ import org.w3c.dom.NodeList;
 import javax.swing.*;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static xml.XMLManager.ASZTAL_FILE;
 
+
+/**
+ * Az osztály az asztalok XML fáljának kezelését végzi
+ */
 public class XMLAsztal {
     private List<asztal> asztalok = new ObservableAsztalList(this);
 
-    // Asztalok mentése fájlba
+    /**
+     * Asztalok frissítése fájlba kiírjuk az asztal adatokat a fájlba az asztalok listából
+     */
     public void asztalUpdate() {
         try {
             saveAsztalToXML();
@@ -29,22 +38,37 @@ public class XMLAsztal {
         }
     }
 
-    // Asztalok betöltése fájlból
+
+    /**
+     * Asztalok betöltése fájból
+     * @param menuItems Menüelemek listája
+     * @param terem A terem adatai
+     * @return Az asztalok listája
+     * Megpróbálja betölteni az asztalokat a fájlból, ha nem sikerül, akkor kiírja a betöltött asztalok neveit
+     */
     public List<asztal> asztalLoad(List<menu> menuItems,terem terem) {
         try {
-            List<asztal> loadedAsztalok = loadAsztalFromXML(menuItems, terem);
+            loadAsztalFromXML(menuItems, terem);
             asztalok.clear();
-            asztalok.addAll(loadedAsztalok);
+            asztalok.addAll(asztalok);
             return asztalok;
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e.getMessage(), "Hiba az asztalok olvasásakor", JOptionPane.ERROR_MESSAGE);
+            List<String> asztalname = asztalok.stream().map(asztal::getNev).collect(Collectors.toList());
+            JTextArea textArea = new JTextArea(String.join("\n", asztalname));
+            textArea.setEditable(false);
+            JScrollPane scrollPane = new JScrollPane(textArea);
+            scrollPane.setPreferredSize(new Dimension(300, 200));
+            JOptionPane.showMessageDialog(null, scrollPane, "Hiba az asztalok olvasásakor", JOptionPane.ERROR_MESSAGE);
             return asztalok;
         }
     }
 
+
+
     /**
-     *
-     * @throws Exception
+     * Asztalok mentése XML fájlba
+     * @throws Exception Ha hiba történik a fájl írásakor
+     * Az asztalok listából kiírja az asztalokat a fájlba
      */
     public void saveAsztalToXML() throws Exception {
         DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
@@ -88,13 +112,16 @@ public class XMLAsztal {
     }
 
     /**
-     *
-     * @param menuItems
-     * @param terem
-     * @return
-     * @throws Exception
+     * Asztalok betöltése XML fájlból
+     * @param menuItems Menüelemek listája
+     * @param terem A terem adatai
+     * @return Az asztalok listája
+     * @throws Exception Ha hiba történik a fájl olvasásakor
+     * Betölti az asztalokat a fájlból, ha nem sikerül, akkor hibát dobunk hibba lehet az asztal pozíciója nem lehet nagyobb, mint a terem mérete
+     * vagy a rendeléshez tartozó menüelem nem található
+     * vagy az asztal neve vagy pozíciója már létezik
      */
-    public List<asztal> loadAsztalFromXML(List<menu> menuItems,terem terem) throws Exception {
+    public void loadAsztalFromXML(List<menu> menuItems,terem terem) throws Exception {
         List<asztal> asztalok = new ArrayList<>();
         Document doc = XMLManager.loadXmlFile(ASZTAL_FILE);
         NodeList asztalNodes = doc.getElementsByTagName("asztal");
@@ -134,6 +161,17 @@ public class XMLAsztal {
                     if (rendeles != null) {
                         rendelesek.add(rendeles);
                     }
+                    else {
+                        throw new Exception("A rendeléshez tartozó menüelem nem található!");
+                    }
+
+                }
+
+
+                // Ellenőrzés, hogy van-e már ilyen nevű asztal vagy azonos pozíciójú asztal
+                boolean exists = asztalok.stream().anyMatch(a -> a.getNev().equals(nev) || (a.getX() == x && a.getY() == y));
+                if (exists) {
+                    throw new Exception("Az asztal neve vagy pozíciója már létezik!");
                 }
 
                 // Asztal létrehozása és hozzáadása a listához
@@ -142,7 +180,6 @@ public class XMLAsztal {
             }
         }
 
-        return asztalok;
     }
 
 }

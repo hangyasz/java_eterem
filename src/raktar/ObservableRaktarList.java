@@ -4,12 +4,24 @@ import xml.XMLRaktar;
 import java.util.ArrayList;
 import java.util.Collection;
 
+
+/**
+ * Az ObservableRaktarList osztály egy raktárakat tároló lista, amely értesíti a hozzá tartozó XMLRaktar objektumot a változásokról.
+ */
 public class ObservableRaktarList extends ArrayList<raktar> {
     private XMLRaktar xmlRaktar;
 
+    /**
+     * Konstruktor
+     * @param xmlRaktar Az XMLRaktar objektum, amelyet értesíteni kell a változásokról
+     */
     public ObservableRaktarList(XMLRaktar xmlRaktar) {
         this.xmlRaktar = xmlRaktar;
     }
+
+    /**
+     * ArrayList metodok feluldefinialasa azert, hogy ertesitse az XMLMenu-t a valtozasrol és a megfigyeloket is kezeli
+     */
 
     @Override
     public boolean add(raktar item) {
@@ -58,14 +70,24 @@ public class ObservableRaktarList extends ArrayList<raktar> {
         return result;
     }
 
+    /**
+     * Megfigyelő hozzáadása és az XMLMenu értesítése
+     */
     private void attachObserver(raktar item) {
         item.setOnChangeCallback(this::updateXML);
     }
 
+    /**
+     * Megfigyelő eltávolítása
+     */
     private void detachObserver(raktar item) {
         item.setOnChangeCallback(null);
     }
 
+
+    /**
+     * Az XMLMenu értesítése a változásokról
+     */
     private void updateXML() {
         if (xmlRaktar != null) {
             xmlRaktar.raktarUpdate();

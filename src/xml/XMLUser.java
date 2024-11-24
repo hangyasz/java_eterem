@@ -12,17 +12,23 @@ import javax.swing.*;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import static xml.XMLManager.USER_FILE;
 
+/**
+ * Az osztály a felhasználók XML fáljának kezelését végzi
+ */
 public class XMLUser {
 
     private List<User> users = new ObservableUserList(this);
 
+    /**
+     * Felhasználók frissítése fájlba kiírjuk a felhasználó adatokat a fájlba a felhasználó listából
+     * @param users A felhasználók listája
+     */
     public void userUpdate(List<User> users){
         try {
             saveUserToXML(users);
@@ -31,6 +37,11 @@ public class XMLUser {
         }
     }
 
+    /**
+     * Felhasználók betöltése fájból hibbes esetén kiírja a betöltött felhasználókat
+     * @return A felhasználó elemek listája
+     * Ha nincs tulajdonos felhasználó, akkor hozzáad egyet 000 jelszóval és default felhasználónévvel és kiírja a felhasználókat
+     */
     public List<User> userLoad() {
         try {
             loadUserFromXML();
@@ -45,7 +56,7 @@ public class XMLUser {
         }
 
         // Ellenőrizzük, hogy van-e OWNER szerepkörű felhasználó
-        if (users.stream().noneMatch(user -> user.getRole() == Role.OWNER)) {
+        if (users.stream().noneMatch(user -> user.getRole() == Role.Tuljonos)) {
             String baseUsername = "default";
             String uniqueUsername = baseUsername;
             int count = 1;
@@ -64,15 +75,19 @@ public class XMLUser {
                     JOptionPane.INFORMATION_MESSAGE);
 
             // Új tulajdonos felhasználó hozzáadása a listához
-            users.add(new User(uniqueUsername, defaultPassword, Role.OWNER));
+            users.add(new User(uniqueUsername, defaultPassword, Role.Tuljonos));
         }
 
         return users;
     }
 
 
-
-
+    /**
+     * Felhasználók mentése XML fájlba
+     * @param users A felhasználók listája
+     * @throws Exception Ha hiba történik a fájl írásakor
+     * A felhasználók listából kiírja a felhasználókat a fájlba
+     */
     public void saveUserToXML(List<User> users) throws Exception  {
         DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
@@ -82,9 +97,7 @@ public class XMLUser {
         doc.appendChild(rootElement);
 
         for (User user : users) {
-            if (!user.getPassword().matches("\\d{4}")) {
-                continue;
-            }
+
             Element userElem = doc.createElement("user");
             userElem.setAttribute("nev", user.getUsername());
 
@@ -102,9 +115,19 @@ public class XMLUser {
         XMLManager.writeXmlFile(doc, USER_FILE);
     }
 
+    /**
+     * Felhasználók betöltése XML fájlból
+     * @throws Exception Hiba esetén kivétel dobása
+     * A fájlból kiolvassa a felhasználókat és hozzáadja őket a listához
+     * Ha a felhasználó már szerepel a listában, akkor kivételt dob
+     */
     public  void loadUserFromXML() throws Exception {
         Document doc = XMLManager.loadXmlFile(USER_FILE);
         NodeList userNodes = doc.getElementsByTagName("user");
+
+        if (userNodes.getLength() == 0) {  // Ellenőrzés, hogy nincs user elem
+            throw new Exception("Nincs felhasználó az XML fájlban.");
+        }
 
         for (int i = 0; i < userNodes.getLength(); i++) {
             Node node = userNodes.item(i);

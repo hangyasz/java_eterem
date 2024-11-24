@@ -1,31 +1,34 @@
 package xml;
 
-import javax.swing.*;
 import javax.xml.parsers.*;
 import javax.xml.transform.*;
 import javax.xml.transform.dom.*;
 import javax.xml.transform.stream.*;
 import org.w3c.dom.*;
 
-import java.awt.*;
+
 import java.io.*;
-import java.util.*;
-import java.util.List;
 
-import raktar.raktar;
-import asztal.asztal;
-import role.Role;
-import role.User;
-
+/**
+ * Az osztály a XML fájlok kezelését végzi
+ */
 
 public class XMLManager{
-    static public final String RAKTAR_FILE = "raktar.xml";
-    static public final String MENU_FILE = "menu.xml";
-    static public final String ASZTAL_FILE = "asztal.xml";
-    static public  String USER_FILE = "users.xml";
-    static public  String TEREM_FILE = "terem.xml";
 
-    // Segéd metódus XML fájl írásához
+    /**
+     * Az XML fájlok nevei
+     */
+    static public String RAKTAR_FILE = "raktar.xml";
+    static public String MENU_FILE = "menu.xml";
+    static public String ASZTAL_FILE = "asztal.xml";
+    static public String USER_FILE = "users.xml";
+    static public String TEREM_FILE = "terem.xml";
+
+    /**
+     * Segéd metódus XML fájl írásához
+     * @param doc Az írandó XML dokumentum
+     * @param fileName A fájl neve
+     */
     static void writeXmlFile(Document doc, String fileName) throws TransformerException {
         TransformerFactory transformerFactory = TransformerFactory.newInstance();
         Transformer transformer = transformerFactory.newTransformer();
@@ -37,7 +40,11 @@ public class XMLManager{
         transformer.transform(source, result);
     }
 
-    // Segéd metódus XML fájl betöltéséhez
+    /**
+     * Segéd metódus XML fájl beolvasásához
+     * @param fileName A beolvasandó fájl neve
+     * @return A beolvasott XML dokumentum
+     */
     static Document loadXmlFile(String fileName) throws Exception {
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();

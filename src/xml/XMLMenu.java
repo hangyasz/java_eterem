@@ -14,15 +14,22 @@ import raktar.raktar;
 import javax.swing.*;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import java.util.ArrayList;
+import java.awt.*;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static xml.XMLManager.MENU_FILE;
+
+/**
+ * Az osztály a menü XML fáljának kezelését végzi
+ */
 
 public class XMLMenu {
     private List<menu> menuItems = new ObservableMenuList(this);
 
-    // Menü mentése fájlba
+    /**
+     * Menü friss írása fájlba hibbes esetén hibaüzenet megjelenítése
+     */
     public void menuUpdate(){
         try {
             saveMenuToXML(menuItems);
@@ -31,18 +38,31 @@ public class XMLMenu {
         }
     }
 
-    // Menü betöltése fájlból
+    /**
+     * Menü betöltése fájlból hibbes esetén hibaüzenet megjelenít a menü elemek listáját
+     * @param raktarItems Raktár elemek listája
+     * @return A menü elemek listája
+     */
     public List<menu> menuLoad(List<raktar> raktarItems){
         try {
             return loadMenuFromXML(raktarItems);
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null,  e.getMessage(), "Hiba a menü olvasásakor", JOptionPane.ERROR_MESSAGE);
+            List<String> menuName = menuItems.stream().map(menu::getNev).collect(Collectors.toList());
+            JTextArea textArea = new JTextArea(String.join("\n", menuName));
+            textArea.setEditable(false);
+            JScrollPane scrollPane = new JScrollPane(textArea);
+            scrollPane.setPreferredSize(new Dimension(300, 200));
+            JOptionPane.showMessageDialog(null,  scrollPane, "Hiba a menü olvasásakor", JOptionPane.ERROR_MESSAGE);
             return menuItems;
         }
     }
 
 
-
+    /**
+     * Menü elemek fájlba írása
+     * @param menuItems A menü elemek listája
+     * @throws Exception Hiba esetén kivétel dobása
+     */
     public void saveMenuToXML(List<menu> menuItems) throws Exception {
         DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
@@ -87,6 +107,13 @@ public class XMLMenu {
     }
 
 
+    /**
+     * Menü elemek betöltése fájlból
+     * @param raktarItems Raktár elemek listája
+     * @return A menü elemek listája
+     * @throws Exception Hiba esetén kivétel dobása
+     * ha nem található az alapanyag a raktárban vagy az asztal neve már létezik kivételt dob
+     */
     public List<menu> loadMenuFromXML(List<raktar> raktarItems) throws Exception {
         Document doc = XMLManager.loadXmlFile(MENU_FILE);
         NodeList elemList = doc.getElementsByTagName("elem");
@@ -102,6 +129,7 @@ public class XMLMenu {
 
                 List<oszetevok> oszetevokList = new ObservableOszetevokList(this);
                 NodeList oszetevokNodes = elem.getElementsByTagName("oszetevo");
+                // Az összetevők beolvasása ha nem található az alapanyag a raktárban kivételt dob kivéa ha ures a lista
                 for (int j = 0; j < oszetevokNodes.getLength(); j++) {
                     Element oszElem = (Element) oszetevokNodes.item(j);
                     String oszNev = oszElem.getAttribute("nev");
@@ -113,9 +141,14 @@ public class XMLMenu {
                             .orElse(null);
 
                     if (raktarItem == null) {
-                        throw new Exception("Nem található a raktárban az alapanyag: " + oszNev);
+                        throw new Exception("Nem található a raktárban az alapanyag");
                     }
                     oszetevokList.add(new oszetevok(raktarItem, mennyiseg));
+                }
+
+                boolean exists = menuItems.stream().anyMatch(menuItem -> menuItem.getNev().equals(nev));
+                if (exists) {
+                    throw new Exception("Az asztal neve már létezik");
                 }
 
                 menu menuItem = new menu(nev, ar, oszetevokList, type);

@@ -11,8 +11,15 @@ import java.awt.*;
 
 import static xml.XMLManager.TEREM_FILE;
 
+/**
+ * Az osztály a terem XML fájlának kezelését végzi
+ */
 public class XMLTerem {
 
+    /**
+     * Terem betöltése fájból hibbes esetén bekéri a felhasználótól a terem méretét
+     * @return A terem elemek listája
+     */
     public terem loadTerem() {
         try {
             return loadTeremFromXML();
@@ -21,6 +28,11 @@ public class XMLTerem {
         }
     }
 
+    /**
+     * Betölti a terem adatait az XML fájlból
+     * @return A terem adatai
+     * @throws Exception Hiba esetén kivétel dobása a terem méretei nem lehetnek 0 vagy annál kisebb
+     */
     private terem loadTeremFromXML() throws Exception {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
@@ -36,62 +48,53 @@ public class XMLTerem {
         return new terem(x, y);
     }
 
-    private terem getTeremFromUser() {
-        while (true) {
-            JTextField xField = new JTextField(10);
-            JTextField yField = new JTextField(10);
 
-            JPanel panel = new JPanel(new GridLayout(2, 2));
-            panel.add(new JLabel("X:"));
-            panel.add(xField);
+    /**
+     * Bekéri a felhasználótól a terem méretét
+     * @return A terem adatai
+     * Ha a felhasználó nem ad meg érvényes méretet, akkor újra bekéri a méretet
+     * Ha a felhasználó bezárja az ablakot, akkor kilép a program
+     */
+    private terem getTeremFromUser() {
+       JTextField xField = new JTextField(10);
+       JTextField yField = new JTextField(10);
+
+         JPanel panel = new JPanel(new GridLayout(2, 2));
+         panel.add(new JLabel("X:"));
+         panel.add(xField);
             panel.add(new JLabel("Y:"));
             panel.add(yField);
-
-            int result = JOptionPane.showConfirmDialog(
-                    null,
-                    panel,
-                    "Terem méretének megadása",
-                    JOptionPane.OK_CANCEL_OPTION
-            );
-
-            if (result == JOptionPane.OK_OPTION) {
-                try {
-                    int x = Integer.parseInt(xField.getText());
-                    int y = Integer.parseInt(yField.getText());
-
-                    if (x <= 0 || y <= 0) {
-                        JOptionPane.showMessageDialog(
-                                null,
-                                "X és Y értékének nagyobbnak kell lennie mint 0",
-                                "Hiba",
-                                JOptionPane.ERROR_MESSAGE
-                        );
-                        continue;
-                    }
-
-                    terem newTerem = new terem(x, y);
-                    saveTeremToXML(newTerem);
-                    return newTerem;
-
-                } catch (NumberFormatException e) {
-                    JOptionPane.showMessageDialog(
-                            null,
-                            "Kérem számokat adjon meg!",
-                            "Hiba",
-                            JOptionPane.ERROR_MESSAGE
-                    );
-                } catch (Exception e) {
-                    JOptionPane.showMessageDialog(
-                            null,
-                            "Hiba történt: " + e.getMessage(),
-                            "Hiba",
-                            JOptionPane.ERROR_MESSAGE
-                    );
-                }
-            }
-        }
+         if (JOptionPane.showConfirmDialog(null, panel, "Terem méretének megadása", JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION) {
+             try {
+                 int x = Integer.parseInt(xField.getText());
+                 int y = Integer.parseInt(yField.getText());
+                 if (x <= 0 || y <= 0) {
+                     JOptionPane.showMessageDialog(null, "X és Y értékének nagyobbnak kell lennie mint 0", "Hiba", JOptionPane.ERROR_MESSAGE);
+                     return getTeremFromUser();
+                 }
+                 terem newTerem = new terem(x, y);
+                 saveTeremToXML(newTerem);
+                 return newTerem;
+             } catch (NumberFormatException e) {
+                 JOptionPane.showMessageDialog(null, "Kérem számokat adjon meg!", "Hiba", JOptionPane.ERROR_MESSAGE);
+                 return getTeremFromUser();
+             } catch (Exception e) {
+                 JOptionPane.showMessageDialog(null, "Hiba történt: " + e.getMessage(), "Hiba", JOptionPane.ERROR_MESSAGE);
+                 return getTeremFromUser();
+             }
+         }
+         else {
+             System.exit(0);
+             return null;
+         }
     }
 
+
+    /**
+     * Terem mentése XML fájlba
+     * @param terem A terem adatai
+     * @throws Exception Hiba esetén kivétel dobása
+     */
     private void saveTeremToXML(terem terem) throws Exception {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();

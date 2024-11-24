@@ -11,8 +11,12 @@ import terem.*;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class Main {
+
+    /**
+     * @param args a parancssori argumentumok
+     * beolvasuk a termet, a felhasznalokat, a raktart, a menut, az asztalokat es elinditjuk a programot
+     */
     public static void main(String[] args) {
        XMLTerem xmlTerem = new XMLTerem();
         terem terem = xmlTerem.loadTerem();

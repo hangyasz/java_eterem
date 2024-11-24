@@ -1,10 +1,14 @@
 package oszetevok;
 
-import raktar.raktar;
+
 import xml.XMLMenu;
 
 import java.util.ArrayList;
 import java.util.Collection;
+
+/**
+ *  Az összetevők listájának osztálya
+ */
 
 public class ObservableOszetevokList extends ArrayList<oszetevok> {
     private XMLMenu xmloszetevok;
@@ -12,6 +16,10 @@ public class ObservableOszetevokList extends ArrayList<oszetevok> {
     public ObservableOszetevokList(XMLMenu xmloszetevok) {
         this.xmloszetevok = xmloszetevok;
     }
+
+    /**
+     * ArrayList metodok feluldefinialasa azert, hogy ertesitse az XMLMenu-t a valtozasrol és a megfigyeloket is kezeli
+     */
 
     @Override
     public boolean add(oszetevok item) {
@@ -61,14 +69,24 @@ public class ObservableOszetevokList extends ArrayList<oszetevok> {
         return result;
     }
 
+
+    /**
+     * Megfigyelő hozzáadása és az XMLMenu értesítése
+     */
     private void attachObserver(oszetevok item) {
         item.setOnChangeCallback(this::updateXML);
     }
 
+    /**
+     * Megfigyelő eltávolítása
+     */
     private void detachObserver(oszetevok item) {
         item.setOnChangeCallback(null);
     }
 
+    /**
+     * XMLMenu értesítése
+     */
     private void updateXML() {
         if (xmloszetevok != null) {
             xmloszetevok.menuUpdate();

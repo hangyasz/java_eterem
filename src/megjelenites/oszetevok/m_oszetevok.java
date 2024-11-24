@@ -97,9 +97,9 @@ public class m_oszetevok extends JFrame {
             try {
                 quantity = Double.parseDouble(quantityField.getText());
                 if (quantity <= 0) {
-                    throw new NumberFormatException();
+                    throw new IllegalArgumentException();
                 }
-            } catch (NumberFormatException ex) {
+            } catch (IllegalArgumentException ex) {
                 JOptionPane.showMessageDialog(this, "Érvénytelen mennyiség!", "Hiba", JOptionPane.ERROR_MESSAGE);
                 return;
             }

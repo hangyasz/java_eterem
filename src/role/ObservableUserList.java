@@ -1,17 +1,27 @@
 package role;
 
-import raktar.raktar;
 import xml.XMLUser;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
+
+/**
+ * Az ObservableUserList osztály egy felhasználókat tároló lista, amely értesíti a hozzá tartozó XMLUser objektumot a változásokról.
+ */
 public class ObservableUserList extends ArrayList<User> {
     private XMLUser xmlUser;
 
+    /**
+     * Konstruktor
+     * @param xmlUser Az XMLUser objektum, amelyet értesíteni kell a változásokról
+     */
     public ObservableUserList(XMLUser xmlUser) {
         this.xmlUser = xmlUser;
     }
+
+    /**
+     * ArrayList metodok feluldefinialasa azert, hogy ertesitse az XMLUser-t a valtozasrol es a megfigyeloket is kezeli
+     */
 
     @Override
     public boolean add(User user) {
@@ -63,15 +73,24 @@ public class ObservableUserList extends ArrayList<User> {
         return result;
     }
 
+    /**
+     * Megfigyelő hozzáadása és az XMLUser értesítése
+     */
 
     private void attachObserver(User item) {
         item.setOnChangeCallback(this::updateXML);
     }
 
+    /**
+     * Megfigyelő eltávolítása
+     */
     private void detachObserver(User item) {
         item.setOnChangeCallback(null);
     }
 
+    /**
+     * Az XMLUser értesítése
+     */
     private void updateXML() {
         if (xmlUser != null) {
             xmlUser.userUpdate(this);

@@ -49,7 +49,7 @@ public class m_admin extends JFrame {
                 User userToDelete = userTableModel.getUsers().get(row);
                 if (userToDelete.equals(loggedInUser)) {
                     JOptionPane.showMessageDialog(m_admin.this, "Nem törölheti saját magát!", "Hiba", JOptionPane.ERROR_MESSAGE);
-                } else if (userToDelete.getRole() == Role.OWNER) {
+                } else if (userToDelete.getRole() == Role.Tuljonos) {
                     JOptionPane.showMessageDialog(m_admin.this, "Az owner fiókot nem lehet törölni!", "Hiba", JOptionPane.ERROR_MESSAGE);
                 } else {
                     users.remove(userToDelete); //törlés a felhasználók listából

@@ -1,4 +1,3 @@
-// XMLUser.java
 package role;
 
 public class User {

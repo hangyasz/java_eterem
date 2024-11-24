@@ -137,7 +137,7 @@ public class PinInputField extends JPanel {
         }
         // hibás pin esetén hibaüzenet
         if (authenticatedUser == null) {
-            JOptionPane.showMessageDialog(this, "Hibbás Pinn", "Hiba", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Hibbás Pin", "Hiba", JOptionPane.ERROR_MESSAGE);
             enteredPin.setLength(0);
         } else {
             //belépés esetén ablak bezárása
