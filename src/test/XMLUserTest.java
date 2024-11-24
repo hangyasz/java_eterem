@@ -238,6 +238,5 @@ class XMLUserTest {
         File myObj = new File(xmlManager.USER_FILE);
         myObj.delete();
         xmlManager.USER_FILE = "users.xml";
-//zoli
     }
 }
