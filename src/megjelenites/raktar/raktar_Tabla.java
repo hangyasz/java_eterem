@@ -6,28 +6,45 @@ import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 import java.util.List;
 
+/**
+ * A raktár táblázatot megjelenítő osztály
+ */
+
 public class raktar_Tabla extends AbstractTableModel {
     private final String[] columnNames = {"Név", "Mértékegység", "Mennyiség","Hozzadás", "Törlés"};
     private  List<raktar> raktars;
 
 
+    /**
+     * Konstruktor
+     * @param raktars a raktárak listája
+     */
     public raktar_Tabla(List<raktar> raktars) {
         this.raktars = raktars;
     }
 
-    //visszaadja a sorok számát
+    /**
+     * visszaadja a raktárak listáj méretét
+     */
     @Override
     public int getRowCount() {
         return raktars.size();
     }
 
-    //visszaadja az oszlopok számát
+    /**
+     * visszaadja a raktárak listáj méretét
+     */
     @Override
     public int getColumnCount() {
         return columnNames.length;
     }
 
-    //visszaadja az adott cella értékét
+    /**
+     * visszaadja a táblázat egy cellájának értékét
+     * @param rowIndex        the row whose value is to be queried
+     * @param columnIndex     the column whose value is to be queried
+     * @return a cella értéke
+     */
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         raktar raktar = raktars.get(rowIndex);
@@ -47,13 +64,21 @@ public class raktar_Tabla extends AbstractTableModel {
         }
     }
 
-    //visszaadja az oszlop nevét
+    /**
+     * visszaadja az oszlopok nevét
+     * @param column az oszlop sorszáma
+     * @return az oszlop neve
+     */
     @Override
     public String getColumnName(int column) {
         return columnNames[column];
     }
 
-    //visszaadja az oszlopok típusát
+    /**
+     * visszaadja az oszlopok típusát
+     * @param columnIndex az oszlop sorszáma
+     * @return az oszlop típusa
+     */
     @Override
     public Class<?> getColumnClass(int columnIndex) {
         switch (columnIndex) {
@@ -71,13 +96,24 @@ public class raktar_Tabla extends AbstractTableModel {
         }
     }
 
-    //visszaadja hogy az adott cella szerkeszthető e
+    /**
+     * visszaadja, hogy az adott cella szerkeszthető-e
+     * @param rowIndex a sor sorszáma
+     * @param columnIndex az oszlop sorszáma
+     * @return csak a hozzáadás és a törlés oszlop szerkeszthető
+     */
     @Override
     public boolean isCellEditable(int rowIndex, int columnIndex) {
         return columnIndex == 3 || columnIndex == 4;
     }
 
-    //itt lehet a cellákat szerkeszteni
+    /**
+     * a táblázat celláinak értékét beállító metódus
+     * @param value az új érték
+     * @param rowIndex a sor sorszáma
+     * @param columnIndex az oszlop sorszáma
+     * beállítja a raktár mennyiségét a kapott értékr alpján
+     */
     @Override
     public void setValueAt(Object value, int rowIndex, int columnIndex) {
         raktar raktar = raktars.get(rowIndex);

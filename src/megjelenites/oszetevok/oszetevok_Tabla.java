@@ -7,27 +7,46 @@ import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 import java.util.List;
 
+/**
+ * Az összetevők táblázatának a megjelenítésére szolgáló osztály
+ */
+
 public class oszetevok_Tabla extends AbstractTableModel {
     private final String[] columnNames = {"Név", "Mértékegység", "Mennyiség", "Törles"};
     private final List<oszetevok> oszetevok;
 
+    /**
+     * Konstruktor
+     * @param oszetevoks Az összetevők listája
+     */
     public oszetevok_Tabla(List<oszetevok> oszetevoks) {
         this.oszetevok = oszetevoks;
     }
 
-    //visszaadja a sorok számát
+    /**
+     * Visszaadja az összetevők számát
+     * @return
+     */
     @Override
     public int getRowCount() {
         return oszetevok.size();
     }
 
-    //visszaadja az oszlopok számát
+    /**
+     * Visszaadja az oszlopok számát
+     * @return
+     */
     @Override
     public int getColumnCount() {
         return columnNames.length;
     }
 
-    //visszaadja az adott cella értékét
+    /**
+     * Visszaadja az adott cella értékét
+     * @param rowIndex
+     * @param columnIndex
+     * @return
+     */
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         //ha nincs összetevő akkor null
@@ -49,13 +68,22 @@ public class oszetevok_Tabla extends AbstractTableModel {
         }
     }
 
-    //visszaadja az oszlop nevét
+    /**
+     * Visszaadja az oszlopok nevét
+     * @param column
+     * @return
+     */
     @Override
     public String getColumnName(int column) {
         return columnNames[column];
     }
 
-    //visszaadja az oszlopok típusát
+
+    /**
+     * Visszaadja az oszlopok típusát
+     * @param columnIndex
+     * @return
+     */
     @Override
     public Class<?> getColumnClass(int columnIndex) {
         switch (columnIndex) {
@@ -72,14 +100,25 @@ public class oszetevok_Tabla extends AbstractTableModel {
         }
     }
 
-    //visszaadja hogy az adott cella szerkeszthető itt a menyiség és a torlés gomb
+    /**
+     * Megadja, hogy az adott cella szerkeszthető-e
+     * @param rowIndex
+     * @param columnIndex
+     * @return a 3 és 4 oszlop szerkeszthető a meyniség és a torlés
+     */
     @Override
     public boolean isCellEditable(int rowIndex, int columnIndex) {
 
         return columnIndex == 2 || columnIndex == 3;
     }
 
-    //az adott cella értékét beállítja
+    /**
+     * Az adott cella értékét állítja be
+     * @param value
+     * @param rowIndex sor index
+     * @param columnIndex oszlop index
+     * beállítja az új menyiséget
+     */
     @Override
     public void setValueAt(Object value, int rowIndex, int columnIndex) {
         switch (columnIndex) {

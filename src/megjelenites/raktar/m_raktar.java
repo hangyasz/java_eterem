@@ -10,10 +10,12 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.TableColumn;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.stream.Collectors;
+
+/**
+ * Raktár megjelenítését végző osztály
+ */
 
 public class m_raktar extends JFrame {
     private final List<raktar> raktars;
@@ -21,6 +23,13 @@ public class m_raktar extends JFrame {
     private final JTextField filterField;
     private final JTable table;
 
+
+    /**
+     * Konstruktor
+     * @param raktars raktárak lista
+     * @param menus menük lista
+     * megjelenít a kersősávot a raktár elmeit és és allul a hozzáadás uj elme lehetőséget
+     */
     public m_raktar(List<raktar> raktars, List<menu> menus) {
         this.raktars = raktars;
         this.menus = menus;
@@ -124,7 +133,10 @@ public class m_raktar extends JFrame {
         });
     }
 
-    // Táblázat frissítése szűrés után
+
+    /**
+     * Táblázat szűrése a szűrőmező tartalma alapján (név) listában teszi a kersés erményét és frissíti a táblázatot
+     */
     private void filterTable() {
         String filterText = filterField.getText();
         List<raktar> filteredRaktars = raktars.stream()
@@ -134,7 +146,11 @@ public class m_raktar extends JFrame {
         setButtonEditorAndRenderer(table);
     }
 
-    // Torlés gomb beállítása
+    /**
+     * A torles gomb megjelenítése a táblázatban és a törlés eseménykezelője
+     * @param table a táblázat
+     * akkor nem lehet elememet törölni ha az szerepel a menü listában
+     */
     private void setButtonEditorAndRenderer(JTable table) {
         TableColumn buttonColumn = table.getColumnModel().getColumn(4);
         buttonColumn.setCellRenderer(new ButtonRenderer());
@@ -167,8 +183,13 @@ public class m_raktar extends JFrame {
 
 
 
-    // Szűrő mező eseménykezelője
+    /**
+     * Szűrőmező eseménykezelője
+     */
     private class FilterFieldListener implements DocumentListener {
+        /**
+         * Szűrőmező tartalmának megváltozásakor frissíti a táblázatot
+         */
         @Override
         public void insertUpdate(DocumentEvent e) {
             filterTable();

@@ -12,10 +12,21 @@ import java.awt.event.KeyEvent;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Az összetevők megjelenítésére szolgáló ablak
+ */
+
 public class m_oszetevok extends JFrame {
 
     private final List<oszetevok> oszetevok_lista;
 
+    /**
+     * Konstruktor
+     *
+     * @param oszetevok_lista Az összetevők listája
+     * @param raktars A raktárak listája
+     * itt jelenik meg az egyes menuk oszetvői táblázatos formában nevel menyiségel törlés és hozzáadás lehetoségel
+     */
     public m_oszetevok(List<oszetevok> oszetevok_lista, List<raktar> raktars) {
         this.oszetevok_lista = oszetevok_lista;
         // Ablak beállítása
@@ -128,7 +139,12 @@ public class m_oszetevok extends JFrame {
         });
     }
 
-    // Lehetővé teszi a torlés gomb használatát a táblázatban
+
+    /**
+     * A torlés gomb megjelenitésrt felel és az használatáért
+     * @param table a tablazt amiben megjelenek az adatok
+     */
+
     private void setButtonEditorAndRenderer(JTable table) {
         TableColumn buttonColumn = table.getColumnModel().getColumn(3);
         buttonColumn.setCellRenderer(new ButtonRenderer());
