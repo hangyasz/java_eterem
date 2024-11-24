@@ -207,7 +207,7 @@ public class m_menu extends JFrame {
         //Törlés gomb
         TableColumn buttonTorles = table.getColumnModel().getColumn(5);
         buttonTorles.setCellRenderer(new ButtonRenderer());
-        buttonTorles.setCellEditor(new ButtonEditor(new JCheckBox(), e -> {
+        buttonTorles.setCellEditor(new ButtonEditor( e -> {
             //hozzáférés ellenőrzése
             if (!exes.ratar_menuex(authenticatedUser)) {
                 if (!magasab(users, frame)) {
@@ -226,7 +226,7 @@ public class m_menu extends JFrame {
         // Összetevők gomb
         TableColumn buttonoszetevok = table.getColumnModel().getColumn(4);
         buttonoszetevok.setCellRenderer(new ButtonRenderer());
-        buttonoszetevok.setCellEditor(new ButtonEditor(new JCheckBox(), e -> {
+        buttonoszetevok.setCellEditor(new ButtonEditor( e -> {
             //megjelenítjük az adot menü összetevőit
             int row = table.convertRowIndexToModel(table.getSelectedRow());
             menu menu = filteredMenus.get(row);

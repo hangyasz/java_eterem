@@ -155,7 +155,7 @@ public class m_raktar extends JFrame {
         TableColumn buttonColumn = table.getColumnModel().getColumn(4);
         buttonColumn.setCellRenderer(new ButtonRenderer());
         // Törlés gomb eseménykezelője
-        buttonColumn.setCellEditor(new ButtonEditor(new JCheckBox(), e -> {
+        buttonColumn.setCellEditor(new ButtonEditor( e -> {
             // Kiválasztott sor lekérése
             int row = table.convertRowIndexToModel(table.getSelectedRow());
             raktar raktarToRemove = raktars.get(row);

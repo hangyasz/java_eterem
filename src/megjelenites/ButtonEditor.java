@@ -4,52 +4,40 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
-public class ButtonEditor extends DefaultCellEditor {
-    protected JButton button;
-    private String label;
-    private boolean isPushed;
-    private ActionListener actionListener;
 
-    public ButtonEditor(JCheckBox checkBox, ActionListener actionListener) {
-        super(checkBox);
-        this.actionListener = actionListener;
+/**
+ * A gombot valositja meg a tablazatban a katiáséet segit
+ */
+public class ButtonEditor extends DefaultCellEditor {
+    private JButton button;
+
+    /**
+     * Konstruktor
+     * @param actionListener az actionListener
+     * a gomb megnyomásakor az actionListener actionperformed metódusa hívódik meg
+     */
+    public ButtonEditor(ActionListener actionListener) {
+
+        super(new JCheckBox()); // Szükséges az ősosztály miatt
         button = new JButton();
-        button.setOpaque(true);
         button.addActionListener(e -> {
             fireEditingStopped();
             actionListener.actionPerformed(e);
         });
     }
 
+    /**
+     * A gombot adja vissza
+     * @param table a tábla
+     * @param value az érték
+     * @param isSelected kiválasztva van-e
+     * @param row a sor
+     * @param column az oszlop
+     * @return a gomb
+     */
     @Override
     public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
-        if (isSelected) {
-            button.setForeground(table.getSelectionForeground());
-            button.setBackground(table.getSelectionBackground());
-        } else {
-            button.setForeground(table.getForeground());
-            button.setBackground(table.getBackground());
-        }
-        label = (value == null) ? "" : value.toString();
-        button.setText(label);
-        isPushed = true;
+        button.setText(value != null ? value.toString() : "");
         return button;
-    }
-
-    @Override
-    public Object getCellEditorValue() {
-        isPushed = false;
-        return label;
-    }
-
-    @Override
-    public boolean stopCellEditing() {
-        isPushed = false;
-        return super.stopCellEditing();
-    }
-
-    @Override
-    protected void fireEditingStopped() {
-        super.fireEditingStopped();
     }
 }

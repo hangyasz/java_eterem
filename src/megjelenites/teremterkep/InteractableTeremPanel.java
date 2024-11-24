@@ -9,12 +9,24 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.List;
 
+
+/**
+ * Terem megjelenítését végző osztály
+ */
 public class InteractableTeremPanel extends TeremPanel {
+   //az moztatásnál használjuk az asztalt tároljuk itt
     private asztal draggedAsztal = null;
 
+    /**
+     * Konstruktor
+     * @param asztalok Az asztalok listája
+     * @param terem A terem adati
+     * megjeleníti a termet és lehetőséget ad az asztalok mozgatására és az asztalok törlését, átnevezését és mozgatását
+     */
     public InteractableTeremPanel(List<asztal> asztalok, terem terem) {
         super(asztalok, terem);
 
+        //az ablmak méretének változásakor ujra számoljuk a zoom faktort és újra rajzol
         addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
@@ -26,6 +38,7 @@ public class InteractableTeremPanel extends TeremPanel {
             }
         });
 
+        //egérkattintások kezelése
         addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -34,6 +47,7 @@ public class InteractableTeremPanel extends TeremPanel {
                     int tableX = asztal.getX() * cellSize;
                     int tableY = asztal.getY() * cellSize;
 
+                    //megézük hogy asztalra kattintottunk-e
                     if (e.getX() / zoomFactorX >= tableX &&
                             e.getX() / zoomFactorX < tableX + cellSize &&
                             e.getY() / zoomFactorY >= tableY &&
@@ -52,12 +66,18 @@ public class InteractableTeremPanel extends TeremPanel {
                 }
             }
 
+            /**
+             * Az asztal mozgatásának befejezése
+             */
             @Override
             public void mouseReleased(MouseEvent e) {
                 draggedAsztal = null;
             }
         });
 
+        /**
+         * Az asztal mozgatása csinálj nem lehet az asztalt kivinni a teremből az egér poziíciót visza számolja az értélet
+         */
         addMouseMotionListener(new MouseAdapter() {
             @Override
             public void mouseDragged(MouseEvent e) {

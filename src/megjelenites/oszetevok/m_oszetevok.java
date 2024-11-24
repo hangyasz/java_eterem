@@ -148,7 +148,7 @@ public class m_oszetevok extends JFrame {
     private void setButtonEditorAndRenderer(JTable table) {
         TableColumn buttonColumn = table.getColumnModel().getColumn(3);
         buttonColumn.setCellRenderer(new ButtonRenderer());
-        buttonColumn.setCellEditor(new ButtonEditor(new JCheckBox(), e -> {
+        buttonColumn.setCellEditor(new ButtonEditor( e -> {
             oszetevok oszetevok1 = oszetevok_lista.get(table.getSelectedRow());
             oszetevok_lista.remove(oszetevok1);
             table.setModel(new oszetevok_Tabla(oszetevok_lista));

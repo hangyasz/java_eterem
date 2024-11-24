@@ -12,8 +12,18 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
 
+
+/**
+ * Terem megjelenítését végző osztály
+ */
 public class m_TeremTerkep extends JFrame {
 
+    /**
+     * Konstruktor
+     * @param asztalok Az asztalok listája
+     * @param terem A terem adati
+     * megjeleníti a termet és lehetőséget ad az asztalok mozgatására és az asztalok törlését, átnevezését és mozgatását
+     */
     public m_TeremTerkep(List<asztal> asztalok,terem terem) {
         setTitle("Terem Térkép");
         setSize(800, 600);

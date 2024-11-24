@@ -19,8 +19,21 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
+
+/**
+ * Kezdő panel
+ */
 public class kezd extends JFrame {
 
+    /**
+     * Konstruktor
+     * @param raktars a raktárak listája
+     * @param menu a menük listája
+     * @param asztals az asztalok listája
+     * @param terem a terem adati
+     * @param users a felhasználók listája
+     * megjeleníti a kezdő panelt és lehetőséget ad az étterem, raktár, menü, térkép és admin felületek megnyitására gombnyomásra
+     */
     public kezd(List<raktar> raktars, List<menu> menu, List<asztal> asztals, terem terem, List<User> users) {
         //válaszopanel megjelenitése
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

@@ -43,7 +43,7 @@ public class m_admin extends JFrame {
 
         //a törlés gomb oszlop szerkesztőjének beállítása
         userTable.getColumnModel().getColumn(3).setCellRenderer(new ButtonRenderer());
-        userTable.getColumnModel().getColumn(3).setCellEditor(new ButtonEditor(new JCheckBox(), e -> {
+        userTable.getColumnModel().getColumn(3).setCellEditor(new ButtonEditor( e -> {
             int row = userTable.convertRowIndexToModel(userTable.getSelectedRow());
             if (row >= 0 && row < userTableModel.getUsers().size()) {
                 User userToDelete = userTableModel.getUsers().get(row);
