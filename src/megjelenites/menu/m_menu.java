@@ -2,7 +2,6 @@ package megjelenites.menu;
 
 import megjelenites.ButtonEditor;
 import megjelenites.ButtonRenderer;
-import megjelenites.login.login_side;
 import megjelenites.oszetevok.m_oszetevok;
 import menu.menu;
 import menu.MenuType;
@@ -22,6 +21,10 @@ import java.util.EventObject;
 
 import static role.exes.magasab;
 
+/**
+ * A menü megjelenítését megvalósító osztály
+ */
+
 public class m_menu extends JFrame {
     private List<menu> menus;
     private final List<raktar> raktars;
@@ -31,6 +34,16 @@ public class m_menu extends JFrame {
     private User authenticatedUser;
     private List<User> users;
     private JFrame frame;
+
+
+    /**
+     * Konstruktor a menü megjelenítéséhez
+     * @param menus a menük listája
+     * @param raktars a raktárak listája
+     * @param users a felhasználók listája
+     * @param authenticatedUser az azonosított felhasználó
+     * felül megjeleníti a szűrő mezőt és a menüket táblázatos formában és lehetőségetvan új menü hozzáadására és a menü törlésére
+     */
 
     public m_menu(List<menu> menus, List<raktar> raktars, List<User> users, User authenticatedUser) {
         //privát változók beállítása
@@ -137,9 +150,12 @@ public class m_menu extends JFrame {
         pack();
     }
 
-    //tábla frissítése szűrés alapján
+    /**
+     * A tábla frissítése a szűrőmezőben megadott szöveg alapján
+     */
     private void filterTable() {
         String filterText = filterField.getText();
+        //szűrés
         if (filterText.isEmpty()) {
             filteredMenus = menus;
         } else {
@@ -151,7 +167,11 @@ public class m_menu extends JFrame {
         setButtonEditorAndRenderer(table);
     }
 
-    //gomb használata táblázatbol
+    /**
+     * A táblázatban lévő muveletek gombok beállítása
+     * @param table a táblázat
+     * itt lehetőség van a menü típusának módosítására, a menü összetevőinek megtekintésére és a menü törlésére ezet az elemeket rendelejujük a táblázathoz
+     */
     private void setButtonEditorAndRenderer(JTable table) {
         // dropbox szerkesztő
         TableColumn typeColumn = table.getColumnModel().getColumn(1);

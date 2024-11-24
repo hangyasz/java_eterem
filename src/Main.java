@@ -14,7 +14,8 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        terem terem= new terem(10, 10);
+       XMLTerem xmlTerem = new XMLTerem();
+        terem terem = xmlTerem.loadTerem();
         XMLUser xmlUser = new XMLUser();
         List<User> users = xmlUser.userLoad();
         XMLRaktar xmlRaktar = new XMLRaktar();

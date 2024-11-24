@@ -23,6 +23,7 @@ public class XMLManager{
     static public final String MENU_FILE = "menu.xml";
     static public final String ASZTAL_FILE = "asztal.xml";
     static public  String USER_FILE = "users.xml";
+    static public  String TEREM_FILE = "terem.xml";
 
     // Segéd metódus XML fájl írásához
     static void writeXmlFile(Document doc, String fileName) throws TransformerException {

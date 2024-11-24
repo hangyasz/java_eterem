@@ -2,7 +2,7 @@
 <asztalok>
   <asztal nev="000">
     <pozicio>
-      <x>7</x>
+      <x>0</x>
       <y>3</y>
     </pozicio>
     <ertek>9330</ertek>
@@ -152,5 +152,13 @@
       <rendeles nev="pgacsa"/>
       <rendeles nev="pgacsa"/>
     </rendelesek>
+  </asztal>
+  <asztal nev="zol">
+    <pozicio>
+      <x>4</x>
+      <y>4</y>
+    </pozicio>
+    <ertek>0</ertek>
+    <rendelesek/>
   </asztal>
 </asztalok>

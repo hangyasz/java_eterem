@@ -8,28 +8,47 @@ import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 import java.util.List;
 
+
+/**
+ * A menü táblázatának a megjelenítését megvalósító osztály
+ */
+
 public class menu_Tabla extends AbstractTableModel {
     private final String[] columnNames = {"Elérhető","Tipus", "Név", "Ár", "Összetevők", "Törles"};
     private final List<menu> menus;
 
-    //konstruktor
+    /**
+     * Konstruktor a menü táblázatának létrehozásához
+     * @param menus a menük listája
+     */
     public menu_Tabla(List<menu> menus) {
         this.menus = menus;
     }
 
-    //visszaadja a sorok számát
+    /**
+     * Visszaadja a menus lista méretét
+     * @return
+     */
     @Override
     public int getRowCount() {
         return menus.size();
     }
 
-    //visszaadja az oszlopok számát
+    /**
+     * Visszaadja az oszlopok számát az oszlopok nevei alapján
+     * @return
+     */
     @Override
     public int getColumnCount() {
         return columnNames.length;
     }
 
-    //visszaadja az adott cella értékét
+    /**
+     * Visszaadja a cella értékét a megadott sor és oszlop alapján
+     * @param rowIndex a sor sorszáma
+     * @param columnIndex az oszlop sorszáma
+     * @return
+     */
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         menu menu = menus.get(rowIndex);
@@ -52,13 +71,21 @@ public class menu_Tabla extends AbstractTableModel {
         }
     }
 
-    //visszaadja az oszlop nevét
+    /**
+     * Visszaadja az oszlop nevét
+     * @param column az oszlop sorszáma
+     * @return
+     */
     @Override
     public String getColumnName(int column) {
         return columnNames[column];
     }
 
-    //visszaadja az oszlopok típusát
+    /**
+     * Visszaadja az oszlopok típusát
+     * @param columnIndex az oszlop sorszáma
+     * @return
+     */
     @Override
     public Class<?> getColumnClass(int columnIndex) {
         switch (columnIndex) {
@@ -79,17 +106,29 @@ public class menu_Tabla extends AbstractTableModel {
         }
     }
 
-    //a cellák szerkeszthetőek alapesetben mindegyik az
+    /**
+     * Megadja, hogy az adott cella szerkeszthető-e
+     * @param rowIndex a sor sorszáma
+     * @param columnIndex az oszlop sorszáma
+     * @return
+     * nálunk minden cella szerkeszthető
+     */
     @Override
     public boolean isCellEditable(int rowIndex, int columnIndex) {
         return true;
     }
 
-    //az adott cella értékét bálitás modositás estén
+    /**
+     * A cella értékének beállítása
+     * @param value az új érték
+     * @param rowIndex a sor sorszáma
+     * @param columnIndex az oszlop sorszáma
+     */
     @Override
     public void setValueAt(Object value, int rowIndex, int columnIndex) {
         menu menu = menus.get(rowIndex);
         switch (columnIndex) {
+            //elérhető beállítása
             case 0:
                 menu.setEnabled((boolean) value);
                 break;
