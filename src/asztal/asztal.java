@@ -142,7 +142,7 @@ public class asztal {
      * Beállítja az asztal értékét.
      * @param eretke az asztal értéke
      */
-    public void setEretke(int eretke) {
+    public void setEretke(long eretke) {
         this.eretke = eretke;
         notifyChange();
     }

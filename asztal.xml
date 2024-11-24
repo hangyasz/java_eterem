@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <asztalok>
-  <asztal nev="zol">
+  <asztal nev="zzz">
     <pozicio>
-      <x>1</x>
+      <x>6</x>
       <y>2</y>
     </pozicio>
     <ertek>0</ertek>
     <rendelesek/>
   </asztal>
-  <asztal nev="ppp">
+  <asztal nev="aaa">
     <pozicio>
-      <x>6</x>
-      <y>5</y>
+      <x>4</x>
+      <y>4</y>
     </pozicio>
     <ertek>0</ertek>
     <rendelesek/>

@@ -32,7 +32,7 @@ public class XMLAsztal {
      */
     public void asztalUpdate() {
         try {
-            saveAsztalToXML();
+            saveAsztalToXML(asztalok);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Hiba az asztalok írásakor", JOptionPane.ERROR_MESSAGE);
         }
@@ -49,8 +49,6 @@ public class XMLAsztal {
     public List<asztal> asztalLoad(List<menu> menuItems,terem terem) {
         try {
             loadAsztalFromXML(menuItems, terem);
-            asztalok.clear();
-            asztalok.addAll(asztalok);
             return asztalok;
         } catch (Exception e) {
             List<String> asztalname = asztalok.stream().map(asztal::getNev).collect(Collectors.toList());
@@ -70,7 +68,7 @@ public class XMLAsztal {
      * @throws Exception Ha hiba történik a fájl írásakor
      * Az asztalok listából kiírja az asztalokat a fájlba
      */
-    public void saveAsztalToXML() throws Exception {
+    public void saveAsztalToXML(List<asztal> AsztalItems) throws Exception {
         DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
         Document doc = docBuilder.newDocument();
@@ -78,7 +76,7 @@ public class XMLAsztal {
         Element rootElement = doc.createElement("asztalok");
         doc.appendChild(rootElement);
 
-        for (asztal item : asztalok) {
+        for (asztal item : AsztalItems) {
             Element asztalElem = doc.createElement("asztal");
             asztalElem.setAttribute("nev", item.getNev());
 
@@ -122,7 +120,6 @@ public class XMLAsztal {
      * vagy az asztal neve vagy pozíciója már létezik
      */
     public void loadAsztalFromXML(List<menu> menuItems,terem terem) throws Exception {
-        List<asztal> asztalok = new ArrayList<>();
         Document doc = XMLManager.loadXmlFile(ASZTAL_FILE);
         NodeList asztalNodes = doc.getElementsByTagName("asztal");
 
@@ -179,7 +176,7 @@ public class XMLAsztal {
                 asztalok.add(asztalItem);
             }
         }
-
     }
+
 
 }
