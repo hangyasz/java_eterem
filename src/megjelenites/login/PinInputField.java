@@ -8,16 +8,27 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.List;
 
+/**
+ * A PIN bevitel mezőt megvalósító osztály
+ */
+
 public class PinInputField extends JPanel {
     private JTextField pinField;
     private StringBuilder enteredPin = new StringBuilder();
     private List<User> users;
-    private User authenticatedUser;
+    private User authenticatedUser = null;
 
+
+    /**
+     * Konstruktor a PIN bevitel mező létrehozásához
+     * @param users a felhasználók listája
+     * beállítja a felhasználókat és a mezőket itt lehet beírni a pin kódot
+     */
     public PinInputField(List<User> users) {
         this.users = users;
         setLayout(new BorderLayout());
 
+        // PIN mező
         pinField = new JPasswordField(4);
         pinField.setFont(new Font("Arial", Font.BOLD, 24));
         pinField.setEditable(false);
@@ -27,12 +38,15 @@ public class PinInputField extends JPanel {
         pinField.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
+                // ha számot ütünk be és a pin hossza nem éri el a 4 karaktert akkor hozzáadja a pinhez
                 if (Character.isDigit(e.getKeyChar()) && enteredPin.length() < 4) {
                     enteredPin.append(e.getKeyChar());
                     updatePinDisplay();
+                    // ha backspace-t ütünk be és a pin hossza nagyobb mint 0 akkor törli az utolsó karaktert
                 } else if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE && enteredPin.length() > 0) {
                     enteredPin.setLength(enteredPin.length() - 1);
                     updatePinDisplay();
+                    // ha enter-t ütünk be akkor belépteti a felhasználót
                 } else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                     authenticateUser();
                 }
@@ -60,9 +74,14 @@ public class PinInputField extends JPanel {
         SwingUtilities.invokeLater(() -> pinField.requestFocusInWindow());
     }
 
+    /**
+     * Szám gomb hozzáadása
+     * @param panel a panel amire a gombot hozzáadja
+     * @param number a gomb szövege
+     */
     private void addNumberButton(JPanel panel, String number) {
         JButton button = new JButton(number);
-        // gomb szövegének megelenése
+        // gomb szövegének megelenése formátuma
         button.setFont(new Font("Arial", Font.BOLD, 24));
         button.addActionListener(e -> {
             if (enteredPin.length() < 4) {
@@ -73,7 +92,11 @@ public class PinInputField extends JPanel {
         panel.add(button);
     }
 
-    // vezérlő gombok hozzáadása
+    /**
+     * Vezérlő gomb hozzáadása (Clear, Enter, Visza) gombok muveletei álja be
+     * @param panel a panel amire a gombot hozzáadja
+     * @param text a gomb szövege
+     */
     private void addControlButton(JPanel panel, String text) {
         JButton button = new JButton(text);
         button.setFont(new Font("Arial", Font.BOLD, 24));
@@ -94,12 +117,16 @@ public class PinInputField extends JPanel {
         panel.add(button);
     }
 
-    // pinField frissítése csilagokal
+    /**
+     * A pinField frissítése a beírja a csillagokat a beírt számok helyére
+     */
     private void updatePinDisplay() {
         pinField.setText("*".repeat(enteredPin.length()));
     }
 
-    // felhasználó azonosítása
+    /**
+     * Felhasználó azonosítása a beírt PIN alapján  hibba esetén hibaüzenet ha helyes akkor belépteti a felhasználót és bezárja az ablakot
+     */
     private void authenticateUser() {
         String pin = enteredPin.toString();
         for (User user : users) {
@@ -119,7 +146,10 @@ public class PinInputField extends JPanel {
         updatePinDisplay();
     }
 
-    // visszaadja a bejelentkezett felhasználót
+    /**
+     * Az azonosított felhasználó lekérdezése
+     * @return az azonosított felhasználó
+     */
     public User getAuthenticatedUser() {
         return authenticatedUser;
     }
