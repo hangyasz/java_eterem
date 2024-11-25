@@ -2,9 +2,10 @@ package megjelenites.Eterem;
 
 import asztal.asztal;
 import megjelenites.login.login_side;
-import menu.menu;
 import menu.MenuType;
-import role.*;
+import menu.menu;
+import role.User;
+import role.exes;
 import terem.terem;
 
 import javax.swing.*;
@@ -178,10 +179,10 @@ public class m_Etterem extends JFrame {
                     return;
                 }
             }
-            asztal.getRendelesek().clear();
-            ordersPanel.setVisible(false);
+
             JOptionPane.showMessageDialog(null, "Fizetendő összeg: " + asztal.getEretke() + " Ft", "Fizetés", JOptionPane.INFORMATION_MESSAGE);
-            asztal.setEretke(0);
+            asztal.pay();
+            ordersPanel.setVisible(false);
         });
 
        //gombok hozzáadása a panelhez

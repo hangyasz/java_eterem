@@ -77,7 +77,23 @@ public class m_raktar extends JFrame {
         centerPanel.add(addPanel, BorderLayout.SOUTH);
 
         // Szűrő mező eseménykezelője
-        filterField.getDocument().addDocumentListener(new FilterFieldListener());
+        //szűrő mező figyelése és változás esetén a tábla frissítése
+        filterField.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                filterTable();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                filterTable();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                filterTable();
+            }
+        });
 
         // Alsó panel
         JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
@@ -181,28 +197,4 @@ public class m_raktar extends JFrame {
         }));
     }
 
-
-
-    /**
-     * Szűrőmező eseménykezelője
-     */
-    private class FilterFieldListener implements DocumentListener {
-        /**
-         * Szűrőmező tartalmának megváltozásakor frissíti a táblázatot
-         */
-        @Override
-        public void insertUpdate(DocumentEvent e) {
-            filterTable();
-        }
-
-        @Override
-        public void removeUpdate(DocumentEvent e) {
-            filterTable();
-        }
-
-        @Override
-        public void changedUpdate(DocumentEvent e) {
-            filterTable();
-        }
-    }
 }

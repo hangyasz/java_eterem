@@ -1,9 +1,10 @@
 package asztal;
 
-import oszetevok.oszetevok;
 import menu.menu;
-import java.util.List;
+import oszetevok.oszetevok;
+
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Az asztalokat reprezentáló osztály, amely az asztalok nevét, rendelés értékeit, pozícióját és rendeléseit tárolja.
@@ -87,6 +88,7 @@ public class asztal {
     /**
      * Beállítja az asztal x koordinátáját.
      * @param x az asztal x koordinátája
+     * megfigyelőt értesít
      */
     public void setX(int x) {
         this.x = x;
@@ -97,6 +99,7 @@ public class asztal {
     /**
      * Beállítja az asztal y koordinátáját.
      * @param y az asztal y koordinátája
+     * megfigyelőt értesít
      */
     public void setY(int y) {
         this.y = y;
@@ -106,6 +109,7 @@ public class asztal {
     /**
      * Beállítja az asztal nevét.
      * @param nev az asztal neve
+     * megfigyelőt értesít
      */
     public void setNev(String nev) {
         this.nev = nev;
@@ -115,6 +119,7 @@ public class asztal {
     /**
      * Hozzáad egy rendelést az asztalhoz.
      * @param item a rendelés
+     * megfigyelőt értesít
      */
     public void addRendeles(menu item) {
         rendelesek.add(item);
@@ -128,6 +133,7 @@ public class asztal {
     /**
      * Eltávolít egy rendelést az asztalról.
      * @param item a rendelés
+     * megfigyelőt értesít
      */
     public void removeRendeles(menu item) {
         rendelesek.remove(item);
@@ -141,6 +147,8 @@ public class asztal {
     /**
      * Beállítja az asztal értékét.
      * @param eretke az asztal értéke
+     * megfigyelőt értesít
+     *
      */
     public void setEretke(long eretke) {
         this.eretke = eretke;
@@ -163,6 +171,17 @@ public class asztal {
         if(onChangeCallback != null){
             onChangeCallback.run();
         }
+    }
+
+    /**
+     * Az asztal fizetése.
+     * Az asztal rendeléseit törli és az értéket nullára állítja.
+     * megfigyelőt értesít
+     */
+    public void pay() {
+        rendelesek.clear();
+        eretke = 0;
+        notifyChange();
     }
 
 
