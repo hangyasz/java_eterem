@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<raktar>
+  <elem nev="11">
+    <mertekegyseg>11</mertekegyseg>
+    <mennyiseg>11001.0</mennyiseg>
+  </elem>
+  <elem nev="222">
+    <mertekegyseg>22</mertekegyseg>
+    <mennyiseg>222.0</mennyiseg>
+  </elem>
+  <elem nev="333">
+    <mertekegyseg>333</mertekegyseg>
+    <mennyiseg>33.0</mennyiseg>
+  </elem>
+  <elem nev="12">
+    <mertekegyseg>111</mertekegyseg>
+    <mennyiseg>111.0</mennyiseg>
+  </elem>
+  <elem nev="3331">
+    <mertekegyseg>333</mertekegyseg>
+    <mennyiseg>333.0</mennyiseg>
+  </elem>
+  <elem nev="11111">
+    <mertekegyseg>11</mertekegyseg>
+    <mennyiseg>111.0</mennyiseg>
+  </elem>
+</raktar>

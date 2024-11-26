@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<asztalok>
+  <asztal nev="ttt">
+    <pozicio>
+      <x>1</x>
+      <y>3</y>
+    </pozicio>
+    <ertek>0</ertek>
+    <rendelesek/>
+  </asztal>
+  <asztal nev="sss">
+    <pozicio>
+      <x>5</x>
+      <y>5</y>
+    </pozicio>
+    <ertek>11110</ertek>
+    <rendelesek>
+      <rendeles nev="zzo"/>
+      <rendeles nev="zzo"/>
+      <rendeles nev="zzo"/>
+      <rendeles nev="zzo"/>
+      <rendeles nev="zzo"/>
+      <rendeles nev="zzo"/>
+      <rendeles nev="zzo"/>
+      <rendeles nev="zzo"/>
+      <rendeles nev="zzo"/>
+      <rendeles nev="zzo"/>
+    </rendelesek>
+  </asztal>
+</asztalok>

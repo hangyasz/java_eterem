@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<menu>
+  <elem nev="zzo">
+    <ar>1111</ar>
+    <type>ELOETEL</type>
+    <enabled>true</enabled>
+    <oszetevok>
+      <oszetevo nev="11">
+        <mennyiseg>11.0</mennyiseg>
+      </oszetevo>
+    </oszetevok>
+  </elem>
+</menu>

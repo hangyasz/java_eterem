@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<users>
+  <user nev="default">
+    <password>0000</password>
+    <role>Tuljonos</role>
+  </user>
+  <user nev="1111">
+    <password>1111</password>
+    <role>Tuljonos</role>
+  </user>
+  <user nev="pincer">
+    <password>1234</password>
+    <role>Pincér</role>
+  </user>
+</users>

@@ -5,8 +5,8 @@ package terem;
  */
 
 public class terem {
-    int x;//terem szélessége
-    int y;//terem magassága
+    private int x;//terem szélessége
+    private int y;//terem magassága
 
     /**
      * Konstruktor
